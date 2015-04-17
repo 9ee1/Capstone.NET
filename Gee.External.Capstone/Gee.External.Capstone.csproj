@@ -58,6 +58,17 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArmCodeCondition.cs" />
+    <Compile Include="ArmCpsFlag.cs" />
+    <Compile Include="ArmCpsMode.cs" />
+    <Compile Include="ArmInstruction.cs" />
+    <Compile Include="ArmInstructionGroup.cs" />
+    <Compile Include="ArmInstructionOperand.cs" />
+    <Compile Include="ArmInstructionOperandShiftType.cs" />
+    <Compile Include="ArmMemoryBarrier.cs" />
+    <Compile Include="ArmRegister.cs" />
+    <Compile Include="ArmSetEndInstructionOperandType.cs" />
+    <Compile Include="ArmVectorDataType.cs" />
     <Compile Include="CapstoneDisassembler.cs" />
     <Compile Include="CapstoneImport.cs" />
     <Compile Include="CapstoneX86Disassembler.cs" />
@@ -71,6 +82,11 @@
     <Compile Include="IndependentInstructionGroup.cs" />
     <Compile Include="Instruction.cs" />
     <Compile Include="MarshalExtension.cs" />
+    <Compile Include="NativeArmInstructionDetail.cs" />
+    <Compile Include="NativeArmInstructionMemoryOperandValue.cs" />
+    <Compile Include="NativeArmInstructionOperand.cs" />
+    <Compile Include="NativeArmInstructionOperandShift.cs" />
+    <Compile Include="NativeArmInstructionOperandValue.cs" />
     <Compile Include="NativeCapstone.cs" />
     <Compile Include="NativeIndependentInstructionDetailExtension.cs" />
     <Compile Include="NativeInstruction.cs" />
