@@ -329,7 +329,7 @@ namespace Gee.External.Capstone {
                     //
                     // This is a relatively expensive operation. An better approach needs to be investigated.
                     var operandPropertyName = String.Format("Operand{0}", i);
-                    var operandProperty = thisType.GetProperty(operandPropertyName);
+                    var operandProperty = thisType.GetField(operandPropertyName);
                     var operandPropertyValue = (NativeArmInstructionOperand) operandProperty.GetValue(this);
 
                     managedOperands[(i - 1)] = operandPropertyValue;

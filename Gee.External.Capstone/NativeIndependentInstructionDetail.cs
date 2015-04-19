@@ -43,6 +43,16 @@ namespace Gee.External.Capstone {
         public NativeX86InstructionDetail X86Detail;
 
         /// <summary>
+        ///     Instruction's ARM64 Architecture Detail.
+        /// </summary>
+        public NativeArm64InstructionDetail Arm64Detail;
+
+        /// <summary>
+        ///     Instruction's ARM Architecture Detail.
+        /// </summary>
+        public NativeArmInstructionDetail ArmDetail;
+
+        /// <summary>
         ///     Get Managed Implicit Registers Read by an Instruction.
         /// </summary>
         /// <value>

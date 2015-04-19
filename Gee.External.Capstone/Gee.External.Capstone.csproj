@@ -58,6 +58,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arm64Instruction.cs" />
+    <Compile Include="Arm64InstructionGroup.cs" />
+    <Compile Include="Arm64Register.cs" />
     <Compile Include="ArmCodeCondition.cs" />
     <Compile Include="ArmCpsFlag.cs" />
     <Compile Include="ArmCpsMode.cs" />
@@ -82,6 +85,11 @@
     <Compile Include="IndependentInstructionGroup.cs" />
     <Compile Include="Instruction.cs" />
     <Compile Include="MarshalExtension.cs" />
+    <Compile Include="NativeArm64InstructionDetail.cs" />
+    <Compile Include="NativeArm64InstructionMemoryOperandValue.cs" />
+    <Compile Include="NativeArm64InstructionOperand.cs" />
+    <Compile Include="NativeArm64InstructionOperandShift.cs" />
+    <Compile Include="NativeArm64InstructionOperandValue.cs" />
     <Compile Include="NativeArmInstructionDetail.cs" />
     <Compile Include="NativeArmInstructionMemoryOperandValue.cs" />
     <Compile Include="NativeArmInstructionOperand.cs" />
