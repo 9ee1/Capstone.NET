@@ -14,17 +14,17 @@ namespace Gee.External.Capstone {
         //
         // First Byte. 
 
-        LOCK = 0xf0,
-        REP = 0xf3,
-        REPNE = 0xf2,
+        LOCK = 0xF0,
+        REP = 0xF3,
+        REPNE = 0xF2,
 
         // Note.
         //
         // Second Byte.
 
-        CS = 0x2e,
+        CS = 0x2E,
         SS = 0x36,
-        DS = 0x3e,
+        DS = 0x3E,
         ES = 0x26,
         FS = 0x64,
         GS = 0x65,

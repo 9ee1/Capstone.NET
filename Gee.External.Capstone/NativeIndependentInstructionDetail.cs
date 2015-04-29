@@ -38,19 +38,26 @@ namespace Gee.External.Capstone {
         public byte GroupCount;
 
         /// <summary>
-        ///     Instruction's X86 Architecture Detail.
+        ///     Get Managed Groups an Instruction Belongs to.
         /// </summary>
-        public NativeX86InstructionDetail X86Detail;
+        /// <value>
+        ///     Convenient property to retrieve the implicit groups an instruction belongs to as a managed collection.
+        ///     The size of the managed collection will always be equal to the value represented by
+        ///     <c>NativeInstructionIndependentDetail.GroupCount</c>. This property allocates managed memory for a new
+        ///     managed collection and uses direct memory copying to copy the collection from unmanaged memory to
+        ///     managed memory every time it is invoked.
+        /// </value>
+        public byte[] ManagedGroups {
+            get {
+                fixed (byte* pGroups = this.Groups) {
+                    var pPGroups = new IntPtr(pGroups);
+                    var managedGroups = new byte[this.GroupCount];
 
-        /// <summary>
-        ///     Instruction's ARM64 Architecture Detail.
-        /// </summary>
-        public NativeArm64InstructionDetail Arm64Detail;
-
-        /// <summary>
-        ///     Instruction's ARM Architecture Detail.
-        /// </summary>
-        public NativeArmInstructionDetail ArmDetail;
+                    Marshal.Copy(pPGroups, managedGroups, 0, this.GroupCount);
+                    return managedGroups;
+                }
+            }
+        }
 
         /// <summary>
         ///     Get Managed Implicit Registers Read by an Instruction.
@@ -92,28 +99,6 @@ namespace Gee.External.Capstone {
 
                     Marshal.Copy(pPWrittenRegisters, managedWrittenRegisters, 0, this.WrittenRegisterCount);
                     return managedWrittenRegisters;
-                }
-            }
-        }
-
-        /// <summary>
-        ///     Get Managed Groups an Instruction Belongs to.
-        /// </summary>
-        /// <value>
-        ///     Convenient property to retrieve the implicit groups an instruction belongs to as a managed collection.
-        ///     The size of the managed collection will always be equal to the value represented by
-        ///     <c>NativeInstructionIndependentDetail.GroupCount</c>. This property allocates managed memory for a new
-        ///     managed collection and uses direct memory copying to copy the collection from unmanaged memory to
-        ///     managed memory every time it is invoked.
-        /// </value>
-        public byte[] ManagedGroups {
-            get {
-                fixed (byte* pGroups = this.Groups) {
-                    var pPGroups = new IntPtr(pGroups);
-                    var managedGroups = new byte[this.GroupCount];
-
-                    Marshal.Copy(pPGroups, managedGroups, 0, this.GroupCount);
-                    return managedGroups;
                 }
             }
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gee.External.Capstone.Arm64;
+using System;
 using System.Linq;
 
 namespace Gee.External.Capstone {
@@ -100,6 +101,20 @@ namespace Gee.External.Capstone {
             get {
                 return this._handle;
             }
+        }
+
+        /// <summary>
+        ///     Create a ARM64 Disassembler.
+        /// </summary>
+        /// <param name="mode">
+        ///     The disassembler's mode.
+        /// </param>
+        /// <returns>
+        ///     A capstone disassembler.
+        /// </returns>
+        public static CapstoneDisassembler<Arm64Instruction, Arm64Register, Arm64InstructionGroup, Arm64InstructionDetail> CreateArm64Disassembler(DisassembleMode mode) {
+            var @object = new CapstoneArm64Disassembler(mode);
+            return @object;
         }
 
         /// <summary>

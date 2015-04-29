@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Gee.External.Capstone.Arm;
+using Gee.External.Capstone.Arm64;
 
 namespace Gee.External.Capstone {
     /// <summary>
@@ -132,6 +134,42 @@ namespace Gee.External.Capstone {
                 }
 
                 return managedDetail;
+            }
+        }
+
+        /// <summary>
+        ///     Get Instruction's ARM64 Detail.
+        /// </summary>
+        public NativeArm64InstructionDetail NativeArm64Detail {
+            get {
+                var pDetail = CapstoneProxyImport.Arm64Detail(this.IndependentDetail);
+                var detail = MarshalExtension.PtrToStructure<NativeArm64InstructionDetail>(pDetail);
+
+                return detail;
+            }
+        }
+
+        /// <summary>
+        ///     Get Instruction's ARM Detail.
+        /// </summary>
+        public NativeArmInstructionDetail NativeArmDetail {
+            get {
+                var pDetail = CapstoneProxyImport.ArmDetail(this.IndependentDetail);
+                var detail = MarshalExtension.PtrToStructure<NativeArmInstructionDetail>(pDetail);
+
+                return detail;
+            }
+        }
+
+        /// <summary>
+        ///     Get Instruction's X86 Detail.
+        /// </summary>
+        public NativeX86InstructionDetail NativeX86Detail {
+            get {
+                var pDetail = CapstoneProxyImport.ArmDetail(this.IndependentDetail);
+                var detail = MarshalExtension.PtrToStructure<NativeX86InstructionDetail>(pDetail);
+
+                return detail;
             }
         }
 

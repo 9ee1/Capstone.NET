@@ -1,4 +1,6 @@
-﻿namespace Gee.External.Capstone {
+﻿using Gee.External.Capstone.Arm64;
+
+namespace Gee.External.Capstone {
     /// <summary>
     ///     Native Instruction Extension.
     /// </summary>
@@ -18,6 +20,22 @@
             @object.Bytes = @this.ManagedBytes;
             @object.Mnemonic = @this.ManagedMnemonic;
             @object.Operand = @this.ManagedOperand;
+
+            return @object;
+        }
+
+        /// <summary>
+        ///     Convert a Native Instruction to a ARM64 Dissembled Instruction.
+        /// </summary>
+        /// <param name="this">
+        ///     A native instruction.
+        /// </param>
+        /// <returns>
+        ///     A dissembled instruction.
+        /// </returns>
+        public static Instruction<Arm64Instruction, Arm64Register, Arm64InstructionGroup, Arm64InstructionDetail> AsArm64Instruction(this NativeInstruction @this) {
+            var @object = @this.AsInstruction<Arm64Instruction, Arm64Register, Arm64InstructionGroup, Arm64InstructionDetail>();
+            @object.Id = (Arm64Instruction) @this.Id;
 
             return @object;
         }

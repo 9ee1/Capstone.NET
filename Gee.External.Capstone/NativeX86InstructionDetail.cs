@@ -70,6 +70,7 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Instruction's AVX Suppress All Exceptions Flag.
         /// </summary>
+        [MarshalAs(UnmanagedType.I1)]
         public bool AvxSuppressAllExceptions;
 
         /// <summary>

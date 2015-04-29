@@ -29,6 +29,7 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Operand's AVX Zero Operation Mask Flag.
         /// </summary>
+        [MarshalAs(UnmanagedType.I1)]
         public bool AvxZeroOperationMask;
 
         /// <summary>

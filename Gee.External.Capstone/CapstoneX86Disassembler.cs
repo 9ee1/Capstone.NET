@@ -29,7 +29,7 @@
             // new memory every time it is retrieved.
             var nativeIndependentInstructionDetail = nativeInstruction.ManagedIndependentDetail;
             if (nativeIndependentInstructionDetail != null) {
-                @object.ArchitectureDetail = nativeIndependentInstructionDetail.Value.X86Detail.AsX86InstructionDetail();
+                @object.ArchitectureDetail = nativeInstruction.NativeX86Detail.AsX86InstructionDetail();
                 @object.IndependentDetail = nativeIndependentInstructionDetail.Value.AsX86IndependentInstructionDetail();
             }
 

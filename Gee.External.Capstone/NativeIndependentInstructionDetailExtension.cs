@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gee.External.Capstone.Arm64;
+using System;
 using System.Linq;
 
 namespace Gee.External.Capstone {
@@ -6,6 +7,32 @@ namespace Gee.External.Capstone {
     ///     Native Architecture Independent Instruction Detail Extension.
     /// </summary>
     public static class NativeIndependentInstructionDetailExtension {
+        /// <summary>
+        ///     Convert a Native Architecture Independent Instruction Detail to an ARM64 Independent Instruction Detail.
+        /// </summary>
+        /// <param name="this">
+        ///     A native architecture independent instruction detail.
+        /// </param>
+        /// <returns>
+        ///     An independent instruction detail.
+        /// </returns>
+        public static IndependentInstructionDetail<Arm64Register, Arm64InstructionGroup> AsArm64IndependentInstructionDetail(this NativeIndependentInstructionDetail @this) {
+            var @object = new IndependentInstructionDetail<Arm64Register, Arm64InstructionGroup>();
+            @object.Groups = @this.ManagedGroups
+                .Select(m => (Arm64InstructionGroup) Convert.ToInt32(m))
+                .ToArray();
+
+            @object.ReadRegisters = @this.ManagedReadRegisters
+                .Select(m => (Arm64Register) Convert.ToInt32(m))
+                .ToArray();
+
+            @object.WrittenRegisters = @this.ManagedWrittenRegisters
+                .Select(m => (Arm64Register) Convert.ToInt32(m))
+                .ToArray();
+
+            return @object;
+        }
+
         /// <summary>
         ///     Convert a Native Architecture Independent Instruction Detail to an X86 Independent Instruction Detail.
         /// </summary>
