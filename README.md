@@ -2,11 +2,11 @@
 Capstone.NET is a .NET Framework binding for the Capstone disassembly framework. It is written in C#, supports Capstone 3, and has a friendly and simple type safe object oriented (OO) API that is ridiculously easy to learn and quick to pick up.
 
 ## Features
-(+) Supports Capstone 3. Only the ARM64 and X86 architectures are supported right now
+(+) Supports Capstone 3. Only the ARM64 and X86 architectures are supported right now but more are on the way!
 
-(+) A friendly and simple to use type safe object oriented (OO) API that is ridiculously easy to learn and pick up
+(+) A friendly and simple to use type safe object oriented (OO) API that is ridiculously easy to learn and pick up. I am aware the C# is an object oriented language, the wording **object oriented API** here means it has a well thought out design!
 
-(+) One of the best documented source code you'll find in an open source project, guaranteed or your money back
+(+) One of the best documented source code you'll find in an open source project, guaranteed or your money back!
 
 ## Quick Example
 ```C#
