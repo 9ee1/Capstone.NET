@@ -63,7 +63,7 @@
     <Compile Include="TestCapstoneX86Disassembler.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages-VS2010.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Gee.External.Capstone\Gee.External.Capstone-VS2010.csproj">
