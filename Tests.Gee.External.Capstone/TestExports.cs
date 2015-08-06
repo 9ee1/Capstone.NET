@@ -7,6 +7,21 @@ namespace Tests.Gee.External.Capstone
     public sealed class TestExports
     {
         [Test]
+        public void TestApiVersion()
+        {
+            int major;
+            int minor;
+            uint compositeVersion = CapstoneImport.GetApiVersion(out major, out minor);
+
+            Assert.AreEqual(((((uint)major) << 8) | (uint)minor), compositeVersion,
+                string.Format("Composite version 0x{0:X8} doesn't match major 0x{1:X8} and minor 0x{2:X2}",
+                    compositeVersion, major, minor));
+            System.Console.WriteLine(
+                string.Format("Running on API version {0}.{1}", major, minor));
+            return;
+        }
+
+        [Test]
         public void TestErrorTexts()
         {
             int minTestedCode = int.MaxValue;
