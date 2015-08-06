@@ -315,6 +315,8 @@ namespace Gee.External.Capstone {
             UnsupportedVersion,  // Unsupported version (bindings)
             NotAvailableInDietMode,     // Access irrelevant data in "diet" engine
             NotAvailableInSkipDataMode, // Access irrelevant data for "data" instruction in SKIPDATA mode
+            // The two codes below are documented in the capstone.h header. However they
+            // don't have any associated error message.
             UnsupportedATTSyntax,  // X86 AT&T syntax is unsupported (opt-out at compile time)
             UnsupportedIntelSyntax, // X86 Intel syntax is unsupported (opt-out at compile time)
         }

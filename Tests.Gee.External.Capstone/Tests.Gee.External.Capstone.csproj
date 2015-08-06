@@ -62,6 +62,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestCapstoneArm64Disassembler.cs" />
     <Compile Include="TestCapstoneX86Disassembler.cs" />
+    <Compile Include="TestExports.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
