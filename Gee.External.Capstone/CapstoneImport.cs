@@ -6,6 +6,14 @@ namespace Gee.External.Capstone {
     ///     Capstone Import.
     /// </summary>
     public static class CapstoneImport {
+        /// <summary>Allocate memory for 1 instruction to be used by cs_disasm_iter().</summary>
+        /// <param name="pHandle">handle returned by <see cref="Open"/></param>
+        /// <remarks>NOTE: when no longer in use, you can reclaim the memory allocated
+        /// for this instruction with cs_free(insn, 1)</remarks>
+        /// <returns></returns>
+        [DllImport("capstone.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_malloc")]
+        public static extern IntPtr /* cs_insn * */ AllocInstruction(IntPtr pHandle);
+
         /// <summary>Check if a disassembled instruction belong to a particular group.
         /// Find the group id from header file of corresponding architecture (arm.h for
         /// ARM, x86.h for X86, ...)
@@ -23,7 +31,7 @@ namespace Gee.External.Capstone {
         /// <returns>true if this instruction indeed belongs to aboved group, or false
         /// otherwise.</returns>
         [DllImport("capstone.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_insn_group")]
-        public static extern bool BellongsToGroup(IntPtr pHandle, IntPtr /* cs_insn * */ insn, uint group_id);
+        public static extern bool BelongsToGroup(IntPtr pHandle, IntPtr /* cs_insn * */ insn, uint group_id);
 
         /// <summary>
         ///     Close a Capstone Handle.
@@ -66,6 +74,35 @@ namespace Gee.External.Capstone {
         [DllImport("capstone.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_disasm")]
         public static extern IntPtr Disassemble(IntPtr pHandle, IntPtr pCode, IntPtr codeSize, ulong startingAddress, IntPtr count, ref IntPtr instruction);
 
+        /// <summary> Fast API to disassemble binary code, given the code buffer, size,
+        /// address and number of instructions to be decoded. This API put the resulted
+        /// instruction into a given cache in @insn. See tests/test_iter.c for sample
+        /// code demonstrating this API.</summary>
+        /// <param name="pHandle">handle returned by <see cref="Open"/></param>
+        /// <param name="code">buffer containing raw binary code to be disassembled</param>
+        /// <param name="size">size of above code</param>
+        /// <param name="address">address of the first insn in given raw code buffer</param>
+        /// <param name="insn">pointer to instruction to be filled in by this API.</param>
+        /// <returns></returns>
+        /// <remarks>NOTE 1: this API will update @code, @size & @address to point to the
+        /// next instruction in the input buffer. Therefore, it is convenient to use
+        /// cs_disasm_iter() inside a loop to quickly iterate all the instructions.
+        /// While decoding one instruction at a time can also be achieved with
+        /// cs_disasm(count=1), some benchmarks shown that cs_disasm_iter() can be 30%
+        /// faster on random input.
+        /// NOTE 2: the cache in @insn can be created with cs_malloc() API.
+        /// NOTE 3: for system with scarce memory to be dynamically allocated such as
+        /// OS kernel or firmware, this API is recommended over cs_disasm(), which
+        /// allocates memory based on the number of instructions to be disassembled.
+        /// The reason is that with cs_disasm(), based on limited available memory,
+        /// we have to calculate in advance how many instructions to be disassembled,
+        /// which complicates things. This is especially troublesome for the case
+        /// @count=0, when cs_disasm() runs uncontrollably (until either end of input
+        /// buffer, or when it encounters an invalid instruction).</remarks>
+        [DllImport("capstone.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_disasm_iter")]
+        public static extern bool DisassembleIteratively(IntPtr pHandle, byte[] code,
+            int size, out ulong address, IntPtr /* cs_insn * */ insn);
+
         /// <summary>
         ///     Free Memory Allocated For Disassembled Instructions.
         /// </summary>
@@ -78,13 +115,12 @@ namespace Gee.External.Capstone {
         [DllImport("capstone.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_free")]
         public static extern void Free(IntPtr pInstructions, IntPtr instructionCount);
 
-        // TODO : There seem to be a mismatch between exported function name and header file.
         /// <summary>Report the last error number when some API function fail.
         /// Like glibc's errno, cs_errno might not retain its old value once accessed.</summary>
         /// <param name="pHandle">handle returned by <see cref="Open"/></param>
         /// <returns>error code of cs_err enum type (CS_ERR_*, see below</returns>
-        //[DllImport("capstone.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_error")]
-        //public static extern ErrorCode GetLastError(IntPtr pHandle);
+        [DllImport("capstone.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_errno")]
+        public static extern ErrorCode GetLastError(IntPtr pHandle);
 
         /// <summary>Retrieve the position of operand of given type in <arch>.operands[] array.
         /// Later, the operand can be accessed using the returned position. Find the operand type
@@ -128,6 +164,13 @@ namespace Gee.External.Capstone {
         /// set both @major & @minor arguments to NULL.</remarks>
         [DllImport("capstone.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_version")]
         public static extern uint GetApiVersion(out int major, out int minor);
+
+        /// <summary>Return a string describing given error code.</summary>
+        /// <param name="code">error code (see CS_ERR_* below)</param>
+        /// <returns>returns a pointer to a string that describes the error code passed
+        /// in the argument @code</returns>
+        [DllImport("capstone.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_strerror", CharSet=CharSet.Ansi)]
+        public static extern string GetErrorText(ErrorCode code);
 
         /// <summary>Return friendly name of a group id (that an instruction can belong to)
         /// Find the group id from header file of corresponding architecture (arm.h for ARM,
@@ -255,7 +298,7 @@ namespace Gee.External.Capstone {
         [DllImport("capstone.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_option")]
         public static extern int SetOption(IntPtr pHandle, int option, IntPtr value);
 
-        /// <summary>// All type of errors encountered by Capstone API.
+        /// <summary>All type of errors encountered by Capstone API.
         /// These are values returned by cs_errno()
         /// </summary>
         public enum ErrorCode
