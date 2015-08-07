@@ -204,12 +204,15 @@ namespace Gee.External.Capstone {
         /// mode).
         /// To check if a particular arch is supported by this library, set @query to
         /// arch mode (CS_ARCH_* value).
-        /// To verify if this library supports all the archs, use CS_ARCH_ALL.
-        /// To check if this library is in 'diet' mode, set @query to CS_SUPPORT_DIET.</summary>
+        /// To check if this library is in 'diet' mode, set @query to Feature.Diet
+        /// To verify if this library supports all the archs, use Feature.All
+        /// which is a special value (0xFFFF) not encoded in the <see cref="Feature"/>
+        /// enumeration.
+        /// </summary>
         /// <param name="query"></param>
         /// <returns>True if this library supports the given arch, or in 'diet' mode.</returns>
         [DllImport("capstone.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_support")]
-        public static extern bool IsFeatureSupported(int query);
+        public static extern bool IsFeatureSupported(Feature query);
 
         /// <summary>Check if a disassembled instruction IMPLICITLY used a particular register.
         /// Find the register id from header file of corresponding architecture (arm.h for ARM,
@@ -297,6 +300,21 @@ namespace Gee.External.Capstone {
         /// </returns>
         [DllImport("capstone.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_option")]
         public static extern int SetOption(IntPtr pHandle, int option, IntPtr value);
+
+        // Feature type
+        public enum Feature
+        {
+            ARM = 0,	// ARM architecture (including Thumb, Thumb-2)
+            ARM64,		// ARM-64, also called AArch64
+            MIPS,		// Mips architecture
+            X86,		// X86 architecture (including x86 & x86-64)
+            PPC,		// PowerPC architecture
+            SPARC,		// Sparc architecture
+            SYSZ,		// SystemZ architecture
+            XCORE,		// XCore architecture
+            All = 0xFFFF,
+            Diet = 0x10000,
+        }
 
         /// <summary>All type of errors encountered by Capstone API.
         /// These are values returned by cs_errno()
