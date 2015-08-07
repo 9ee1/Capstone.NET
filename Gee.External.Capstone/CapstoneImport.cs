@@ -5,7 +5,8 @@ namespace Gee.External.Capstone {
     /// <summary>
     ///     Capstone Import.
     /// </summary>
-    public static class CapstoneImport {
+    /// <remarks>For stringly typed functions see the CapstoneImport.String.cs file.</remarks>
+    public static partial class CapstoneImport {
         /// <summary>Allocate memory for 1 instruction to be used by cs_disasm_iter().</summary>
         /// <param name="pHandle">handle returned by <see cref="Open"/></param>
         /// <remarks>NOTE: when no longer in use, you can reclaim the memory allocated
@@ -298,6 +299,9 @@ namespace Gee.External.Capstone {
         /// <returns>
         ///     An integer indicating the result of the operation.
         /// </returns>
+#if STRONG_IMPORT_TYPES
+        [System.Obsolete()]
+#endif
         [DllImport("capstone.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_option")]
         public static extern int SetOption(IntPtr pHandle, int option, IntPtr value);
 

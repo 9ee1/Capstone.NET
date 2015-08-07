@@ -97,6 +97,7 @@
     <Compile Include="Arm\ArmVectorDataType.cs" />
     <Compile Include="CapstoneDisassembler.cs" />
     <Compile Include="CapstoneImport.cs" />
+    <Compile Include="CapstoneImport.Strong.cs" />
     <Compile Include="CapstoneProxyImport.cs" />
     <Compile Include="CapstoneX86Disassembler.cs" />
     <Compile Include="DisassembleArchitecture.cs" />
