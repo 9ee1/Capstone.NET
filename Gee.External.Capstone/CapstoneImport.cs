@@ -314,6 +314,7 @@ namespace Gee.External.Capstone {
             XCORE,		// XCore architecture
             All = 0xFFFF,
             Diet = 0x10000,
+            X86ReduceMode = 0x10001,
         }
 
         /// <summary>All type of errors encountered by Capstone API.

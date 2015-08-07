@@ -55,5 +55,54 @@ namespace Tests.Gee.External.Capstone
             }
             return;
         }
+
+        [Test]
+        public void TestFeatureSupport()
+        {
+            System.Console.WriteLine("Diet mode is {0}.",
+                CapstoneImport.IsFeatureSupported(CapstoneImport.Feature.Diet)
+                    ? "enabled"
+                    : "disabled");
+            System.Console.WriteLine("All architectures are {0}.",
+                CapstoneImport.IsFeatureSupported(CapstoneImport.Feature.All)
+                    ? "enabled"
+                    : "not enabled");
+            System.Console.WriteLine("X86 reduce mode is {0}.",
+                CapstoneImport.IsFeatureSupported(CapstoneImport.Feature.X86ReduceMode)
+                    ? "enabled"
+                    : "disabled");
+            CapstoneImport.Feature[] values =
+                (CapstoneImport.Feature[])System.Enum.GetValues(typeof(CapstoneImport.Feature));
+
+            System.Array.Sort(values, delegate(CapstoneImport.Feature x, CapstoneImport.Feature y)
+                {
+                    int xInt = (int)x;
+                    int yInt = (int)y;
+
+                    return (xInt == yInt)
+                        ? 0
+                        : (xInt > yInt)
+                            ? 1
+                            : -1;
+                });
+            int lastArchitectureIndex = -1;
+            for (int index = 0; index < values.Length; index++) {
+                CapstoneImport.Feature scannedFeature = values[index];
+
+                if (CapstoneImport.Feature.All == scannedFeature) { break; }
+                lastArchitectureIndex = index;
+                System.Console.WriteLine("{0} feature is {1}.",
+                    scannedFeature,
+                    CapstoneImport.IsFeatureSupported(scannedFeature)
+                        ? "enabled"
+                        : "disabled");
+            }
+            Assert.Greater(lastArchitectureIndex, -1,
+                "There is no defined architecture in CapstoneImport.Feature enumeration");
+            int firstUndefinedArchitecture = lastArchitectureIndex + 1;
+            Assert.False(CapstoneImport.IsFeatureSupported((CapstoneImport.Feature)firstUndefinedArchitecture),
+                string.Format("Capstone DLL supports architecture {0} which is not defined in CapstoneImport.Feature enumeration.",
+                    firstUndefinedArchitecture));
+        }
     }
 }
