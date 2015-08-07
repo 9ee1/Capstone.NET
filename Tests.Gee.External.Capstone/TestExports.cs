@@ -27,20 +27,20 @@ namespace Tests.Gee.External.Capstone
             int minTestedCode = int.MaxValue;
             int maxTestedCode = int.MinValue;
             // Find min and max error codes.
-            foreach(CapstoneImport.ErrorCode testedCode in System.Enum.GetValues(typeof(CapstoneImport.ErrorCode))) {
+            foreach (DisassembleErrorCode testedCode in System.Enum.GetValues(typeof(DisassembleErrorCode))) {
                 minTestedCode = System.Math.Min(minTestedCode, (int)testedCode);
                 maxTestedCode = System.Math.Max(maxTestedCode, (int)testedCode);
             }
             // Retrieve unknown error text and make sure it is not null.
             Assert.AreNotEqual(minTestedCode, int.MinValue);
-            string unknownErrorCodeString = CapstoneImport.GetErrorText((CapstoneImport.ErrorCode)(minTestedCode - 1));
+            string unknownErrorCodeString = CapstoneImport.GetErrorText((DisassembleErrorCode)(minTestedCode - 1));
             // Make sure every known error code has an associated error text
             // and that this text is different from the one for unknown errors.
-            foreach (CapstoneImport.ErrorCode testedCode in System.Enum.GetValues(typeof(CapstoneImport.ErrorCode))) {
+            foreach (DisassembleErrorCode testedCode in System.Enum.GetValues(typeof(DisassembleErrorCode))) {
                 switch (testedCode) {
                     // These two codes are known not to return valid error text for now.
-                    case CapstoneImport.ErrorCode.UnsupportedATTSyntax:
-                    case CapstoneImport.ErrorCode.UnsupportedIntelSyntax:
+                    case DisassembleErrorCode.UnsupportedATTSyntax:
+                    case DisassembleErrorCode.UnsupportedIntelSyntax:
                         continue;
                     default:
                         break;

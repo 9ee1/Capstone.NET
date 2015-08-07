@@ -43,8 +43,15 @@ namespace Gee.External.Capstone {
         /// <returns>
         ///     An integer indicating the result of the operation.
         /// </returns>
+#if STRONG_IMPORT_TYPES
+        [Obsolete()]
+#endif
         [DllImport("capstone.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_close")]
         public static extern int Close(ref IntPtr pHandle);
+#if STRONG_IMPORT_TYPES
+        [DllImport("capstone.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_close")]
+        public static extern DisassembleErrorCode Close([In, Out] ref CapstoneHandle pHandle);
+#endif
 
         /// <summary>
         ///     Disassemble Binary Code.
@@ -121,7 +128,7 @@ namespace Gee.External.Capstone {
         /// <param name="pHandle">handle returned by <see cref="Open"/></param>
         /// <returns>error code of cs_err enum type (CS_ERR_*, see below</returns>
         [DllImport("capstone.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_errno")]
-        public static extern ErrorCode GetLastError(IntPtr pHandle);
+        public static extern DisassembleErrorCode GetLastError(IntPtr pHandle);
 
         /// <summary>Retrieve the position of operand of given type in <arch>.operands[] array.
         /// Later, the operand can be accessed using the returned position. Find the operand type
@@ -171,7 +178,7 @@ namespace Gee.External.Capstone {
         /// <returns>returns a pointer to a string that describes the error code passed
         /// in the argument @code</returns>
         [DllImport("capstone.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_strerror", CharSet=CharSet.Ansi)]
-        public static extern string GetErrorText(ErrorCode code);
+        public static extern string GetErrorText(DisassembleErrorCode code);
 
         /// <summary>Return friendly name of a group id (that an instruction can belong to)
         /// Find the group id from header file of corresponding architecture (arm.h for ARM,
@@ -319,29 +326,6 @@ namespace Gee.External.Capstone {
             All = 0xFFFF,
             Diet = 0x10000,
             X86ReduceMode = 0x10001,
-        }
-
-        /// <summary>All type of errors encountered by Capstone API.
-        /// These are values returned by cs_errno()
-        /// </summary>
-        public enum ErrorCode
-        {
-            Ok = 0,   // No error: everything was fine
-            OutOfMemory,      // Out-Of-Memory error: cs_open(), cs_disasm(), cs_disasm_iter()
-            UnusupportedArchitecture,     // Unsupported architecture: cs_open()
-            InvalidHandle,   // Invalid handle: cs_op_count(), cs_op_index()
-            InvalidHandle2,	     // Invalid csh argument: cs_close(), cs_errno(), cs_option()
-            InvalidName,     // Invalid/unsupported mode: cs_open()
-            InvalidOption,   // Invalid/unsupported option: cs_option()
-            DetailOptionIsOff,   // Information is unavailable because detail option is OFF
-            UninitializedDynamicMemoryManagee, // Dynamic memory management uninitialized (see CS_OPT_MEM)
-            UnsupportedVersion,  // Unsupported version (bindings)
-            NotAvailableInDietMode,     // Access irrelevant data in "diet" engine
-            NotAvailableInSkipDataMode, // Access irrelevant data for "data" instruction in SKIPDATA mode
-            // The two codes below are documented in the capstone.h header. However they
-            // don't have any associated error message.
-            UnsupportedATTSyntax,  // X86 AT&T syntax is unsupported (opt-out at compile time)
-            UnsupportedIntelSyntax, // X86 Intel syntax is unsupported (opt-out at compile time)
         }
     }
 }

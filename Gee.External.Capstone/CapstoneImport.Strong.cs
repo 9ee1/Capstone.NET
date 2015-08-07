@@ -7,29 +7,29 @@ namespace Gee.External.Capstone
     public static partial class CapstoneImport
     {
         [DllImport("capstone.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_option")]
-        private static extern ErrorCode SetOption(IntPtr pHandle, Option option, IntPtr value);
+        private static extern DisassembleErrorCode SetOption(IntPtr pHandle, Option option, IntPtr value);
 
     //CS_OPT_MEM,	// User-defined dynamic memory related functions
     //CS_OPT_SKIPDATA_SETUP, // Setup user-defined function for SKIPDATA option
 
-        public static ErrorCode EnableInstructionDetails(IntPtr pHandle, bool enable)
+        public static DisassembleErrorCode EnableInstructionDetails(IntPtr pHandle, bool enable)
         {
             return SetOption(pHandle, Option.EnableInstructionDetails,
                 enable ? OptionOn : OptionOff);
         }
 
-        public static ErrorCode EnableSkipData(IntPtr pHandle, bool enable)
+        public static DisassembleErrorCode EnableSkipData(IntPtr pHandle, bool enable)
         {
             return SetOption(pHandle, Option.SkipData,
                 enable ? OptionOn : OptionOff);
         }
 
-        public static ErrorCode SetAssemblySyntax(IntPtr pHandle, AssemblySyntax syntax)
+        public static DisassembleErrorCode SetAssemblySyntax(IntPtr pHandle, AssemblySyntax syntax)
         {
             return SetOption(pHandle, Option.AssemblySyntax, new IntPtr((uint)syntax));
         }
 
-        public static ErrorCode SetDisassemblerMode(IntPtr pHandle, DisassemblerMode newMode)
+        public static DisassembleErrorCode SetDisassemblerMode(IntPtr pHandle, DisassemblerMode newMode)
         {
             return SetOption(pHandle, Option.DynamicEngineModeChange, new IntPtr((uint)newMode));
         }

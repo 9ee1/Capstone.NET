@@ -46,6 +46,29 @@
         /// <summary>
         ///     Uninitialized Dynamic Memory Management Error Code.
         /// </summary>
-        UninitializedDynamicMemoryManagement = 8
+        UninitializedDynamicMemoryManagement = 8,
+
+        /// <summary>
+        /// Unsupported version (bindings)
+        /// </summary>
+        UnsupportedVersion = 9,  
+        /// <summary>
+        /// Access irrelevant data in "diet" engine
+        /// </summary>
+        NotAvailableInDietMode = 10,
+        /// <summary>
+        /// Access irrelevant data for "data" instruction in SKIPDATA mode
+        /// </summary>
+        NotAvailableInSkipDataMode = 11,
+        // The two codes below are documented in the capstone.h header. However they
+        // don't have any associated error message.
+        /// <summary>
+        /// X86 AT&T syntax is unsupported (opt-out at compile time)
+        /// </summary>
+        UnsupportedATTSyntax = 12,
+        /// <summary>
+        /// X86 Intel syntax is unsupported (opt-out at compile time)
+        /// </summary>
+        UnsupportedIntelSyntax = 13,
     }
 }
