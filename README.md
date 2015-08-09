@@ -2,7 +2,7 @@
 Capstone.NET is a .NET Framework binding for the Capstone disassembly framework. It is written in C#, supports Capstone 3, and has a friendly and simple type safe object oriented (OO) API that is ridiculously easy to learn and quick to pick up.
 
 ## Features
-(+) Supports Capstone 3. Only the ARM64 and X86 architectures are supported right now but more are on the way!
+(+) Supports Capstone 3. Only the ARM, ARM64, and X86 architectures are supported right now but more are on the way!
 
 (+) A friendly and simple to use type safe object oriented (OO) API that is ridiculously easy to learn and pick up. I am aware the C# is an object oriented language, the wording **object oriented API** here means it has a well thought out design!
 
@@ -96,12 +96,6 @@ using (var disassembler = CapstoneDisassembler.CreateX86Disassembler(Disassemble
 
 ## Packaged Installation
 The simplest way to get started with Capstone.NET is to download the latest release package. It will contain all the compiled binaries you need to get started. The latest release will usually be backwards compatible with older releases but as both Capstone.NET and Capstone mature, this might not always be the case. Please make sure to read the release notes for each release before upgrading!
-
-As of Capstone.NET 1.1.0, each release package will contain 2 folders:
-
-(+) **CapstoneCMD**: This is an example command line application that shows you how to use Capstone.NET. It highlights usage for all the supported architectures.
-
-(+) **Gee.External.Capstone**: This is the main Capstone.NET DLL and all dependencies, including the native Capstone 3 DLL. You'll need to copy all the DLLs you find in the folder to a location where you can reference them from your project. **Gee.External.Capstone.dll** is the DLL you will need to reference from your project in order to use Capstone.NET. If you compile your project as a DLL, you will need to make sure both **capstone.dll** and **Gee.External.Capstone.Proxy.dll** are distributed along with your compiled DLL and **Gee.External.Capstone.dll** otherwise you will get a runtime exception. If you compile your project as an EXE, you will need to make sure both **capstone.dll** and  **Gee.External.Capstone.Proxy.dll** are available in the same directory as your compiled EXE and **Gee.External.Capstone.dll** otherwise you will get a runtime exception.
 
 ## Upgrading Capstone
 The Capstone team is always hard at work at upgrading Capstone. It is entirely possible that the copy of Capstone that is distributed with a Capstone.NET release is out of date when you download it. You can feel free to replace the **capstone.dll** that is distributed with Capstone.NET with the latest copy you download from the Capstone website. However, please make sure it is **always** named **capstone.dll**. Capstone.NET looks for this DLL when it goes to work and if it can't find it, you will get a runtime exception.
