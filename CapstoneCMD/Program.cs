@@ -1,6 +1,7 @@
 ﻿using Gee.External.Capstone;
 using Gee.External.Capstone.Arm;
 using Gee.External.Capstone.Arm64;
+using Gee.External.Capstone.X86;
 using System;
 
 namespace CapstoneCMD {

@@ -1,4 +1,4 @@
-﻿namespace Gee.External.Capstone {
+﻿namespace Gee.External.Capstone.X86 {
     /// <summary>
     ///     X86 AVX Broadcast.
     /// </summary>
