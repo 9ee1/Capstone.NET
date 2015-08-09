@@ -1,4 +1,5 @@
-﻿using Gee.External.Capstone.Arm64;
+﻿using Gee.External.Capstone.Arm;
+using Gee.External.Capstone.Arm64;
 
 namespace Gee.External.Capstone {
     /// <summary>
@@ -20,6 +21,22 @@ namespace Gee.External.Capstone {
             @object.Bytes = @this.ManagedBytes;
             @object.Mnemonic = @this.ManagedMnemonic;
             @object.Operand = @this.ManagedOperand;
+
+            return @object;
+        }
+
+        /// <summary>
+        ///     Create an ARM Dissembled Instruction.
+        /// </summary>
+        /// <param name="this">
+        ///     A native instruction.
+        /// </param>
+        /// <returns>
+        ///     A dissembled instruction.
+        /// </returns>
+        public static Instruction<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail> AsArmInstruction(this NativeInstruction @this) {
+            var @object = @this.AsInstruction<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail>();
+            @object.Id = (ArmInstruction) @this.Id;
 
             return @object;
         }

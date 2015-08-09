@@ -14,7 +14,7 @@ namespace Gee.External.Capstone.Arm {
         /// <summary>
         ///     Operand's Shift.
         /// </summary>
-        public NativeArmInstructionOperandShift Shift;
+        public NativeArmShifter Shifter;
 
         /// <summary>
         ///     Operand's Type.
