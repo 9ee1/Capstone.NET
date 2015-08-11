@@ -1,6 +1,8 @@
 ﻿using Gee.External.Capstone.Arm64;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace Gee.External.Capstone {
     /// <summary>
@@ -185,7 +187,7 @@ namespace Gee.External.Capstone {
         /// <param name="mode">
         ///     The disassembler's mode.
         /// </param>
-        protected CapstoneDisassembler(DisassembleArchitecture architecture, DisassembleMode mode) : base(architecture, mode) {}
+        protected CapstoneDisassembler(DisassembleArchitecture architecture, DisassembleMode mode) : base(architecture, mode) { }
 
         /// <summary>
         ///     Disassemble Binary Code.
@@ -256,6 +258,21 @@ namespace Gee.External.Capstone {
         }
 
         /// <summary>
+        ///     Disassemble Binary Code incrementally.
+        /// </summary>
+        /// <param name="code">
+        ///     A collection of bytes representing the binary code to disassemble. Should not be a null reference.
+        /// </param>
+        /// <returns>
+        ///     An IEnumerable deferred stream of dissembled instructions.
+        /// </returns>
+        /// <exception cref="System.InvalidOperationException">
+        ///     Thrown if the binary code could not be disassembled.
+        /// </exception>
+        public IEnumerable<Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail>> DisassembleStream(byte[] code, int offset, long startAddress) {
+            return new InstructionStream(this, code, offset, startAddress);
+        }
+        /// <summary>
         ///     Disassemble Binary Code.
         /// </summary>
         /// <param name="code">
@@ -282,5 +299,112 @@ namespace Gee.External.Capstone {
         ///     A dissembled instruction.
         /// </returns>
         protected abstract Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> CreateInstruction(NativeInstruction nativeInstruction);
+
+
+        class InstructionStream : 
+            IEnumerable<Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail>> {
+            private CapstoneDisassembler<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> dasm;
+            private byte[] code;
+            private int offset;
+            private long address;
+
+            public InstructionStream(
+                CapstoneDisassembler<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> dasm,
+                byte[] code,
+                int offset,
+                long address)
+            {
+                this.dasm = dasm;
+                this.code = code;
+                this.offset = offset;
+                this.address = address;
+            }
+        
+            public IEnumerator<Instruction<TArchitectureInstruction,TArchitectureRegister,TArchitectureGroup,TArchitectureDetail>> GetEnumerator()
+            {
+                return new InstructionEnumerator(dasm, code, offset, address);
+            }
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            {
+ 	            return GetEnumerator();
+            }
+        }
+
+        /// <summary>
+        ///     Enumerator that lazily disassembles a stream of instructions. 
+        /// </summary>
+        class InstructionEnumerator :
+            IEnumerator<Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail>> {
+            private CapstoneDisassembler<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> dasm;
+            private SafeCapstoneHandle pHandle;
+            private GCHandle code;  // Pinned array of bytes containing the area we wish to disassemble.
+            private int codeSize;       // the size of the code.
+            private Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> current;
+            private ulong address;
+
+            public InstructionEnumerator(
+                CapstoneDisassembler<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> dasm,
+                byte[] code,
+                int offset,
+                long startAddress) {
+                this.dasm = dasm;
+                this.pHandle = dasm.Handle;
+                this.code = GCHandle.Alloc(code);
+                this.codeSize = code.Length;
+                this.address = (ulong)startAddress;
+            }
+
+            ~InstructionEnumerator() {
+                Dispose(false);
+            }
+
+            public Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> Current {
+                get {
+                    if (current == null)
+                        throw new InvalidOperationException();
+                    return current;
+                }
+            }
+
+            public void Dispose() {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void Dispose(bool disposing) {
+                if (code.IsAllocated)
+                    code.Free();
+                if (disposing) {
+                    pHandle.Dispose();
+                    pHandle = null;     //$REVIEW: not thread safe.
+                }
+            }
+
+            object System.Collections.IEnumerator.Current {
+                get { return Current; }
+            }
+
+            public bool MoveNext() {
+                var pCount = (IntPtr)1;
+                var pCode = GCHandle.ToIntPtr(this.code);
+                var pInstructions = IntPtr.Zero;
+                var pSize = (IntPtr)codeSize;
+                var uStartingAddress = (ulong)address;
+
+                var pResultCode = CapstoneImport.Disassemble(pHandle.DangerousGetHandle(), pCode, pSize, uStartingAddress, pCode, ref pInstructions);
+
+                var iResultCode = (int)pResultCode;
+                var instructions = MarshalExtension.PtrToStructure<NativeInstruction>(pInstructions, iResultCode);
+                if (instructions == null || instructions.Length == 0)
+                    return false;
+                this.current = dasm.CreateInstruction(instructions[0]);
+                return true;
+            }
+
+            public void Reset() {
+                throw new NotSupportedException();
+            }
+        }
     }
 }
