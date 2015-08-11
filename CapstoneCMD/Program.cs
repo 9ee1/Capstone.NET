@@ -328,7 +328,14 @@ namespace CapstoneCMD {
                 //
                 // ...
                 var code = new byte[] {0x8d, 0x4c, 0x32, 0x08, 0x01, 0xd8, 0x81, 0xc6, 0x34, 0x12, 0x00, 0x00, 0x05, 0x23, 0x01, 0x00, 0x00, 0x36, 0x8b, 0x84, 0x91, 0x23, 0x01, 0x00, 0x00, 0x41, 0x8d, 0x84, 0x39, 0x89, 0x67, 0x00, 0x00, 0x8d, 0x87, 0x89, 0x67, 0x00, 0x00, 0xb4, 0xc6};
+#if DISASSEMBLE_STREAM
+                //$REVIEW: uxmal: This exercises the lazy stream implementation of the disassembler.
+                // It isn't greed and tries to disassembly all the instructions at once,
+                // but only on demand.
                 var instructions = disassembler.DisassembleStream(code, 0, 0x1000);
+#else
+                var instructions = disassembler.DisassembleAll(code);
+#endif
 
                 var hexCode = BitConverter.ToString(code).Replace("-", " ");
                 Console.WriteLine(hexCode);
