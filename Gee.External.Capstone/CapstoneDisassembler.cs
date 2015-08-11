@@ -372,7 +372,7 @@ namespace Gee.External.Capstone {
                 long startAddress) {
                 this.dasm = dasm;
                 // Avoid copying the code to be disassembled, by pinning it instead.
-                this.pinnedCode = GCHandle.Alloc(code);
+                this.pinnedCode = GCHandle.Alloc(code, GCHandleType.Pinned);
                 this.offset = offset;
                 this.codeSize = code.Length;
                 this.address = (ulong)startAddress;
@@ -432,7 +432,7 @@ namespace Gee.External.Capstone {
             /// <returns></returns>
             public bool MoveNext() {
                 var pCount = (IntPtr)1;
-                var pCode = GCHandle.ToIntPtr(this.pinnedCode) + offset;
+                var pCode = this.pinnedCode.AddrOfPinnedObject() + offset;
                 var pInstructions = IntPtr.Zero;
                 var pSize = (IntPtr)codeSize - offset;
                 var uStartingAddress = (ulong)address;
