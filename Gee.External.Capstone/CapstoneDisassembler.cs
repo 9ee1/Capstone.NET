@@ -360,6 +360,7 @@ namespace Gee.External.Capstone {
             IEnumerator<Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail>> {
             private CapstoneDisassembler<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> dasm;
             private GCHandle pinnedCode;      // Pinned array of bytes containing the area we wish to disassemble.
+            private int offset;               // "cursor": the position within the code we're currently at.
             private int codeSize;       // the size of the code.
             private Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> current;
             private ulong address;
@@ -372,6 +373,7 @@ namespace Gee.External.Capstone {
                 this.dasm = dasm;
                 // Avoid copying the code to be disassembled, by pinning it instead.
                 this.pinnedCode = GCHandle.Alloc(code);
+                this.offset = offset;
                 this.codeSize = code.Length;
                 this.address = (ulong)startAddress;
             }
@@ -430,9 +432,9 @@ namespace Gee.External.Capstone {
             /// <returns></returns>
             public bool MoveNext() {
                 var pCount = (IntPtr)1;
-                var pCode = GCHandle.ToIntPtr(this.pinnedCode);
+                var pCode = GCHandle.ToIntPtr(this.pinnedCode) + offset;
                 var pInstructions = IntPtr.Zero;
-                var pSize = (IntPtr)codeSize;
+                var pSize = (IntPtr)codeSize - offset;
                 var uStartingAddress = (ulong)address;
 
                 var pResultCode = CapstoneImport.Disassemble(dasm.Handle.DangerousGetHandle(), pCode, pSize, uStartingAddress, pCode, ref pInstructions);
@@ -441,12 +443,16 @@ namespace Gee.External.Capstone {
                 var instructions = MarshalExtension.PtrToStructure<NativeInstruction>(pInstructions, iResultCode);
                 if (instructions == null || instructions.Length == 0)
                     return false;
+
+                // Update the state of the IEnumerator.
                 this.current = dasm.CreateInstruction(instructions[0]);
+                this.address += (ulong) current.Bytes.Length;
+                this.offset += current.Bytes.Length;
                 return true;
             }
 
             /// <summary>
-            /// The Reset method is not supported; it is rarely used in practice.
+            ///     The Reset method is not supported; it is rarely used in practice.
             /// </summary>
             public void Reset() {
                 throw new NotSupportedException();
