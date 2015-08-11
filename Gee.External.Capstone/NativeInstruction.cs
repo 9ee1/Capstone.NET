@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using Gee.External.Capstone.Arm;
 using Gee.External.Capstone.Arm64;
+using Gee.External.Capstone.X86;
 
 namespace Gee.External.Capstone {
     /// <summary>

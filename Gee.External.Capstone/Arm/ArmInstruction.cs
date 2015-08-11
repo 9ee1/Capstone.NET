@@ -1,9 +1,13 @@
-﻿// ReSharper disable InconsistentNaming
+﻿using System.Diagnostics.CodeAnalysis;
+
+#pragma warning disable 1591
 
 namespace Gee.External.Capstone.Arm {
     /// <summary>
     ///     ARM Instruction.
     /// </summary>
+    [SuppressMessage("ReSharper", "IdentifierTypo")]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public enum ArmInstruction {
         /// <summary>
         ///     Invalid ARM Instruction.

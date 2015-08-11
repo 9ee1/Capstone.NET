@@ -10,7 +10,7 @@ namespace Gee.External.Capstone.Arm {
         /// <summary>
         ///     Instruction's Load User Mode Registers Flag.
         /// </summary>
-        public bool LoadUserModeRegisters;
+        [MarshalAs(UnmanagedType.I1)] public bool LoadUserModeRegisters;
 
         /// <summary>
         ///     Instruction's Vector Size.
@@ -40,12 +40,12 @@ namespace Gee.External.Capstone.Arm {
         /// <summary>
         ///     Instruction's Update Flags Flag.
         /// </summary>
-        public bool UpdateFlags;
+        [MarshalAs(UnmanagedType.I1)] public bool UpdateFlags;
 
         /// <summary>
         ///     Instruction's Write Back Flag.
         /// </summary>
-        public bool WriteBack;
+        [MarshalAs(UnmanagedType.I1)] public bool WriteBack;
 
         /// <summary>
         ///     Instruction's Memory Barrier.

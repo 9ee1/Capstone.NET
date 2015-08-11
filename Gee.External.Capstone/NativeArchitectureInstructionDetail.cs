@@ -1,16 +1,19 @@
-﻿using System.Runtime.InteropServices;
-using Gee.External.Capstone.Arm;
+﻿using Gee.External.Capstone.Arm;
 using Gee.External.Capstone.Arm64;
 using Gee.External.Capstone.Mips;
 using Gee.External.Capstone.PowerPc;
 using Gee.External.Capstone.Sparc;
 using Gee.External.Capstone.SystemZ;
+using Gee.External.Capstone.X86;
 using Gee.External.Capstone.XCore;
+using System;
+using System.Runtime.InteropServices;
 
 namespace Gee.External.Capstone {
     /// <summary>
     ///     Native Architecture Dependent Instruction Detail.
     /// </summary>
+    [Obsolete("Deprecated.")]
     [StructLayout(LayoutKind.Explicit)]
     public struct NativeArchitectureInstructionDetail {
         /// <summary>

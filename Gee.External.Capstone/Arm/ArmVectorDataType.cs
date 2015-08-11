@@ -1,4 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
+﻿#pragma warning disable 1591
 
 namespace Gee.External.Capstone.Arm {
     /// <summary>

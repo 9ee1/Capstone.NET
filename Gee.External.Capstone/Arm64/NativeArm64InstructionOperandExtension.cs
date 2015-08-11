@@ -78,7 +78,7 @@
 
                             break;
                         case Arm64Instruction.TLBI:
-                            @object.TlbiInstructionOperation = (Arm64TlbiInstructionOperation?) @this.Value.SysOperation;
+                            @object.TlbiInstructionOperation = (Arm64TlbiInstructionOperation) @this.Value.SysOperation;
 
                             break;
                     }

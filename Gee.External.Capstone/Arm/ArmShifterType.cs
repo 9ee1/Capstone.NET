@@ -1,12 +1,15 @@
-﻿// ReSharper disable InconsistentNaming
+﻿using System.Diagnostics.CodeAnalysis;
+
+#pragma warning disable 1591
 
 namespace Gee.External.Capstone.Arm {
     /// <summary>
-    ///     ARM Instruction Operand Shift Type.
+    ///     ARM Shifter Type.
     /// </summary>
-    public enum ArmInstructionOperandShiftType {
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    public enum ArmShifterType {
         /// <summary>
-        ///     Invalid Shift Type.
+        ///     Invalid Shifter Type.
         /// </summary>
         Invalid = 0,
 

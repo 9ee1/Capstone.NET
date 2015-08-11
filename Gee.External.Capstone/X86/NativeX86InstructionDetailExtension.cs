@@ -1,8 +1,7 @@
-﻿using Gee.External.Capstone.Arm64;
-using System;
+﻿using System;
 using System.Linq;
 
-namespace Gee.External.Capstone {
+namespace Gee.External.Capstone.X86 {
     /// <summary>
     ///     Native X86 Instruction Detail Extension.
     /// </summary>
@@ -23,7 +22,7 @@ namespace Gee.External.Capstone {
             @object.AvxRoundingMode = @this.ManagedAvxRoundingMode;
             @object.Displacement = @this.Displacement;
             @object.ModRm = @this.ModRm;
-            @object.Operands = @this.ManagedOperands.Select(m => m.AsX86InstructionOperand()).ToArray();
+            @object.Operands = @this.ManagedOperands.Select(m => NativeX86InstructionOperandExtension.AsX86InstructionOperand(m)).ToArray();
             @object.OperationCode = @this.ManagedOperationCode;
             @object.Prefix = @this.ManagedPrefix.Select(m => (X86Prefix) Convert.ToInt32(m)).ToArray();
             @object.Rex = @this.Rex;

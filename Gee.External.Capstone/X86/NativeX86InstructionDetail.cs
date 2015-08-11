@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Gee.External.Capstone {
+namespace Gee.External.Capstone.X86 {
     /// <summary>
     ///     Native X86 Instruction Detail.
     /// </summary>

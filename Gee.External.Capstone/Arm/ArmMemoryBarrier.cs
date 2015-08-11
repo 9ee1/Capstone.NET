@@ -1,9 +1,13 @@
-﻿// ReSharper disable InconsistentNaming
+﻿using System.Diagnostics.CodeAnalysis;
+
+#pragma warning disable 1591
 
 namespace Gee.External.Capstone.Arm {
     /// <summary>
     ///     ARM Memory Barrier.
     /// </summary>
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("ReSharper", "IdentifierTypo")]
     public enum ArmMemoryBarrier {
         /// <summary>
         ///     Invalid Memory Barrier.

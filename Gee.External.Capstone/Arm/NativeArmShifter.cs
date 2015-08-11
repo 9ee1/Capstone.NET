@@ -5,7 +5,7 @@ namespace Gee.External.Capstone.Arm {
     ///     Native ARM Instruction Operand Shift.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct NativeArmInstructionOperandShift {
+    public struct NativeArmShifter {
         /// <summary>
         ///     Operand's Shift Type.
         /// </summary>

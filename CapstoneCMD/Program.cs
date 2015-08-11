@@ -1,5 +1,7 @@
 ﻿using Gee.External.Capstone;
+using Gee.External.Capstone.Arm;
 using Gee.External.Capstone.Arm64;
+using Gee.External.Capstone.X86;
 using System;
 
 namespace CapstoneCMD {
@@ -21,11 +23,23 @@ namespace CapstoneCMD {
             Console.WriteLine();
 
             Console.SetBufferSize(80, 480);
-            Console.Write("Choose an Architecture (ARM64, X86): --> ");
+            Console.Write("Choose an Architecture (ARM32, ARM32-V8, ARM32-Thumb, ARM32-Thumb-MClass, ARM64, X86): --> ");
 
             var architecture = Console.ReadLine();
             Console.WriteLine();
             switch (architecture) {
+                case "ARM32":
+                    Program.ShowArm(DisassembleMode.Arm32);
+                    break;
+                case "ARM32-V8":
+                    Program.ShowArm((int)DisassembleMode.Arm32 + DisassembleMode.ArmV8);
+                    break;
+                case "ARM32-Thumb":
+                    Program.ShowArm(DisassembleMode.ArmThumb);
+                    break;
+                case "ARM32-Thumb-MClass":
+                    Program.ShowArm((int) DisassembleMode.ArmThumb + DisassembleMode.ArmCortexM);
+                    break;
                 case "ARM64":
                     Program.ShowArm64();
                     break;
@@ -38,6 +52,126 @@ namespace CapstoneCMD {
             }
 
             Console.ReadLine();
+        }
+
+        internal static void ShowArm(DisassembleMode mode) {
+            // Create ARM Disassembler.
+            //
+            // Creating the disassembler in a "using" statement ensures that resources get cleaned up automatically
+            // when it is no longer needed.
+            using (var disassembler = CapstoneDisassembler.CreateArmDisassembler(mode)) {
+                // Enable Disassemble Details.
+                //
+                // Enables disassemble details, which are disabled by default, to provide more detailed information on
+                // disassembled binary code.
+                disassembler.EnableDetails = true;
+
+                // Set Disassembler's Syntax.
+                //
+                // Make the disassembler generate instructions in Intel syntax.
+                disassembler.Syntax = DisassembleSyntaxOptionValue.Intel;
+
+                var code = new byte[0];
+                switch (mode) {
+                    case DisassembleMode.Arm32:
+                        code = new byte[] {0xED, 0xFF, 0xFF, 0xEB, 0x04, 0xe0, 0x2d, 0xe5, 0x00, 0x00, 0x00, 0x00, 0xe0, 0x83, 0x22, 0xe5, 0xf1, 0x02, 0x03, 0x0e, 0x00, 0x00, 0xa0, 0xe3, 0x02, 0x30, 0xc1, 0xe7, 0x00, 0x00, 0x53, 0xe3, 0x00, 0x02, 0x01, 0xf1, 0x05, 0x40, 0xd0, 0xe8, 0xf4, 0x80, 0x00, 0x00};
+                        break;
+                    case (int)DisassembleMode.Arm32 + DisassembleMode.ArmV8:
+                        code = new byte[] { 0xe0, 0x3b, 0xb2, 0xee, 0x42, 0x00, 0x01, 0xe1, 0x51, 0xf0, 0x7f, 0xf5 };
+                        break;
+                    case DisassembleMode.ArmThumb:
+                        code = new byte[] {0x70, 0x47, 0xeb, 0x46, 0x83, 0xb0, 0xc9, 0x68, 0x1f, 0xb1, 0x30, 0xbf, 0xaf, 0xf3, 0x20, 0x84};
+                        break;
+                    case (int) DisassembleMode.ArmThumb + DisassembleMode.ArmCortexM:
+                        code = new byte[] {0xef, 0xf3, 0x02, 0x80};
+                        break;
+                }
+
+                // Disassemble All Binary Code.
+                //
+                // ...
+                var instructions = disassembler.DisassembleAll(code);
+
+                var hexCode = BitConverter.ToString(code).Replace("-", " ");
+                Console.WriteLine(hexCode);
+                Console.WriteLine();
+
+                // Loop Through Each Disassembled Instruction.
+                // ...
+                foreach (var instruction in instructions) {
+                    Console.WriteLine("{0:X}: \t {1} \t {2}", instruction.Address, instruction.Mnemonic, instruction.Operand);
+                    Console.WriteLine("\t Id = {0}", instruction.Id);
+
+                    if (instruction.ArchitectureDetail != null) {
+                        Console.WriteLine("\t CPS Flag = {0}", instruction.ArchitectureDetail.CpsFlag);
+                        Console.WriteLine("\t CPS Mode = {0}", instruction.ArchitectureDetail.CpsMode);
+                        Console.WriteLine("\t Code Condition = {0}", instruction.ArchitectureDetail.CodeCondition);
+                        Console.WriteLine("\t Load User Mode Registers? {0}", instruction.ArchitectureDetail.LoadUserModeRegisters);
+                        Console.WriteLine("\t Memory Barrier = {0}", instruction.ArchitectureDetail.MemoryBarrier);
+                        Console.WriteLine("\t Operand Count: {0}", instruction.ArchitectureDetail.Operands.Length);
+
+                        // Loop Through Each Instruction's Operands.
+                        //
+                        // ...
+                        foreach (var operand in instruction.ArchitectureDetail.Operands) {
+                            string operandValue = null;
+                            switch (operand.Type) {
+                                case ArmInstructionOperandType.CImmediate:
+                                    operandValue = operand.ImmediateValue.Value.ToString("X");
+                                    break;
+                                case ArmInstructionOperandType.FloatingPoint:
+                                    operandValue = operand.FloatingPointValue.Value.ToString();
+                                    break;
+                                case ArmInstructionOperandType.Immediate:
+                                    operandValue = operand.ImmediateValue.Value.ToString("X");
+                                    break;
+                                case ArmInstructionOperandType.PImmediate:
+                                    operandValue = operand.ImmediateValue.Value.ToString("X");
+                                    break;
+                                case ArmInstructionOperandType.Memory:
+                                    operandValue = "-->";
+                                    break;
+                                case ArmInstructionOperandType.Register:
+                                    operandValue = operand.RegisterValue.Value.ToString();
+                                    break;
+                                case ArmInstructionOperandType.SetEnd:
+                                    operandValue = operand.SetEndValue.Value.ToString();
+                                    break;
+                                case ArmInstructionOperandType.SysRegister:
+                                    operandValue = operand.SysRegisterValue.Value.ToString();
+                                    break;
+                            }
+
+                            Console.WriteLine("\t\t {0} = {1}", operand.Type, operandValue);
+
+                            // Handle Memory Operand.
+                            //
+                            // ...
+                            if (operand.Type == ArmInstructionOperandType.Memory) {
+                                Console.WriteLine("\t\t\t Base Register = {0} ", operand.MemoryValue.BaseRegister);
+                                Console.WriteLine("\t\t\t Displacement = {0:X} ", operand.MemoryValue.Displacement);
+                                Console.WriteLine("\t\t\t Index Register = {0} ", operand.MemoryValue.IndexRegister);
+                                Console.WriteLine("\t\t\t Index Register Scale = {0} ", operand.MemoryValue.IndexRegisterScale);
+                                Console.WriteLine();
+                            }
+
+                            Console.WriteLine("\t\t\t Is Subtracted? = {0}", operand.IsSubtracted);
+                            Console.WriteLine("\t\t\t Shifter = -->");
+                            Console.WriteLine("\t\t\t\t Type = {0}", operand.Shifter.Type);
+                            Console.WriteLine("\t\t\t\t Value = {0:X}", operand.Shifter.Value);
+
+                            Console.WriteLine("\t\t\t Vector Index = {0}", operand.VectorIndex);
+                        }
+
+                        Console.WriteLine("\t Update Flags? {0}", instruction.ArchitectureDetail.UpdateFlags);
+                        Console.WriteLine("\t Vector Data Type = {0}", instruction.ArchitectureDetail.VectorDataType);
+                        Console.WriteLine("\t Vector Size= {0}", instruction.ArchitectureDetail.VectorSize);
+                        Console.WriteLine("\t Write Back? {0}", instruction.ArchitectureDetail.WriteBack);
+                    }
+
+                    Console.WriteLine();
+                }
+            }
         }
 
         internal static void ShowArm64() {

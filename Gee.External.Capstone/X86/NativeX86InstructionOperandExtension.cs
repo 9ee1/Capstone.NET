@@ -1,4 +1,4 @@
-﻿namespace Gee.External.Capstone {
+﻿namespace Gee.External.Capstone.X86 {
     /// <summary>
     ///     Native X86 Instruction Operand Extension.
     /// </summary>

@@ -1,8 +1,11 @@
-﻿using Gee.External.Capstone.Arm64;
+﻿using Gee.External.Capstone.Arm;
+using Gee.External.Capstone.Arm64;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Gee.External.Capstone.X86;
+using System.Collections;
 
 namespace Gee.External.Capstone {
     /// <summary>
@@ -103,6 +106,20 @@ namespace Gee.External.Capstone {
             get {
                 return this._handle;
             }
+        }
+
+        /// <summary>
+        ///     Create an ARM Disassembler.
+        /// </summary>
+        /// <param name="mode">
+        ///     The disassembler's mode.
+        /// </param>
+        /// <returns>
+        ///     A capstone disassembler.
+        /// </returns>
+        public static CapstoneDisassembler<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail> CreateArmDisassembler(DisassembleMode mode) {
+            var @object = new CapstoneArmDisassembler(mode);
+            return @object;
         }
 
         /// <summary>
@@ -272,6 +289,7 @@ namespace Gee.External.Capstone {
         public IEnumerable<Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail>> DisassembleStream(byte[] code, int offset, long startAddress) {
             return new InstructionStream(this, code, offset, startAddress);
         }
+
         /// <summary>
         ///     Disassemble Binary Code.
         /// </summary>
@@ -300,8 +318,12 @@ namespace Gee.External.Capstone {
         /// </returns>
         protected abstract Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> CreateInstruction(NativeInstruction nativeInstruction);
 
-
-        class InstructionStream : 
+        /// <summary>
+        ///     Provides an IEnumerable interface so that Capstone.NET can be used with
+        ///     other .NET components, like LinQ, without having to eagerly disassemble
+        ///     large areas of memory.
+        /// </summary>
+        private class InstructionStream : 
             IEnumerable<Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail>> {
             private CapstoneDisassembler<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> dasm;
             private byte[] code;
@@ -325,7 +347,7 @@ namespace Gee.External.Capstone {
                 return new InstructionEnumerator(dasm, code, offset, address);
             }
 
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            IEnumerator IEnumerable.GetEnumerator()
             {
  	            return GetEnumerator();
             }
@@ -334,11 +356,10 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Enumerator that lazily disassembles a stream of instructions. 
         /// </summary>
-        class InstructionEnumerator :
+        private class InstructionEnumerator :
             IEnumerator<Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail>> {
             private CapstoneDisassembler<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> dasm;
-            private SafeCapstoneHandle pHandle;
-            private GCHandle code;  // Pinned array of bytes containing the area we wish to disassemble.
+            private GCHandle pinnedCode;      // Pinned array of bytes containing the area we wish to disassemble.
             private int codeSize;       // the size of the code.
             private Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> current;
             private ulong address;
@@ -349,16 +370,31 @@ namespace Gee.External.Capstone {
                 int offset,
                 long startAddress) {
                 this.dasm = dasm;
-                this.pHandle = dasm.Handle;
-                this.code = GCHandle.Alloc(code);
+                // Avoid copying the code to be disassembled, by pinning it instead.
+                this.pinnedCode = GCHandle.Alloc(code);
                 this.codeSize = code.Length;
                 this.address = (ulong)startAddress;
             }
 
+            /// <summary>
+            ///     Finalize the enumerator.
+            /// </summary>
+            /// <remarks>
+            ///     The finalizer will be called at some non-specified time 
+            ///     if you forget to Dispose() this object. Avoid this by being
+            ///     diligent with your resource management.
+            /// </remarks>
             ~InstructionEnumerator() {
                 Dispose(false);
             }
 
+            /// <summary>
+            ///     Gets the current instruction in the instruction stream.
+            /// </summary>
+            /// <exception cref="System.InvalidOperationException">
+            ///     Thrown if the caller attempts to read this property before
+            ///     calling the MoveNext() method.
+            /// </exception>
             public Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> Current {
                 get {
                     if (current == null)
@@ -367,32 +403,39 @@ namespace Gee.External.Capstone {
                 }
             }
 
+            object IEnumerator.Current {
+                get { return Current; }
+            }
+
+            /// <summary>
+            ///     Dispose() method is called automatically by foreach 
+            /// </summary>
             public void Dispose() {
                 Dispose(true);
                 GC.SuppressFinalize(this);
             }
 
+            /// <summary>
+            ///     Disposes of any unmanaged/unsafe resources.
+            /// </summary>
+            /// <param name="disposing"></param>
             private void Dispose(bool disposing) {
-                if (code.IsAllocated)
-                    code.Free();
-                if (disposing) {
-                    pHandle.Dispose();
-                    pHandle = null;     //$REVIEW: not thread safe.
-                }
+                if (pinnedCode.IsAllocated)
+                    pinnedCode.Free();
             }
 
-            object System.Collections.IEnumerator.Current {
-                get { return Current; }
-            }
-
+            /// <summary>
+            ///     Retrieve the next instruction using the native Capstone disassembler.
+            /// </summary>
+            /// <returns></returns>
             public bool MoveNext() {
                 var pCount = (IntPtr)1;
-                var pCode = GCHandle.ToIntPtr(this.code);
+                var pCode = GCHandle.ToIntPtr(this.pinnedCode);
                 var pInstructions = IntPtr.Zero;
                 var pSize = (IntPtr)codeSize;
                 var uStartingAddress = (ulong)address;
 
-                var pResultCode = CapstoneImport.Disassemble(pHandle.DangerousGetHandle(), pCode, pSize, uStartingAddress, pCode, ref pInstructions);
+                var pResultCode = CapstoneImport.Disassemble(dasm.Handle.DangerousGetHandle(), pCode, pSize, uStartingAddress, pCode, ref pInstructions);
 
                 var iResultCode = (int)pResultCode;
                 var instructions = MarshalExtension.PtrToStructure<NativeInstruction>(pInstructions, iResultCode);
@@ -402,6 +445,9 @@ namespace Gee.External.Capstone {
                 return true;
             }
 
+            /// <summary>
+            /// The Reset method is not supported; it is rarely used in practice.
+            /// </summary>
             public void Reset() {
                 throw new NotSupportedException();
             }
