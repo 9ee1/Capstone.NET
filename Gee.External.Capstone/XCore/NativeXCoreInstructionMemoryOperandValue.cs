@@ -2,7 +2,7 @@
 
 namespace Gee.External.Capstone.XCore {
     /// <summary>
-    ///     Native X86 Instruction Memory Operand Value.
+    ///     Native XCore Instruction Memory Operand Value.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct NativeXCoreInstructionMemoryOperandValue {
@@ -22,8 +22,8 @@ namespace Gee.External.Capstone.XCore {
         public int Displacement;
 
         /// <summary>
-        ///     Operand Value's Displacement Value.
+        ///     Operand Value's Direction Value.
         /// </summary>
-        public int Direct;
+        public int Direction;
     }
 }

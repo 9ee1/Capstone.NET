@@ -1,11 +1,11 @@
 ﻿using Gee.External.Capstone.Arm;
 using Gee.External.Capstone.Arm64;
+using Gee.External.Capstone.X86;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Gee.External.Capstone.X86;
-using System.Collections;
 
 namespace Gee.External.Capstone {
     /// <summary>
@@ -323,20 +323,19 @@ namespace Gee.External.Capstone {
         ///     other .NET components, like LinQ, without having to eagerly disassemble
         ///     large areas of memory.
         /// </summary>
-        private class InstructionStream : 
-            IEnumerable<Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail>> {
-            private CapstoneDisassembler<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> dasm;
+        private sealed class InstructionStream : IEnumerable<Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail>> {
+            private readonly CapstoneDisassembler<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> _disassembler;
             private byte[] code;
             private int offset;
             private long address;
 
             public InstructionStream(
-                CapstoneDisassembler<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> dasm,
+                CapstoneDisassembler<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> disassembler,
                 byte[] code,
                 int offset,
                 long address)
             {
-                this.dasm = dasm;
+                this._disassembler = disassembler;
                 this.code = code;
                 this.offset = offset;
                 this.address = address;
@@ -344,7 +343,7 @@ namespace Gee.External.Capstone {
         
             public IEnumerator<Instruction<TArchitectureInstruction,TArchitectureRegister,TArchitectureGroup,TArchitectureDetail>> GetEnumerator()
             {
-                return new InstructionEnumerator(dasm, code, offset, address);
+                return new InstructionEnumerator(_disassembler, code, offset, address);
             }
 
             IEnumerator IEnumerable.GetEnumerator()

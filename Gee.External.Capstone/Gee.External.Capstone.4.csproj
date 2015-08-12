@@ -4,32 +4,34 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1297DCEE-009D-4739-8124-3F064EA9EA10}</ProjectGuid>
+    <ProjectGuid>{D8E7BF01-1424-4312-AF14-982E7DA9B9BC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Gee.External.Capstone</RootNamespace>
     <AssemblyName>Gee.External.Capstone</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '.NET45Debug|x86'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '.NET4Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\.NET45Debug\</OutputPath>
+    <OutputPath>bin\x86\.NET4Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '.NET45Release|x86'">
-    <OutputPath>bin\x86\.NET45Release\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '.NET4Release|x86'">
+    <OutputPath>bin\x86\.NET4Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -39,29 +41,34 @@
     <Compile Include="Arm64\Arm64AtInstructionOperation.cs" />
     <Compile Include="Arm64\Arm64CodeCondition.cs" />
     <Compile Include="Arm64\Arm64DcInstructionOperation.cs" />
+    <Compile Include="Arm64\Arm64Extender.cs" />
     <Compile Include="Arm64\Arm64IcInstructionOperation.cs" />
     <Compile Include="Arm64\Arm64Instruction.cs" />
     <Compile Include="Arm64\Arm64InstructionDetail.cs" />
     <Compile Include="Arm64\Arm64InstructionGroup.cs" />
     <Compile Include="Arm64\Arm64InstructionMemoryOperandValue.cs" />
     <Compile Include="Arm64\Arm64InstructionOperand.cs" />
-    <Compile Include="Arm64\Arm64Extender.cs" />
-    <Compile Include="Arm64\Arm64MrsRegister.cs" />
-    <Compile Include="Arm64\Arm64MsrRegister.cs" />
-    <Compile Include="Arm64\Arm64Shifter.cs" />
-    <Compile Include="Arm64\Arm64ShifterType.cs" />
     <Compile Include="Arm64\Arm64InstructionOperandType.cs" />
     <Compile Include="Arm64\Arm64MemoryBarrierOperation.cs" />
+    <Compile Include="Arm64\Arm64MrsRegister.cs" />
+    <Compile Include="Arm64\Arm64MsrRegister.cs" />
     <Compile Include="Arm64\Arm64PrefetchOperation.cs" />
     <Compile Include="Arm64\Arm64PState.cs" />
     <Compile Include="Arm64\Arm64Register.cs" />
+    <Compile Include="Arm64\Arm64Shifter.cs" />
+    <Compile Include="Arm64\Arm64ShifterType.cs" />
     <Compile Include="Arm64\Arm64TlbiInstructionOperation.cs" />
     <Compile Include="Arm64\Arm64VectorArrangementSpecifier.cs" />
     <Compile Include="Arm64\Arm64VectorElementSizeSpecifier.cs" />
     <Compile Include="Arm64\CapstoneArm64Disassembler.cs" />
+    <Compile Include="Arm64\NativeArm64InstructionDetail.cs" />
     <Compile Include="Arm64\NativeArm64InstructionDetailExtension.cs" />
+    <Compile Include="Arm64\NativeArm64InstructionMemoryOperandValue.cs" />
     <Compile Include="Arm64\NativeArm64InstructionMemoryOperandValueExtension.cs" />
+    <Compile Include="Arm64\NativeArm64InstructionOperand.cs" />
     <Compile Include="Arm64\NativeArm64InstructionOperandExtension.cs" />
+    <Compile Include="Arm64\NativeArm64InstructionOperandValue.cs" />
+    <Compile Include="Arm64\NativeArm64Shifter.cs" />
     <Compile Include="Arm64\NativeArm64ShifterExtension.cs" />
     <Compile Include="Arm\ArmCodeCondition.cs" />
     <Compile Include="Arm\ArmCpsFlag.cs" />
@@ -72,17 +79,22 @@
     <Compile Include="Arm\ArmInstructionMemoryOperandValue.cs" />
     <Compile Include="Arm\ArmInstructionOperand.cs" />
     <Compile Include="Arm\ArmInstructionOperandType.cs" />
-    <Compile Include="Arm\ArmShifter.cs" />
-    <Compile Include="Arm\ArmShifterType.cs" />
     <Compile Include="Arm\ArmMemoryBarrier.cs" />
     <Compile Include="Arm\ArmRegister.cs" />
     <Compile Include="Arm\ArmSetEndInstructionOperandType.cs" />
+    <Compile Include="Arm\ArmShifter.cs" />
+    <Compile Include="Arm\ArmShifterType.cs" />
     <Compile Include="Arm\ArmSysRegister.cs" />
     <Compile Include="Arm\ArmVectorDataType.cs" />
     <Compile Include="Arm\CapstoneArmDisassembler.cs" />
+    <Compile Include="Arm\NativeArmInstructionDetail.cs" />
     <Compile Include="Arm\NativeArmInstructionDetailExtension.cs" />
+    <Compile Include="Arm\NativeArmInstructionMemoryOperandValue.cs" />
     <Compile Include="Arm\NativeArmInstructionMemoryOperandValueExtension.cs" />
+    <Compile Include="Arm\NativeArmInstructionOperand.cs" />
     <Compile Include="Arm\NativeArmInstructionOperandExtension.cs" />
+    <Compile Include="Arm\NativeArmInstructionOperandValue.cs" />
+    <Compile Include="Arm\NativeArmShifter.cs" />
     <Compile Include="Arm\NativeArmShifterExtension.cs" />
     <Compile Include="CapstoneDisassembler.cs" />
     <Compile Include="CapstoneImport.cs" />
@@ -94,36 +106,30 @@
     <Compile Include="DisassembleOptionValue.cs" />
     <Compile Include="DisassembleSyntaxOptionValue.cs" />
     <Compile Include="ExceptionThrower.cs" />
+    <Compile Include="IndependentInstructionDetail.cs" />
     <Compile Include="IndependentInstructionGroup.cs" />
     <Compile Include="Instruction.cs" />
     <Compile Include="MarshalExtension.cs" />
-    <Compile Include="NativeArchitectureInstructionDetail.cs" />
-    <Compile Include="Arm64\NativeArm64InstructionDetail.cs" />
-    <Compile Include="Arm64\NativeArm64InstructionMemoryOperandValue.cs" />
-    <Compile Include="Arm64\NativeArm64InstructionOperand.cs" />
-    <Compile Include="Arm64\NativeArm64Shifter.cs" />
-    <Compile Include="Arm64\NativeArm64InstructionOperandValue.cs" />
-    <Compile Include="Arm\NativeArmInstructionDetail.cs" />
-    <Compile Include="Arm\NativeArmInstructionMemoryOperandValue.cs" />
-    <Compile Include="Arm\NativeArmInstructionOperand.cs" />
-    <Compile Include="Arm\NativeArmShifter.cs" />
-    <Compile Include="Arm\NativeArmInstructionOperandValue.cs" />
-    <Compile Include="NativeCapstone.cs" />
-    <Compile Include="NativeIndependentInstructionDetailExtension.cs" />
-    <Compile Include="NativeInstruction.cs" />
-    <Compile Include="NativeIndependentInstructionDetail.cs" />
-    <Compile Include="NativeInstructionCollection.cs" />
-    <Compile Include="NativeInstructionCollectionEnumerator.cs" />
-    <Compile Include="NativeInstructionExtension.cs" />
     <Compile Include="Mips\NativeMipsInstructionDetail.cs" />
     <Compile Include="Mips\NativeMipsInstructionMemoryOperandValue.cs" />
     <Compile Include="Mips\NativeMipsInstructionOperand.cs" />
     <Compile Include="Mips\NativeMipsInstructionOperandValue.cs" />
+    <Compile Include="NativeArchitectureInstructionDetail.cs" />
+    <Compile Include="NativeCapstone.cs" />
+    <Compile Include="NativeIndependentInstructionDetail.cs" />
+    <Compile Include="NativeIndependentInstructionDetailExtension.cs" />
+    <Compile Include="NativeInstruction.cs" />
+    <Compile Include="NativeInstructionCollection.cs" />
+    <Compile Include="NativeInstructionCollectionEnumerator.cs" />
+    <Compile Include="NativeInstructionExtension.cs" />
     <Compile Include="PowerPc\NativePowerPcInstructionConditionRegisterOperandValue.cs" />
     <Compile Include="PowerPc\NativePowerPcInstructionDetail.cs" />
     <Compile Include="PowerPc\NativePowerPcInstructionMemoryOperandValue.cs" />
     <Compile Include="PowerPc\NativePowerPcInstructionOperand.cs" />
     <Compile Include="PowerPc\NativePowerPcInstructionOperandValue.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SafeCapstoneHandle.cs" />
+    <Compile Include="SafeNativeInstructionHandle.cs" />
     <Compile Include="Sparc\NativeSparcInstructionDetail.cs" />
     <Compile Include="Sparc\NativeSparcInstructionMemoryOperandValue.cs" />
     <Compile Include="Sparc\NativeSparcInstructionOperand.cs" />
@@ -156,12 +162,7 @@
     <Compile Include="XCore\NativeXCoreInstructionMemoryOperandValue.cs" />
     <Compile Include="XCore\NativeXCoreInstructionOperand.cs" />
     <Compile Include="XCore\NativeXCoreInstructionOperandValue.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SafeCapstoneHandle.cs" />
-    <Compile Include="SafeNativeInstructionHandle.cs" />
-    <Compile Include="IndependentInstructionDetail.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
