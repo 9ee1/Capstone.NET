@@ -38,7 +38,7 @@ namespace CapstoneCMD {
                     Program.ShowArm(DisassembleMode.ArmThumb);
                     break;
                 case "ARM32-Thumb-MClass":
-                    Program.ShowArm((int) DisassembleMode.ArmThumb + DisassembleMode.ArmCortexM);
+                    Program.ShowArm(DisassembleMode.ArmThumbArmCortexM);
                     break;
                 case "ARM64":
                     Program.ShowArm64();
@@ -82,7 +82,7 @@ namespace CapstoneCMD {
                     case DisassembleMode.ArmThumb:
                         code = new byte[] { 0x70, 0x47, 0xeb, 0x46, 0x83, 0xb0, 0xc9, 0x68, 0x1f, 0xb1, 0x30, 0xbf, 0xaf, 0xf3, 0x20, 0x84 };
                         break;
-                    case (int) DisassembleMode.ArmThumb + DisassembleMode.ArmCortexM:
+                    case DisassembleMode.ArmThumbArmCortexM:
                         code = new byte[] { 0xef, 0xf3, 0x02, 0x80 };
                         break;
                 }
