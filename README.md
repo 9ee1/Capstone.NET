@@ -86,16 +86,18 @@ using (var disassembler = CapstoneDisassembler.CreateX86Disassembler(Disassemble
 ```
 
 ## Requirements
-(+) **.NET Framework 4.5**: Capstone.NET is compiled against the .NET Framework 4.5. It is the latest and greatest version of .NET and has been released for quite some time now. Unless you are working with legacy applications, there is really no reason to be using an older version of the .NET Framework. If this is a problem for you, feel free to either open an issue or fork the project and make it compatible with your desired version of the .NET Framework. Little or no changes might be required.
+(+) **.NET Framework 4.0/4.5**: Capstone.NET is compiled against the .NET Framework 4.0/4.5.
 
 (+) **Capstone 3 (X86)**: Capstone.NET is compatible **only** with the X86 version of Capstone 3. Please make sure you only use that version before you open an issue. Down the road, I will definitely have support for the X64 version of Capstone. If this is a problem for you, feel free to either open an issue or fork the project and make it compatible with both X86 and X64. Significant changes might be required to deal with structure alignment issues when interfacing with the native Capstone API.
 
 (+) **X86 Compiled Assembly**: Capstone.NET is compiled as an X86 DLL. This, obviously, means you should only reference it from an X86 assembly. The word **should** should be taken with a grain of salt here because the C# compiler will only trigger a warning if you reference it from an X64 assembly but please be aware that Capstone.NET has **not** been tested when referenced from an X64 binary so possible runtime exceptions or errors might occur. If this is a problem for you, feel free to either open an issue or fork the project and make it compatible with both X86 and X64. Significant changes might be required to deal with structure alignment issues when interfacing with the native Capstone API.
 
-(+) *Unsafe Assembly (Optional)*: Deep under the hood, some Capstone.NET APIs use unsafe code when interfacing with the native Capstone API. These APIs are abstracted away from you behind the scenes. However, **if**, and only **if**, you want to use these unsafe APIs in your code, you **must** compile your assembly with the C# compiler switch */unsafe*. Just to make sure this is clear, you **only** need to compile your assembly with the */unsafe* switch if you use any unsafe APIs **directly** from your code. Otherwise you are fine and you do not need to use this switch. See MSDN for more information.
-
 ## Packaged Installation
-The simplest way to get started with Capstone.NET is to download the latest release package. It will contain all the compiled binaries you need to get started. The latest release will usually be backwards compatible with older releases but as both Capstone.NET and Capstone mature, this might not always be the case. Please make sure to read the release notes for each release before upgrading!
+The simplest way to get started with Capstone.NET is to grab it from [Nuget](https://www.nuget.org/packages/Gee.External.Capstone). You can also use the Nuget Package Manager in Visual Studio and search for "**Capstone.NET**".
+
+The alternative is to download the latest release package from GitHub. It will contain all the compiled binaries you need to get started.
+
+The latest release will usually be backwards compatible with older releases but as both Capstone.NET and Capstone mature, this might not always be the case. Please make sure to read the release notes for each release before upgrading!
 
 ## Upgrading Capstone
 The Capstone team is always hard at work at upgrading Capstone. It is entirely possible that the copy of Capstone that is distributed with a Capstone.NET release is out of date when you download it. You can feel free to replace the **capstone.dll** that is distributed with Capstone.NET with the latest copy you download from the Capstone website. However, please make sure it is **always** named **capstone.dll**. Capstone.NET looks for this DLL when it goes to work and if it can't find it, you will get a runtime exception.
@@ -113,3 +115,5 @@ Take a look at the unit tests and the example command line application for an ex
 
 ## Acknowledgments
 Greetings to my sensi Mohamed Saher ([@halsten](https://twitter.com/@halsten)) who suggested I take on this project and was a major help in debugging some stucture alignment issues, the Capstone team ([@capstone_engine](https://twitter.com/@capstone_engine)) for all the great work they are doing, and Matt Graeber ([@mattifestation](https://twitter.com/@mattifestation)) who wrote the original binding for Capstone 2 and whose work was a starting point for this project.
+
+Special thanks to John Källén ([@uxmal](https://github.com/uxmal)) for his contribution and for choosing to use Capstone.NET for his binary decompiler, [reko](https://github.com/uxmal/reko).
