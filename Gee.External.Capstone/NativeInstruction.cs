@@ -167,7 +167,7 @@ namespace Gee.External.Capstone {
         /// </summary>
         public NativeX86InstructionDetail NativeX86Detail {
             get {
-                var pDetail = CapstoneProxyImport.ArmDetail(this.IndependentDetail);
+                var pDetail = CapstoneProxyImport.X86Detail(this.IndependentDetail);
                 var detail = MarshalExtension.PtrToStructure<NativeX86InstructionDetail>(pDetail);
 
                 return detail;

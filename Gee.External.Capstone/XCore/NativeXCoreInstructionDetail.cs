@@ -58,8 +58,8 @@ namespace Gee.External.Capstone.XCore {
         /// <value>
         ///     Convenient property to retrieve the instruction's operands as a managed collection. The size of the
         ///     managed collection will always be equal to the value represented by
-        ///     <c>NativePowerPcInstructionDetail.OperandCount</c>. This property allocates managed memory for a new
-        ///     managed collection and copies by value the required <c>NativePowerPcInstructionDetail.Operand</c>
+        ///     <c>NativeXCoreInstructionDetail.OperandCount</c>. This property allocates managed memory for a new
+        ///     managed collection and copies by value the required <c>NativeXCoreInstructionDetail.Operand</c>
         ///     fields every time it is invoked.
         /// </value>
         public NativeXCoreInstructionOperand[] ManagedOperands {

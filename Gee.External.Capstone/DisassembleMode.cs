@@ -84,6 +84,33 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     MIPS-64 Disassemble Mode.
         /// </summary>
-        Mips64 = Bit64
+        Mips64 = Bit64,
+
+        /// <summary>
+        ///     32-Bit ARM + ARMv8 Disassemble Mode.
+        /// </summary>
+        /// <remarks>
+        ///     Represents a disassemble mode consisting of 32-Bit ARM + ARMv8. This enumeration member is not natively
+        ///     defined by the Capstone API and is provided for convenience.
+        /// </remarks>
+        Arm32ArmV8 = Arm32 + ArmV8,
+
+        /// <summary>
+        ///     ARM Thumb + ARM Cortex-M Disassemble Mode.
+        /// </summary>
+        /// <remarks>
+        ///     Represents a disassemble mode consisting of ARM Thumb + ARM Cortex-M. This enumeration member is not
+        ///     natively defined by the Capstone API and is provided for convenience.
+        /// </remarks>
+        ArmThumbArmCortexM = ArmThumb + ArmCortexM,
+
+        /// <summary>
+        ///     32-Bit ARM + Big Endian Disassemble Mode.
+        /// </summary>
+        /// <remarks>
+        ///     Represents a disassemble mode consisting of 32-Bit ARM + Big Endian. This enumeration member is not
+        ///     natively defined by the Capstone API and is provided for convenience.
+        /// </remarks>
+        Arm32BigEndian = Arm32 + BigEndian
     }
 }

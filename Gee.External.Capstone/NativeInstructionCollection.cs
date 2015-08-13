@@ -6,6 +6,7 @@ namespace Gee.External.Capstone {
     /// <summary>
     ///     Native Instruction Collection.
     /// </summary>
+    [Obsolete("Deprecated.")]
     internal sealed class NativeInstructionCollection : IEnumerable<NativeInstruction> {
         /// <summary>
         ///     Native Instructions.

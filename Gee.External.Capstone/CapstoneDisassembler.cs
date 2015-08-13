@@ -1,11 +1,11 @@
 ﻿using Gee.External.Capstone.Arm;
 using Gee.External.Capstone.Arm64;
+using Gee.External.Capstone.X86;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Gee.External.Capstone.X86;
-using System.Collections;
 
 namespace Gee.External.Capstone {
     /// <summary>
@@ -204,7 +204,7 @@ namespace Gee.External.Capstone {
         /// <param name="mode">
         ///     The disassembler's mode.
         /// </param>
-        protected CapstoneDisassembler(DisassembleArchitecture architecture, DisassembleMode mode) : base(architecture, mode) { }
+        protected CapstoneDisassembler(DisassembleArchitecture architecture, DisassembleMode mode) : base(architecture, mode) {}
 
         /// <summary>
         ///     Disassemble Binary Code.
@@ -275,19 +275,24 @@ namespace Gee.External.Capstone {
         }
 
         /// <summary>
-        ///     Disassemble Binary Code incrementally.
+        ///     Defer Disassemble Binary Code.
         /// </summary>
         /// <param name="code">
         ///     A collection of bytes representing the binary code to disassemble. Should not be a null reference.
         /// </param>
+        /// <param name="offset">
+        ///     An offset to start disassembling from. A 0 indicates disassembly should start at the first byte.
+        ///     Should be less than the length of the collection of bytes to disassemble.
+        /// </param>
+        /// <param name="startingAddress">
+        ///     The address of the first instruction in the collection of bytes to disassemble.
+        /// </param>
         /// <returns>
-        ///     An IEnumerable deferred stream of dissembled instructions.
+        ///     A deferred collection of dissembled instructions.
         /// </returns>
-        /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the binary code could not be disassembled.
-        /// </exception>
-        public IEnumerable<Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail>> DisassembleStream(byte[] code, int offset, long startAddress) {
-            return new InstructionStream(this, code, offset, startAddress);
+        public IEnumerable<Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail>> DisassembleStream(byte[] code, int offset, long startingAddress) {
+            var enumerable = new DeferredInstructionEnumerable(this, code, offset, startingAddress);
+            return enumerable;
         }
 
         /// <summary>
@@ -319,98 +324,199 @@ namespace Gee.External.Capstone {
         protected abstract Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> CreateInstruction(NativeInstruction nativeInstruction);
 
         /// <summary>
-        ///     Provides an IEnumerable interface so that Capstone.NET can be used with
-        ///     other .NET components, like LinQ, without having to eagerly disassemble
-        ///     large areas of memory.
+        ///     Deferred Instruction Enumerable.
         /// </summary>
-        private class InstructionStream : 
-            IEnumerable<Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail>> {
-            private CapstoneDisassembler<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> dasm;
-            private byte[] code;
-            private int offset;
-            private long address;
+        /// <remarks>
+        ///     Represents an enumerable that is used to support deferred enumeration of dissembled binary code. This
+        ///     allows instruction-by-instruction disassembling of small ranges of code conveniently. This mode of
+        ///     use is common with recursive disassemblers, which need to disassembly small chunks of code often.
+        /// </remarks>
+        private sealed class DeferredInstructionEnumerable : IEnumerable<Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail>> {
+            /// <summary>
+            ///     Binary Code to Disassemble.
+            /// </summary>
+            private readonly byte[] _code;
 
-            public InstructionStream(
-                CapstoneDisassembler<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> dasm,
-                byte[] code,
-                int offset,
-                long address)
-            {
-                this.dasm = dasm;
-                this.code = code;
-                this.offset = offset;
-                this.address = address;
-            }
-        
-            public IEnumerator<Instruction<TArchitectureInstruction,TArchitectureRegister,TArchitectureGroup,TArchitectureDetail>> GetEnumerator()
-            {
-                return new InstructionEnumerator(dasm, code, offset, address);
+            /// <summary>
+            ///     Disassembler.
+            /// </summary>
+            private readonly CapstoneDisassembler<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> _disassembler;
+
+            /// <summary>
+            ///     Offset.
+            /// </summary>
+            private readonly int _offset;
+
+            /// <summary>
+            ///     Starting Address.
+            /// </summary>
+            private readonly long _startingAddress;
+
+            /// <summary>
+            ///     Create a Deferred Instruction Enumerable.
+            /// </summary>
+            /// <param name="disassembler">
+            ///     The disassembler to use. Should not be a null reference.
+            /// </param>
+            /// <param name="code">
+            ///     A collection of bytes representing the binary code to disassemble. Should not be a null reference.
+            /// </param>
+            /// <param name="offset">
+            ///     An offset to start disassembling from. A 0 indicates disassembly should start at the first byte.
+            ///     Should be less than the length of the collection of bytes to disassemble.
+            /// </param>
+            /// <param name="startingAddress">
+            ///     The address of the first instruction in the collection of bytes to disassemble.
+            /// </param>
+            public DeferredInstructionEnumerable(CapstoneDisassembler<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> disassembler, byte[] code, int offset, long startingAddress) {
+                this._disassembler = disassembler;
+                this._code = code;
+                this._offset = offset;
+                this._startingAddress = startingAddress;
             }
 
-            IEnumerator IEnumerable.GetEnumerator()
-            {
- 	            return GetEnumerator();
+            /// <summary>
+            ///     Get Enumerator.
+            /// </summary>
+            /// <returns>
+            ///     An enumerator.
+            /// </returns>
+            public IEnumerator<Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail>> GetEnumerator() {
+                var enumerator = new DeferredInstructionEnumerator(this._disassembler, this._code, this._offset, this._startingAddress);
+                return enumerator;
+            }
+
+            /// <summary>
+            ///     Get Enumerator.
+            /// </summary>
+            /// <returns>
+            ///     An enumerator.
+            /// </returns>
+            IEnumerator IEnumerable.GetEnumerator() {
+                var enumerator = this.GetEnumerator();
+                return enumerator;
             }
         }
 
         /// <summary>
-        ///     Enumerator that lazily disassembles a stream of instructions. 
+        ///     Deferred Instruction Enumerator.
         /// </summary>
-        private class InstructionEnumerator :
-            IEnumerator<Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail>> {
-            private CapstoneDisassembler<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> dasm;
-            private GCHandle pinnedCode;      // Pinned array of bytes containing the area we wish to disassemble.
-            private int offset;               // "cursor": the position within the code we're currently at.
-            private int codeSize;       // the size of the code.
-            private Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> current;
-            private ulong address;
+        /// <remarks>
+        ///     Represents an enumerator that is used to support deferred enumeration of dissembled binary code. This
+        ///     allows instruction-by-instruction disassembling of small ranges of code conveniently. This mode of
+        ///     use is common with recursive disassemblers, which need to disassembly small chunks of code often.
+        /// </remarks>
+        private class DeferredInstructionEnumerator : IEnumerator<Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail>> {
+            /// <summary>
+            ///     Code Size.
+            /// </summary>
+            private readonly int _codeSize;
 
-            public InstructionEnumerator(
-                CapstoneDisassembler<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> dasm,
-                byte[] code,
-                int offset,
-                long startAddress) {
-                this.dasm = dasm;
-                // Avoid copying the code to be disassembled, by pinning it instead.
-                this.pinnedCode = GCHandle.Alloc(code, GCHandleType.Pinned);
-                this.offset = offset;
-                this.codeSize = code.Length;
-                this.address = (ulong)startAddress;
+            /// <summary>
+            ///     Current Address.
+            /// </summary>
+            private ulong _currentAddress;
+
+            /// <summary>
+            ///     Current Instruction.
+            /// </summary>
+            private Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> _currentInstruction;
+
+            /// <summary>
+            ///     Current Offset.
+            /// </summary>
+            private int _currentOffset;
+
+            /// <summary>
+            ///     Disassembler.
+            /// </summary>
+            private readonly CapstoneDisassembler<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> _disassembler;
+
+            /// <summary>
+            ///     Disposed Flag.
+            /// </summary>
+            private bool _disposed;
+
+            /// <summary>
+            ///     Pinned Code.
+            /// </summary>
+            /// <remarks>
+            ///     Represents a garbage collector handle to the collection of bytes representing the binary code to
+            ///     disassemble. A "pinning" technique is used to pin the collection of bytes while enumerating
+            ///     instead copying the data back and forth between managed and unmanaged memory.
+            /// </remarks>
+            private GCHandle _pinnedCode;
+
+            /// <summary>
+            ///     Created a Deferred Instruction Enumerator.
+            /// </summary>
+            /// <param name="disassembler">
+            ///     The disassembler to use. Should not be a null reference.
+            /// </param>
+            /// <param name="code">
+            ///     A collection of bytes representing the binary code to disassemble. Should not be a null reference.
+            /// </param>
+            /// <param name="offset">
+            ///     An offset to start disassembling from. A 0 indicates disassembly should start at the first byte.
+            ///     Should be less than the length of the collection of bytes to disassemble.
+            /// </param>
+            /// <param name="startingAddress">
+            ///     The address of the first instruction in the collection of bytes to disassemble.
+            /// </param>
+            public DeferredInstructionEnumerator(CapstoneDisassembler<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> disassembler, byte[] code, int offset, long startingAddress) {
+                this._disassembler = disassembler;
+                this._pinnedCode = GCHandle.Alloc(code, GCHandleType.Pinned);
+                this._currentOffset = offset;
+                this._currentAddress = (ulong) startingAddress;
+
+                this._codeSize = code.Length;
+                this._disposed = false;
             }
 
             /// <summary>
-            ///     Finalize the enumerator.
+            ///     Destroy Deferred Instruction Enumerator.
             /// </summary>
-            /// <remarks>
-            ///     The finalizer will be called at some non-specified time 
-            ///     if you forget to Dispose() this object. Avoid this by being
-            ///     diligent with your resource management.
-            /// </remarks>
-            ~InstructionEnumerator() {
-                Dispose(false);
+            ~DeferredInstructionEnumerator() {
+                this.Dispose(false);
             }
 
             /// <summary>
             ///     Gets the current instruction in the instruction stream.
             /// </summary>
             /// <exception cref="System.InvalidOperationException">
-            ///     Thrown if the caller attempts to read this property before
-            ///     calling the MoveNext() method.
+            ///     Thrown if an initial call to <c>DeferredInstructionEnumerator.MoveNext()</c> was not made.
+            /// </exception>
+            /// <exception cref="System.ObjectDisposedException">
+            ///     Thrown if the enumerator is disposed.
             /// </exception>
             public Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail> Current {
                 get {
-                    if (current == null)
+                    this.CheckDisposed();
+                    if (_currentInstruction == null) {
                         throw new InvalidOperationException();
-                    return current;
+                    }
+
+                    return this._currentInstruction;
                 }
             }
 
+            /// <summary>
+            ///     Get Current Instruction.
+            /// </summary>
+            /// <exception cref="System.InvalidOperationException">
+            ///     Thrown if an initial call to <c>DeferredInstructionEnumerator.MoveNext()</c> was not made.
+            /// </exception>
+            /// <exception cref="System.ObjectDisposedException">
+            ///     Thrown if the enumerator is disposed.
+            /// </exception>
             object IEnumerator.Current {
-                get { return Current; }
+                get {
+                    return this.Current;
+                }
             }
 
             /// <summary>
-            ///     Dispose() method is called automatically by foreach 
+            ///     Destroy Deferred Instruction Enumerator.
             /// </summary>
             public void Dispose() {
                 Dispose(true);
@@ -418,44 +524,77 @@ namespace Gee.External.Capstone {
             }
 
             /// <summary>
-            ///     Disposes of any unmanaged/unsafe resources.
+            ///     Get Next Instruction.
             /// </summary>
-            /// <param name="disposing"></param>
-            private void Dispose(bool disposing) {
-                if (pinnedCode.IsAllocated)
-                    pinnedCode.Free();
-            }
-
-            /// <summary>
-            ///     Retrieve the next instruction using the native Capstone disassembler.
-            /// </summary>
-            /// <returns></returns>
+            /// <returns>
+            ///     A boolean true if an instruction is returned. A boolean false otherwise.
+            /// </returns>
+            /// <exception cref="System.ObjectDisposedException">
+            ///     Thrown if the enumerator is disposed.
+            /// </exception>
             public bool MoveNext() {
-                var pCount = (IntPtr)1;
-                var pCode = this.pinnedCode.AddrOfPinnedObject() + offset;
+                this.CheckDisposed();
+
+                var pCode = this._pinnedCode.AddrOfPinnedObject() + this._currentOffset;
+                var pCount = (IntPtr) 1;
                 var pInstructions = IntPtr.Zero;
-                var pSize = (IntPtr)codeSize - offset;
-                var uStartingAddress = (ulong)address;
+                var pSize = (IntPtr) this._codeSize - this._currentOffset;
 
-                var pResultCode = CapstoneImport.Disassemble(dasm.Handle.DangerousGetHandle(), pCode, pSize, uStartingAddress, pCode, ref pInstructions);
+                // Disassemble Binary Code.
+                //
+                // ...
+                var pResultCode = CapstoneImport.Disassemble(_disassembler.Handle.DangerousGetHandle(), pCode, pSize, this._currentAddress, pCount, ref pInstructions);
 
-                var iResultCode = (int)pResultCode;
-                var instructions = MarshalExtension.PtrToStructure<NativeInstruction>(pInstructions, iResultCode);
-                if (instructions == null || instructions.Length == 0)
+                var iResultCode = (int) pResultCode;
+                var nativeInstructions = MarshalExtension.PtrToStructure<NativeInstruction>(pInstructions, iResultCode);
+                if (nativeInstructions == null || nativeInstructions.Length == 0) {
                     return false;
+                }
 
-                // Update the state of the IEnumerator.
-                this.current = dasm.CreateInstruction(instructions[0]);
-                this.address += (ulong) current.Bytes.Length;
-                this.offset += current.Bytes.Length;
+                var instruction = nativeInstructions[0];
+                this._currentInstruction = this._disassembler.CreateInstruction(instruction);
+                this._currentAddress += (ulong) this._currentInstruction.Bytes.Length;
+                this._currentOffset += this._currentInstruction.Bytes.Length;
+
                 return true;
             }
 
             /// <summary>
-            ///     The Reset method is not supported; it is rarely used in practice.
+            ///     Reset Enumerator.
             /// </summary>
+            /// <exception cref="System.NotSupportedException">
+            ///     Thrown always.
+            /// </exception>
             public void Reset() {
                 throw new NotSupportedException();
+            }
+
+            /// <summary>
+            ///     Destroy Deferred Instruction Enumerator.
+            /// </summary>
+            /// <param name="disposing">
+            ///     A boolean true if the enumerator is being disposed from application code. A boolean false otherwise.
+            /// </param>
+            private void Dispose(bool disposing) {
+                if (!this._disposed) {
+                    if (this._pinnedCode.IsAllocated) {
+                        this._pinnedCode.Free();
+                    }
+
+                    this._disposed = true;
+                }
+            }
+
+            /// <summary>
+            ///     Check if Enumerator is Disposed.
+            /// </summary>
+            /// <exception cref="System.ObjectDisposedException">
+            ///     Thrown if the enumerator is disposed.
+            /// </exception>
+            private void CheckDisposed() {
+                if (this._disposed) {
+                    throw new ObjectDisposedException("DeferredInstructionEnumerator");
+                }
             }
         }
     }
