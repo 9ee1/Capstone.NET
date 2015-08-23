@@ -1,5 +1,8 @@
 /*.sln.DotSettings.user
 **/bin
 **/obj
-packages/
 /*.suo
+Gee.External.Capstone.Proxy/x64/
+Gee.External.Capstone.Proxy/Win32/
+*.sdf
+*.opensdf
