@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace Gee.External.Capstone {
@@ -6,6 +8,26 @@ namespace Gee.External.Capstone {
     ///     Native Capstone Disassembler.
     /// </summary>
     public static class NativeCapstone {
+        /// <summary>
+        ///     Capstone Assembly File Name.
+        /// </summary>
+        private const string CapstoneAssemblyFileName = "capstone.dll";
+
+        /// <summary>
+        ///     Proxy Assembly File Name.
+        /// </summary>
+        private const string ProxyAssemblyFileName = "Gee.External.Capstone.Proxy.dll";
+
+        /// <summary>
+        ///     X64 Directory Name.
+        /// </summary>
+        private const string X64DirectoryName = "X64";
+
+        /// <summary>
+        ///     X86 Directory Name.
+        /// </summary>
+        private const string X86DirectoryName = "X86";
+
         /// <summary>
         ///     Create a Capstone Disassembler.
         /// </summary>
@@ -231,6 +253,44 @@ namespace Gee.External.Capstone {
         /// </exception>
         public static void EnableIntelDisassembleSyntaxOption(SafeCapstoneHandle handle) {
             NativeCapstone.SetDisassembleSyntaxOption(handle, DisassembleSyntaxOptionValue.Intel);
+        }
+
+        /// <summary>
+        ///     Load Capstone and Proxy Assemblies.
+        /// </summary>
+        /// <remarks>
+        ///     Conveniently loads the Capstone and proxy assemblies in a platform independent manner. The calling
+        ///     process' platform is determined and the path to the Capstone and proxy assemblies is resolved to
+        ///     predefined directories relative to the calling process' load path. This allows both the X64 and X86
+        ///     versions of Capstone to be supported. To have any impact, this function should be invoked before any
+        ///     Capstone function is invoked, ideally on application startup when the calling process launches.
+        /// </remarks>
+        public static void LoadAssemblies() {
+            // Initialize Platform Directory Name.
+            //
+            // Assume the current process is an X86 process unless the runtime says otherwise.
+            var platformDirectoryName = NativeCapstone.X86DirectoryName;
+            if (Environment.Is64BitProcess) {
+                platformDirectoryName = NativeCapstone.X64DirectoryName;
+            }
+
+            var thisAssembly = Assembly.GetAssembly(typeof (CapstoneDisassembler));
+            var thisAssemblyDirectoryPath = Path.GetDirectoryName(thisAssembly.Location);
+            if (thisAssemblyDirectoryPath != null) {
+                // Initialize File Paths for Libraries.
+                //
+                // ...
+                var capstoneAssemblyFilePath = Path.Combine(thisAssemblyDirectoryPath, platformDirectoryName, NativeCapstone.CapstoneAssemblyFileName);
+                var proxyAssemblyFilePath = Path.Combine(thisAssemblyDirectoryPath, platformDirectoryName, NativeCapstone.ProxyAssemblyFileName);
+
+                // Load Capstone and Proxy Libraries.
+                //
+                // Some error checking should probably be added here, to make sure the libraries were loaded
+                // correctly.Though, technically, if the libraries were not loaded correctly for whatever reason,
+                // there is very little that can be done anyway and the application will crash either way.
+                AssemblyImport.LoadLibrary(capstoneAssemblyFilePath);
+                AssemblyImport.LoadLibrary(proxyAssemblyFilePath);
+            }
         }
 
         /// <summary>

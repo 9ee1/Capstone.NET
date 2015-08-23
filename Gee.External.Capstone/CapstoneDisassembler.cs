@@ -153,6 +153,18 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Create a Disassembler.
         /// </summary>
+        static CapstoneDisassembler() {
+            // Load Capstone and Proxy Assemblies.
+            //
+            // The runtime guarantees this static constructor will be invoked in a thread safe manner before any
+            // references to <c>CapstoneDisassembler</c> is resolved. It makes for an ideal place to load the
+            // Capstone and proxy assemblies.
+            NativeCapstone.LoadAssemblies();
+        }
+
+        /// <summary>
+        ///     Create a Disassembler.
+        /// </summary>
         /// <param name="architecture">
         ///     The disassembler's architecture.
         /// </param>
