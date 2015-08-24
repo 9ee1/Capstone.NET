@@ -29,58 +29,50 @@ using (var disassembler = CapstoneDisassembler.CreateX86Disassembler(Disassemble
     // Disassemble All Code.
     //
     // ...
-    var code = new byte[] { 0x8d, 0x4c, 0x32, 0x08, 0x01, 0xd8, 0x81, 0xc6, 0x34, 0x12, 0x00, 0x00, 0x05, 0x23, 0x01, 0x00, 0x00, 0x36, 0x8b, 0x84, 0x91, 0x23, 0x01, 0x00, 0x00, 0x41, 0x8d, 0x84, 0x39, 0x89, 0x67, 0x00, 0x00, 0x8d, 0x87, 0x89, 0x67, 0x00, 0x00, 0xb4, 0xc6 };
+    var code = new byte[] { 0x8d, 0x4c, 0x32, 0x08, 0x01, 0xd8, 0x81, 0xc6, 0x34, 0x12, 0x00, 0x00, 0x05, 0x23, 0x01, 0x00, 0x00, 0x36, 0x8b, 0x84, 0x91 };
     var instructions = disassembler.DisassembleAll(code);
     
     // Loop Through Each Disassembled Instruction.
     // ...
     foreach (var instruction in instructions) {
-        Console.WriteLine("{0:X}: \t {1} \t {2}", instruction.Address, instruction.Mnemonic, instruction.Operand);
-        Console.WriteLine("\t Id = {0}", instruction.Id);
+        // ...
+    }
+}
+```
 
-        if (instruction.ArchitectureDetail != null) {
-            Console.WriteLine("\t Address Size = {0}", instruction.ArchitectureDetail.AddressSize);
-            Console.WriteLine("\t AVX Code Condition = {0}", instruction.ArchitectureDetail.AvxCodeCondition);
-            Console.WriteLine("\t AVX Rounding Mode = {0}", instruction.ArchitectureDetail.AvxRoundingMode);
-            Console.WriteLine("\t Displacement = {0:X}", instruction.ArchitectureDetail.Displacement);
-            Console.WriteLine("\t Mod/Rm = {0:X}", instruction.ArchitectureDetail.ModRm);
-            Console.WriteLine("\t Operand Count: {0}", instruction.ArchitectureDetail.Operands.Length);
+## Iterator Example
+```C#
+// Create ARM Disassembler.
+//
+// Creating the disassembler in a "using" statement ensures that resources get cleaned up automatically
+// when it is no longer needed.
+using (var disassembler = CapstoneDisassembler.CreateArmDisassembler(DisassembleMode.ArmThumb)) {
+    // Enable Disassemble Details.
+    //
+    // Enables disassemble details, which are disabled by default, to provide more detailed information on
+    // disassembled binary code.
+    disassembler.EnableDetails = true;
 
-            // Loop Through Each Instruction's Operands.
-            //
-            // ...
-            foreach (var operand in instruction.ArchitectureDetail.Operands) {
-                string operandValue = null;
-                switch (operand.Type) {
-                    case X86InstructionOperandType.FloatingPoint:
-                        operandValue = operand.FloatingPointValue.Value.ToString("X");
-                        break;
-                    case X86InstructionOperandType.Immediate:
-                        operandValue = operand.ImmediateValue.Value.ToString("X");
-                        break;
-                    case X86InstructionOperandType.Memory:
-                        operandValue = "-->";
-                        break;
-                    case X86InstructionOperandType.Register:
-                        operandValue = operand.RegisterValue.Value.ToString();
-                        break;
-                }
-                
-                Console.WriteLine("\t\t {0} = {1}", operand.Type, operandValue);
-                
-                // Handle Memory Operand.
-                //
-                // ...
-                if (operand.Type == X86InstructionOperandType.Memory) {
-                    Console.WriteLine("\t\t\t Base Register = {0} ", operand.MemoryValue.BaseRegister);
-                    Console.WriteLine("\t\t\t Displacement = {0:X} ", operand.MemoryValue.Displacement);
-                    Console.WriteLine("\t\t\t Index Register = {0}", operand.MemoryValue.IndexRegister);
-                    Console.WriteLine("\t\t\t Index Register Scale = {0}", operand.MemoryValue.IndexRegisterScale);
-                    Console.WriteLine("\t\t\t Segment Register = {0}", operand.MemoryValue.SegmentRegister);
-                    Console.WriteLine();
-                }
-            }
-        }
+    // Set Disassembler's Syntax.
+    //
+    // Make the disassembler generate instructions in Intel syntax.
+    disassembler.Syntax = DisassembleSyntaxOptionValue.Intel;
+
+    // Disassemble Code One Instruction at a Time.
+    //
+    // This internally uses a deferred enumerator that dissembles the code one instruction at a time. It pins the
+    // memory block in place to avoid exessive copying between managed and unmanaged land. Pinning will only occur
+    // when enumeration begins and will be unpinned when the enumerator is disposed of at the end of enumeration.
+    //
+    // This is an alternative to the native approach that Capstone uses which requires a callback function to be
+    // registered. Instead of depending on a delegate, user code can decide when to break out of the loop.
+    code = new byte[] { 0x70, 0x47, 0xeb, 0x46, 0x83, 0xb0, 0xc9, 0x68, 0x1f, 0xb1, 0x30, 0xbf, 0xaf, 0xf3, 0x20, 0x84 };
+    var instructions = disassembler.DisassembleStream(code, 0, 0x1000);
+    
+    // Loop Through Each Disassembled Instruction.
+    // ...
+    foreach (var instruction in instructions) {
+        // ...
     }
 }
 ```
@@ -88,9 +80,7 @@ using (var disassembler = CapstoneDisassembler.CreateX86Disassembler(Disassemble
 ## Requirements
 (+) **.NET Framework 4.0/4.5**: Capstone.NET is compiled against the .NET Framework 4.0/4.5.
 
-(+) **Capstone 3 (X86)**: Capstone.NET is compatible **only** with the X86 version of Capstone 3. Please make sure you only use that version before you open an issue. Down the road, I will definitely have support for the X64 version of Capstone. If this is a problem for you, feel free to either open an issue or fork the project and make it compatible with both X86 and X64. Significant changes might be required to deal with structure alignment issues when interfacing with the native Capstone API.
-
-(+) **X86 Compiled Assembly**: Capstone.NET is compiled as an X86 DLL. This, obviously, means you should only reference it from an X86 assembly. The word **should** should be taken with a grain of salt here because the C# compiler will only trigger a warning if you reference it from an X64 assembly but please be aware that Capstone.NET has **not** been tested when referenced from an X64 binary so possible runtime exceptions or errors might occur. If this is a problem for you, feel free to either open an issue or fork the project and make it compatible with both X86 and X64. Significant changes might be required to deal with structure alignment issues when interfacing with the native Capstone API.
+(+) **Capstone 3 (X86/X64)**: Capstone.NET is compatible with both the X86 and X64 versions of Capstone 3.
 
 ## Packaged Installation
 The simplest way to get started with Capstone.NET is to grab it from [Nuget](https://www.nuget.org/packages/Gee.External.Capstone). You can also use the Nuget Package Manager in Visual Studio and search for "**Capstone.NET**".
