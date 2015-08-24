@@ -100,5 +100,14 @@ namespace Tests.Gee.External.Capstone
             Assert.AreEqual("ldr r3, [r7, #0x2c]", string.Format("{0} {1}", instr.Mnemonic, instr.Operand));
             Assert.AreEqual(1, instr.ArchitectureDetail.Operands[1].MemoryValue.IndexRegisterScale);
         }
+
+        [Test]
+        public void Github_Issue_xx()
+        {
+            var instr = disassembler.DisassembleStream(
+                new { 0x09, 0x00, 0x38, 0xd5, 0xbf, 0x40, 0x00, 0xd5, 0x0c },
+                2, 
+                0x0040000)
+        }
     }
 }
