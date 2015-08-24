@@ -105,9 +105,9 @@ namespace Tests.Gee.External.Capstone
         public void Github_Issue_xx()
         {
             var instr = disassembler.DisassembleStream(
-                new { 0x09, 0x00, 0x38, 0xd5, 0xbf, 0x40, 0x00, 0xd5, 0x0c },
-                2, 
-                0x0040000)
+                new byte[] { 0x09, 0x00, 0x38, 0xd5, 0xbf, 0x40, 0x00, 0xd5, 0x0c },
+                2,
+                0x0040000);
         }
     }
 }
