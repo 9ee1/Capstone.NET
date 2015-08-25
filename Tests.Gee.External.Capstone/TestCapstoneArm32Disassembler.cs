@@ -3,22 +3,19 @@ using Gee.External.Capstone.Arm;
 using NUnit.Framework;
 using System.Linq;
 
-namespace Tests.Gee.External.Capstone
-{
+namespace Tests.Gee.External.Capstone {
     /// <summary>
     ///     Test Capstone ARM32 Disassembler.
     /// </summary>
     [TestFixture]
-    public sealed class TestCapstoneArm32Disassembler
-    {
+    public sealed class TestCapstoneArm32Disassembler {
         private CapstoneDisassembler<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail> disassembler;
 
         /// <summary>
         ///     Sets up the unit test state before each run.
         /// </summary>
         [SetUp]
-        public void Setup()
-        {
+        public void Setup() {
             this.disassembler = CapstoneDisassembler.CreateArmDisassembler(DisassembleMode.Arm32);
         }
 
@@ -26,10 +23,8 @@ namespace Tests.Gee.External.Capstone
         ///     Cleans up the unit test after each test run.
         /// </summary>
         [TearDown]
-        public void TearDown()
-        {
-            if (this.disassembler != null)
-            {
+        public void TearDown() {
+            if (this.disassembler != null) {
                 this.disassembler.Dispose();
                 this.disassembler = null;
             }
@@ -41,21 +36,19 @@ namespace Tests.Gee.External.Capstone
         /// </summary>
         /// <param name="opcodes"></param>
         /// <returns></returns>
-        private Instruction<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail>[] DisassembleInstructions(params uint [] opcodes)
-        {
+        private Instruction<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail>[] DisassembleInstructions(params uint[] opcodes) {
             var code = opcodes.SelectMany(opc =>
-                new byte[] { (byte)opc, (byte)(opc >> 8), (byte)(opc >> 16), (byte)(opc >> 24) })
+                new byte[] { (byte) opc, (byte) (opc >> 8), (byte) (opc >> 16), (byte) (opc >> 24) })
                 .ToArray();
             disassembler.EnableDetails = true;
             return disassembler.DisassembleAll(code, 0x0010000);
         }
-           
+
         /// <summary>
         ///     Test Create.
         /// </summary>
         [Test]
-        public void TestCreate()
-        {
+        public void TestCreate() {
             Assert.IsNotNull(disassembler);
             Assert.AreEqual(disassembler.Architecture, DisassembleArchitecture.Arm);
             Assert.AreEqual(disassembler.EnableDetails, false);
@@ -67,8 +60,7 @@ namespace Tests.Gee.External.Capstone
         ///     Test Disassemble.
         /// </summary>
         [Test]
-        public void TestDisassemble()
-        {
+        public void TestDisassemble() {
             // Enable Disassemble Details.
             //
             // Enables disassemble details, which are disabled by default, to provide more detailed information on
@@ -93,8 +85,7 @@ namespace Tests.Gee.External.Capstone
         ///     (https://github.com/9ee1/Capstone.NET/issues/12)
         /// </summary>
         [Test]
-        public void Github_Issue_12()
-        {
+        public void Github_Issue_12() {
             var instr = DisassembleInstructions(0xE19120D3).First();
             Assert.AreEqual("ldrsb r2, [r1, r3]", string.Format("{0} {1}", instr.Mnemonic, instr.Operand));
             Assert.AreEqual(1, instr.ArchitectureDetail.Operands[1].MemoryValue.IndexRegisterScale);

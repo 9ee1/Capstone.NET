@@ -274,8 +274,8 @@ namespace Gee.External.Capstone {
                 platformDirectoryName = NativeCapstone.X64DirectoryName;
             }
 
-            var thisAssembly = Assembly.GetAssembly(typeof (CapstoneDisassembler));
-            var thisAssemblyDirectoryPath = Path.GetDirectoryName(thisAssembly.Location);
+            var thisAssembly = Assembly.GetCallingAssembly();
+            var thisAssemblyDirectoryPath = AppDomain.CurrentDomain.BaseDirectory;
             if (thisAssemblyDirectoryPath != null) {
                 // Initialize File Paths for Libraries.
                 //

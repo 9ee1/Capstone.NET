@@ -4,22 +4,19 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Tests.Gee.External.Capstone
-{
+namespace Tests.Gee.External.Capstone {
     /// <summary>
     ///     Test Capstone ARM32 Disassembler.
     /// </summary>
     [TestFixture]
-    public sealed class TestCapstoneThumbDisassembler
-    {
+    public sealed class TestCapstoneThumbDisassembler {
         private CapstoneDisassembler<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail> disassembler;
 
         /// <summary>
         ///     Sets up the unit test state before each run.
         /// </summary>
         [SetUp]
-        public void Setup()
-        {
+        public void Setup() {
             this.disassembler = CapstoneDisassembler.CreateArmDisassembler(DisassembleMode.ArmThumb);
         }
 
@@ -27,10 +24,8 @@ namespace Tests.Gee.External.Capstone
         ///     Cleans up the unit test after each test run.
         /// </summary>
         [TearDown]
-        public void TearDown()
-        {
-            if (this.disassembler != null)
-            {
+        public void TearDown() {
+            if (this.disassembler != null) {
                 this.disassembler.Dispose();
                 this.disassembler = null;
             }
@@ -42,21 +37,19 @@ namespace Tests.Gee.External.Capstone
         /// </summary>
         /// <param name="opcodes"></param>
         /// <returns></returns>
-        private IEnumerable<Instruction<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail>> DisassembleInstructions(params ushort [] opcodes)
-        {
+        private IEnumerable<Instruction<ArmInstruction, ArmRegister, ArmInstructionGroup, ArmInstructionDetail>> DisassembleInstructions(params ushort[] opcodes) {
             var code = opcodes.SelectMany(opc =>
-                new byte[] { (byte)opc, (byte)(opc >> 8),  })
+                new byte[] { (byte) opc, (byte) (opc >> 8), })
                 .ToArray();
             disassembler.EnableDetails = true;
             return disassembler.DisassembleStream(code, 0, 0x0010000);
         }
-           
+
         /// <summary>
         ///     Test Create.
         /// </summary>
         [Test]
-        public void TestCreate()
-        {
+        public void TestCreate() {
             Assert.IsNotNull(disassembler);
             Assert.AreEqual(disassembler.Architecture, DisassembleArchitecture.Arm);
             Assert.AreEqual(disassembler.EnableDetails, false);
@@ -68,8 +61,7 @@ namespace Tests.Gee.External.Capstone
         ///     Test Disassemble.
         /// </summary>
         [Test]
-        public void TestDisassemble()
-        {
+        public void TestDisassemble() {
             // Enable Disassemble Details.
             //
             // Enables disassemble details, which are disabled by default, to provide more detailed information on
@@ -93,8 +85,7 @@ namespace Tests.Gee.External.Capstone
         ///    Sanity check
         /// </summary>
         [Test]
-        public void Disassemble_ldr()
-        {
+        public void Disassemble_ldr() {
             // ldr         r3,[r7,#0x2C]
             var instr = DisassembleInstructions(0x6AFB).First();
             Assert.AreEqual("ldr r3, [r7, #0x2c]", string.Format("{0} {1}", instr.Mnemonic, instr.Operand));
@@ -102,8 +93,7 @@ namespace Tests.Gee.External.Capstone
         }
 
         [Test]
-        public void Github_Issue_xx()
-        {
+        public void Github_Issue_xx() {
             var instr = disassembler.DisassembleStream(
                 new byte[] { 0x09, 0x00, 0x38, 0xd5, 0xbf, 0x40, 0x00, 0xd5, 0x0c },
                 2,
