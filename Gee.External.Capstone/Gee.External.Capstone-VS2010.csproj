@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1297DCEE-009D-4739-8124-3F064EA9EA10}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Gee.External.Capstone</RootNamespace>
+    <AssemblyName>Gee.External.Capstone</AssemblyName>
+    <TargetFrameworkVersion>v4.0.3</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>STRONG_IMPORT_TYPES</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>STRONG_IMPORT_TYPES</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x86</PlatformTarget>
+    <DocumentationFile>bin\Release\Gee.External.Capstone.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;STRONG_IMPORT_TYPES</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;STRONG_IMPORT_TYPES</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Arm64\Arm64AtInstructionOperation.cs" />
+    <Compile Include="Arm64\Arm64CodeCondition.cs" />
+    <Compile Include="Arm64\Arm64DcInstructionOperation.cs" />
+    <Compile Include="Arm64\Arm64IcInstructionOperation.cs" />
+    <Compile Include="Arm64\Arm64Instruction.cs" />
+    <Compile Include="Arm64\Arm64InstructionDetail.cs" />
+    <Compile Include="Arm64\Arm64InstructionGroup.cs" />
+    <Compile Include="Arm64\Arm64InstructionMemoryOperandValue.cs" />
+    <Compile Include="Arm64\Arm64InstructionOperand.cs" />
+    <Compile Include="Arm64\Arm64Extender.cs" />
+    <Compile Include="Arm64\Arm64MrsRegister.cs" />
+    <Compile Include="Arm64\Arm64MsrRegister.cs" />
+    <Compile Include="Arm64\Arm64Shifter.cs" />
+    <Compile Include="Arm64\Arm64ShifterType.cs" />
+    <Compile Include="Arm64\Arm64InstructionOperandType.cs" />
+    <Compile Include="Arm64\Arm64MemoryBarrierOperation.cs" />
+    <Compile Include="Arm64\Arm64PrefetchOperation.cs" />
+    <Compile Include="Arm64\Arm64PState.cs" />
+    <Compile Include="Arm64\Arm64Register.cs" />
+    <Compile Include="Arm64\Arm64TlbiInstructionOperation.cs" />
+    <Compile Include="Arm64\Arm64VectorArrangementSpecifier.cs" />
+    <Compile Include="Arm64\Arm64VectorElementSizeSpecifier.cs" />
+    <Compile Include="Arm64\CapstoneArm64Disassembler.cs" />
+    <Compile Include="Arm64\NativeArm64InstructionDetailExtension.cs" />
+    <Compile Include="Arm64\NativeArm64InstructionMemoryOperandValueExtension.cs" />
+    <Compile Include="Arm64\NativeArm64InstructionOperandExtension.cs" />
+    <Compile Include="Arm64\NativeArm64ShifterExtension.cs" />
+    <Compile Include="Arm\ArmCodeCondition.cs" />
+    <Compile Include="Arm\ArmCpsFlag.cs" />
+    <Compile Include="Arm\ArmCpsMode.cs" />
+    <Compile Include="Arm\ArmInstruction.cs" />
+    <Compile Include="Arm\ArmInstructionGroup.cs" />
+    <Compile Include="Arm\ArmInstructionOperand.cs" />
+    <Compile Include="Arm\ArmInstructionOperandShiftType.cs" />
+    <Compile Include="Arm\ArmMemoryBarrier.cs" />
+    <Compile Include="Arm\ArmRegister.cs" />
+    <Compile Include="Arm\ArmSetEndInstructionOperandType.cs" />
+    <Compile Include="Arm\ArmVectorDataType.cs" />
+    <Compile Include="CapstoneDisassembler.cs" />
+    <Compile Include="CapstoneImport.cs" />
+    <Compile Include="CapstoneImport.Strong.cs" />
+    <Compile Include="CapstoneProxyImport.cs" />
+    <Compile Include="CapstoneX86Disassembler.cs" />
+    <Compile Include="DisassembleArchitecture.cs" />
+    <Compile Include="DisassembleErrorCode.cs" />
+    <Compile Include="DisassembleMode.cs" />
+    <Compile Include="DisassembleOptionType.cs" />
+    <Compile Include="DisassembleOptionValue.cs" />
+    <Compile Include="DisassembleSyntaxOptionValue.cs" />
+    <Compile Include="ExceptionThrower.cs" />
+    <Compile Include="IndependentInstructionGroup.cs" />
+    <Compile Include="Instruction.cs" />
+    <Compile Include="MarshalExtension.cs" />
+    <Compile Include="NativeArchitectureInstructionDetail.cs" />
+    <Compile Include="Arm64\NativeArm64InstructionDetail.cs" />
+    <Compile Include="Arm64\NativeArm64InstructionMemoryOperandValue.cs" />
+    <Compile Include="Arm64\NativeArm64InstructionOperand.cs" />
+    <Compile Include="Arm64\NativeArm64Shifter.cs" />
+    <Compile Include="Arm64\NativeArm64InstructionOperandValue.cs" />
+    <Compile Include="Arm\NativeArmInstructionDetail.cs" />
+    <Compile Include="Arm\NativeArmInstructionMemoryOperandValue.cs" />
+    <Compile Include="Arm\NativeArmInstructionOperand.cs" />
+    <Compile Include="Arm\NativeArmInstructionOperandShift.cs" />
+    <Compile Include="Arm\NativeArmInstructionOperandValue.cs" />
+    <Compile Include="NativeCapstone.cs" />
+    <Compile Include="NativeIndependentInstructionDetailExtension.cs" />
+    <Compile Include="NativeInstruction.cs" />
+    <Compile Include="NativeIndependentInstructionDetail.cs" />
+    <Compile Include="NativeInstructionCollection.cs" />
+    <Compile Include="NativeInstructionCollectionEnumerator.cs" />
+    <Compile Include="NativeInstructionExtension.cs" />
+    <Compile Include="Mips\NativeMipsInstructionDetail.cs" />
+    <Compile Include="Mips\NativeMipsInstructionMemoryOperandValue.cs" />
+    <Compile Include="Mips\NativeMipsInstructionOperand.cs" />
+    <Compile Include="Mips\NativeMipsInstructionOperandValue.cs" />
+    <Compile Include="PowerPc\NativePowerPcInstructionConditionRegisterOperandValue.cs" />
+    <Compile Include="PowerPc\NativePowerPcInstructionDetail.cs" />
+    <Compile Include="PowerPc\NativePowerPcInstructionMemoryOperandValue.cs" />
+    <Compile Include="PowerPc\NativePowerPcInstructionOperand.cs" />
+    <Compile Include="PowerPc\NativePowerPcInstructionOperandValue.cs" />
+    <Compile Include="Sparc\NativeSparcInstructionDetail.cs" />
+    <Compile Include="Sparc\NativeSparcInstructionMemoryOperandValue.cs" />
+    <Compile Include="Sparc\NativeSparcInstructionOperand.cs" />
+    <Compile Include="Sparc\NativeSparcInstructionOperandValue.cs" />
+    <Compile Include="SystemZ\NativeSystemZInstructionDetail.cs" />
+    <Compile Include="SystemZ\NativeSystemZInstructionMemoryOperandValue.cs" />
+    <Compile Include="SystemZ\NativeSystemZInstructionOperand.cs" />
+    <Compile Include="SystemZ\NativeSystemZInstructionOperandValue.cs" />
+    <Compile Include="NativeX86InstructionDetailExtension.cs" />
+    <Compile Include="NativeX86InstructionMemoryOperandValue.cs" />
+    <Compile Include="NativeX86InstructionMemoryOperandValueExtension.cs" />
+    <Compile Include="NativeX86InstructionOperandExtension.cs" />
+    <Compile Include="NativeX86InstructionOperandValue.cs" />
+    <Compile Include="XCore\NativeXCoreInstructionDetail.cs" />
+    <Compile Include="XCore\NativeXCoreInstructionMemoryOperandValue.cs" />
+    <Compile Include="XCore\NativeXCoreInstructionOperand.cs" />
+    <Compile Include="XCore\NativeXCoreInstructionOperandValue.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SafeCapstoneHandle.cs" />
+    <Compile Include="NativeX86InstructionDetail.cs" />
+    <Compile Include="NativeX86InstructionOperand.cs" />
+    <Compile Include="SafeNativeInstructionHandle.cs" />
+    <Compile Include="X86AvxBroadcast.cs" />
+    <Compile Include="X86AvxCodeCondition.cs" />
+    <Compile Include="X86AvxRoundingMode.cs" />
+    <Compile Include="IndependentInstructionDetail.cs" />
+    <Compile Include="X86Instruction.cs" />
+    <Compile Include="X86InstructionDetail.cs" />
+    <Compile Include="X86InstructionGroup.cs" />
+    <Compile Include="X86InstructionMemoryOperandValue.cs" />
+    <Compile Include="X86InstructionOperand.cs" />
+    <Compile Include="X86InstructionOperandType.cs" />
+    <Compile Include="X86Prefix.cs" />
+    <Compile Include="X86Register.cs" />
+    <Compile Include="X86SseCodeCondition.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

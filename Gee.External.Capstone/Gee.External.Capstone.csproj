@@ -87,6 +87,7 @@
     <Compile Include="Arm\NativeArmShifterExtension.cs" />
     <Compile Include="CapstoneDisassembler.cs" />
     <Compile Include="CapstoneImport.cs" />
+    <Compile Include="CapstoneImport.Strong.cs" />
     <Compile Include="CapstoneProxyImport.cs" />
     <Compile Include="DisassembleArchitecture.cs" />
     <Compile Include="DisassembleErrorCode.cs" />
