@@ -549,6 +549,9 @@ namespace Gee.External.Capstone {
 
                 var iResultCode = (int) pResultCode;
                 var nativeInstructions = MarshalExtension.PtrToStructure<NativeInstruction>(pInstructions, iResultCode);
+
+                Marshal.FreeHGlobal(pInstructions);
+
                 if (nativeInstructions == null || nativeInstructions.Length == 0) {
                     return false;
                 }
