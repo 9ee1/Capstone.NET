@@ -225,13 +225,15 @@ namespace Gee.External.Capstone {
         ///     Thrown if the binary code could not be disassembled.
         /// </exception>
         public Instruction<TArchitectureInstruction, TArchitectureRegister, TArchitectureGroup, TArchitectureDetail>[] Disassemble(byte[] code, int count, long startingAddress) {
-            var nativeInstructions = NativeCapstone.Disassemble(this.Handle, code, count, startingAddress);
-            var instructions = nativeInstructions
-                .Instructions
-                .Select(this.CreateInstruction)
-                .ToArray();
+            using (var nativeInstructions = NativeCapstone.Disassemble(this.Handle, code, count, startingAddress))
+            {
+                var instructions = nativeInstructions
+                    .Instructions
+                    .Select(this.CreateInstruction)
+                    .ToArray();
 
-            return instructions;
+                return instructions;
+            }
         }
 
         /// <summary>
