@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <Platforms>x64;x86</Platforms>
+    <RootNamespace>CapstoneCMD</RootNamespace>
+    <AssemblyName>CapstoneCMD</AssemblyName>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Gee.External.Capstone\Gee.External.Capstone.csproj" />
+  </ItemGroup>
+
+</Project>
