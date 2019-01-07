@@ -1,8 +1,118 @@
-/*.sln.DotSettings.user
-**/bin
-**/obj
-/*.suo
-Gee.External.Capstone.Proxy/x64/
-Gee.External.Capstone.Proxy/Win32/
-*.sdf
-*.opensdf
+### Standard GIT Ignore File.
+###
+### ...
+
+### Visual Studio User Specific Files.
+###
+### ...
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+### Visual Studio Build Files.
+###
+### ...
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+*_i.c
+*_p.c
+*_i.h
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.log
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+
+### Visual Studio 2015+ Cache Directory.
+###
+### ...
+.vs/
+
+### Visual Studio Profiler Files.
+###
+### ...
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+### Visual Studio Cache Files.
+###
+### ...
+*.[Cc]ache
+!*.[Cc]ache/
+
+### Visual Studio Code Coverage Result Files.
+###
+### ...
+*.coverage
+*.coveragexml
+
+### MonoDevelop/Xamarin User Specific Files.
+###
+### ...
+*.userprefs
+
+### .NETCore Files.
+###
+### ...
+project.lock.json
+project.fragment.lock.json
+artifacts/
+**/Properties/launchSettings.json
+
+### NUnit Files.
+###
+### ...
+*.VisualState.xml
+TestResult.xml
+
+### ReSharper User Files.
+###
+### ...
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+### DotCover Files.
+###
+### ...
+*.dotCover
+
+### NuGet Packages.
+###
+### ...
+*.nupkg
+**/packages/*
+!**/packages/build/
+
+### NuGet 3 Project Files.
+###
+### ...
+*.nuget.props
+*.nuget.targets
