@@ -1,12 +1,48 @@
 # Capstone.NET
-Capstone.NET is a .NET Framework binding for the Capstone disassembly framework. It is written in C#, supports Capstone 3, and has a friendly and simple type safe object oriented (OO) API that is ridiculously easy to learn and quick to pick up.
+Capstone.NET is a .NET Core and a .NET Framework binding for the [Capstone disassembly framework](http://www.capstone-engine.org). It is written in C#, supports Capstone 4, and has a friendly and simple type safe API that is ridiculously easy to learn and quick to pick up.
 
 ## Features
-(+) Supports Capstone 3. Only the ARM, ARM64, and X86 architectures are supported right now but more are on the way!
+(+) Supports Capstone 4. Only the ARM, ARM64, and X86 architectures are supported right now
 
-(+) A friendly and simple to use type safe object oriented (OO) API that is ridiculously easy to learn and pick up. I am aware the C# is an object oriented language, the wording **object oriented API** here means it has a well thought out design!
+(+) Supports .NET Core and .NET Framework
+
+(+) No external dependencies beside Capstone
+
+(+) A friendly and simple to use type safe API that is ridiculously easy to learn and pick up
 
 (+) One of the best documented source code you'll find in an open source project, guaranteed or your money back!
+
+## Capstone.NET 1.x Developer Warning
+If you are actively developing an application or library, or have a stable application or library released, that has a dependency on Capstone.NET 1.x, **PLEASE READ THIS WARNING BEFORE UPGRADING TO CAPSTONE.NET 2**.
+
+Capstone.NET 2 **IS NOT BACKWARDS COMPATIBLE** with Capstone.NET 1.x. There are many, many API changes and if you do an in-place upgrade, your existing code **WILL BREAK** if you do not do significant refactoring!
+
+I want to apologize to everyone in advance for these breaking changes. I know how incredibly frustrating it can be to have a library you depend on introduce breaking changes but ultimately I feel the new code base is much cleaner and will allow for easier integration moving forward. I have no plans to introduce further breaking changes in the future and I am hoping the 4 year gap between the release of Capstone.NET 1.x and Capstone 2.0 will make it a little easier for everyone to forgive these changes.
+
+If you're interested in understanding why Capstone.NET 2 has these breaking changes, please read this section of this README.
+
+## Requirements
+(+) **Capstone 4 (X86/X64)**: Capstone.NET is compatible with the X86 and X64 versions of Capstone 4. Older versions of Capstone are not supported!
+
+(+) **.NET Framework 4.0+ (X86/X64)**: Capstone.NET is compatible with the X86 and X64 versions of .NET Framework 4.0 and newer. Older versions of .NET Framework are not supported!
+
+(+) **.NET Core 2.0+ (X86/X64)**: Capstone.NET is compatible with the X86 and X64 versions of .NET Core 2.0 and newer. Older versions of .NET Core are not supported!
+
+(+) **C# 7.3+**: Capstone.NET can only be compiled by a C# 7.3 or newer compatible compiler. Older versions of a C# are not supported!
+
+## Installation
+(1) **Download Capstone**: Head over to the [Capstone website](http://www.capstone-engine.org/download.html) and download either the pre-built binaries or the source code and build Capstone yourself. You can also head over to the [Capstone GitHub repository](https://github.com/aquynh/capstone), clone the repository, and build Capstone yourself.
+
+(2) **Download Capstone.NET**: Either open the NuGet Package Manager in Visual Studio and search for "_Capstone.NET_" or head over to the [NuGet website](https://www.nuget.org/packages/Gee.External.Capstone) and download the NuGet package yourself. You can also clone this repository and build Capstone.NET yourself.
+
+(3) Before you run your application, make sure you place the "_capstone.dll_" binary you downloaded or built earlier in the same directory as your application's binary. You'll get a run-time exception otherwise! If you are distributing your application, make sure your distributable package either includes the "_capstone.dll_" binary or a note instructing your users to acquire it.
+
+## Building
+You can build Capstone.NET by opening the included Visual Studio solution file in Visual Studio 2017 and building from there. The Visual Studio solution has "_Debug_" and "_Release_" configurations for X86 and X64. Make sure you select the combination you're targeting before you build.
+
+If you're like me and get a headache when looking at the [.NET Compatibility Matrix](https://docs.microsoft.com/en-us/dotnet/standard/net-standard), you'll appreciate the fact that the Visual Studio solution actually builds 3 assemblies with a single build command. The first assembly targets .NET Framework 4.0, the second targets .NET Framework 4.5, and the third targets .NET Standard 2.0. Those 3 assemblies allow Capstone.NET to support a wide range of .NET Core and .NET Framework versions.
+
+The included Visual Studio solution file is a Visual Studio 2017 solution file. This is the most stable version of Visual Studio that has support for .NET Core, .NET Framework, and the C# 7.3 compiler. I have not tried any other version of Visual Studio so I am not sure if there will be problems if you attempt to open the solution file in an older version of Visual Studio.
 
 ## Quick Example
 ```C#
@@ -77,26 +113,12 @@ using (var disassembler = CapstoneDisassembler.CreateArmDisassembler(Disassemble
 }
 ```
 
-## Requirements
-(+) **.NET Framework 4.0/4.5**: Capstone.NET is compiled against the .NET Framework 4.0/4.5.
-
-(+) **Capstone 3 (X86/X64)**: Capstone.NET is compatible with both the X86 and X64 versions of Capstone 3.
-
-## Packaged Installation
-The simplest way to get started with Capstone.NET is to grab it from [Nuget](https://www.nuget.org/packages/Gee.External.Capstone). You can also use the Nuget Package Manager in Visual Studio and search for "**Capstone.NET**".
-
-The alternative is to download the latest release package from GitHub. It will contain all the compiled binaries you need to get started.
-
-The latest release will usually be backwards compatible with older releases but as both Capstone.NET and Capstone mature, this might not always be the case. Please make sure to read the release notes for each release before upgrading!
-
 ## Upgrading Capstone
-The Capstone team is always hard at work at upgrading Capstone. It is entirely possible that the copy of Capstone that is distributed with a Capstone.NET release is out of date when you download it. You can feel free to replace the **capstone.dll** that is distributed with Capstone.NET with the latest copy you download from the Capstone website. However, please make sure it is **always** named **capstone.dll**. Capstone.NET looks for this DLL when it goes to work and if it can't find it, you will get a runtime exception.
+The Capstone team is always hard at work at upgrading Capstone. There are several important thing to look out for if you decide to upgrade Capstone. Failing to consider these points will usually result in undefined runtime behavior:
 
-There are several important thing to look out for if you decide to replace the **capstone.dll** with one you download from the Capstone website. Failing to consider these points will usually result in undefined runtime behavior. If you replace **capstone.dll** with one you download from the Capstone website, do so at your own risk:
+(+) Capstone.NET **only** supports Capstone 4. Please do not try to use any other major version. If you do, a definite runtime exception is guaranteed!
 
-(+) Capstone.NET **only** supports Capstone 3. Please do not try to use any other major version. If you do, a definite runtime exception is guaranteed!
-
-(+) With every minor release of Capstone, the Capstone team usually adds support for new instructions or new APIs. These will not be available in Capstone.NET! New APIs are usually not a problem since they simply will not be exposed in Capstone.NET. New instructions however might cause undefined runtime behavior. Best case scenario, your application will continue to run fine but you'll notice some disassembled instructions do not make sense. Worst case scenario, you'll get a runtime exception because something from the native API could not be translated correctly to the wonderful managed world of the .NET Framework.
+(+) With every minor release of Capstone, the Capstone team usually adds support for new instructions or new APIs. These will not be available in Capstone.NET! New APIs are usually not a problem since they simply will not be exposed in Capstone.NET. New instructions however might cause undefined runtime behavior. Best case scenario, your application will continue to run fine but you'll notice some disassembled instructions do not make sense. Worst case scenario, you'll get a runtime exception because something from the native API could not be translated correctly to the wonderful managed world of .NET.
 
 (+) If a minor release of Capstone changes the layout of **any** structures, kiss your application goodbye. This means a definite runtime exception. Sorry folks!
 
