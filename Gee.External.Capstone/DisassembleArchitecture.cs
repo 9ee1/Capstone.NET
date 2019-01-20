@@ -47,7 +47,7 @@ namespace Gee.External.Capstone {
         XCore,
 
         /// <summary>
-        ///     68K Architecture.
+        ///     M68K Architecture.
         /// </summary>
         M68K,
 
