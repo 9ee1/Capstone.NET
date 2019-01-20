@@ -2271,6 +2271,9 @@
             <exception cref="T:Gee.External.Capstone.CapstoneException">
                 Thrown if the instruction details option could not be set.
             </exception>
+            <exception cref="T:System.ObjectDisposedException">
+                Thrown if the disassembler is disposed.
+            </exception>
         </member>
         <member name="P:Gee.External.Capstone.CapstoneDisassembler.EnableSkipDataMode">
             <summary>
@@ -2279,16 +2282,25 @@
             <exception cref="T:Gee.External.Capstone.CapstoneException">
                 Thrown if the Skip Data Mode option could not be set.
             </exception>
+            <exception cref="T:System.ObjectDisposedException">
+                Thrown if the disassembler is disposed.
+            </exception>
         </member>
         <member name="P:Gee.External.Capstone.CapstoneDisassembler.Handle">
             <summary>
                 Get Disassembler's Handle.
             </summary>
         </member>
-        <member name="P:Gee.External.Capstone.CapstoneDisassembler.InvalidInstructionMnemonic">
+        <member name="P:Gee.External.Capstone.CapstoneDisassembler.SkipDataInstructionMnemonic">
             <summary>
-                Get and Set Invalid Instruction Mnemonic.
+                Get and Set Skip Data Instruction Mnemonic.
             </summary>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown if the value is a null reference.
+            </exception>
+            <exception cref="T:System.ObjectDisposedException">
+                Thrown if the disassembler is disposed.
+            </exception>
         </member>
         <member name="M:Gee.External.Capstone.CapstoneDisassembler.CreateArm64Disassembler(Gee.External.Capstone.Arm64.Arm64DisassembleMode)">
             <summary>
@@ -2442,9 +2454,14 @@
                 Disassembler's Handle.
             </summary>
         </member>
-        <member name="F:Gee.External.Capstone.CapstoneDisassembler`8._invalidInstructionMnemonic">
+        <member name="F:Gee.External.Capstone.CapstoneDisassembler`8._skipDataCallback">
             <summary>
-                Invalid Instruction Mnemonic.
+                Skip Data Callback.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.CapstoneDisassembler`8._skipDataInstructionMnemonic">
+            <summary>
+                Skip Data Instruction Mnemonic.
             </summary>
         </member>
         <member name="P:Gee.External.Capstone.CapstoneDisassembler`8.DisassembleArchitecture">
@@ -2495,18 +2512,24 @@
                 Get Disassembler's Handle.
             </summary>
         </member>
-        <member name="P:Gee.External.Capstone.CapstoneDisassembler`8.InvalidInstructionMnemonic">
-            <summary>
-                Get and Set Invalid Instruction Mnemonic.
-            </summary>
-            <exception cref="T:System.ArgumentNullException">
-                Thrown if the value is a null reference.
-            </exception>
-        </member>
         <member name="P:Gee.External.Capstone.CapstoneDisassembler`8.SkipDataCallback">
             <summary>
                 Get and Set Skip Data Callback.
             </summary>
+            <exception cref="T:System.ObjectDisposedException">
+                Thrown if the disassembler is disposed.
+            </exception>
+        </member>
+        <member name="P:Gee.External.Capstone.CapstoneDisassembler`8.SkipDataInstructionMnemonic">
+            <summary>
+                Get and Set Skip Data Instruction Mnemonic.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown if the value is a null reference.
+            </exception>
+            <exception cref="T:System.ObjectDisposedException">
+                Thrown if the disassembler is disposed.
+            </exception>
         </member>
         <member name="M:Gee.External.Capstone.CapstoneDisassembler`8.#ctor(Gee.External.Capstone.DisassembleArchitecture,`0)">
             <summary>
@@ -2756,7 +2779,11 @@
                 Disassemble Syntax.
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "F:Gee.External.Capstone.DisassembleSyntax.Att" -->
+        <member name="F:Gee.External.Capstone.DisassembleSyntax.Att">
+            <summary>
+                Indicates a disassembler should use AT&amp;T syntax for generated assembly code.
+            </summary>
+        </member>
         <member name="F:Gee.External.Capstone.DisassembleSyntax.Intel">
             <summary>
                 Indicates a disassembler should use Intel syntax for generated assembly code.
@@ -2793,6 +2820,11 @@
                 The type of the instruction's architecture specific register unique identifiers.
             </typeparam>
         </member>
+        <member name="F:Gee.External.Capstone.Instruction`7._details">
+            <summary>
+                Instruction's Details.
+            </summary>
+        </member>
         <member name="F:Gee.External.Capstone.Instruction`7._mnemonic">
             <summary>
                 Instruction's Mnemonic.
@@ -2817,6 +2849,25 @@
             <summary>
                 Get Instruction's Details.
             </summary>
+            <remarks>
+                Represents the instruction's details if, and only if, the instruction was disassembled with details
+                and the instruction is not a skipped data instruction. A null reference otherwise. To determine if the
+                instruction was disassembled with details, use <see cref="P:Gee.External.Capstone.Instruction`7.HasDetails" />. To determine if the
+                instruction is a skipped data instruction, use <see cref="P:Gee.External.Capstone.Instruction`7.IsSkippedData" />. 
+            </remarks>
+            <exception cref="T:System.InvalidOperationException">
+                Thrown if the instruction was disassembled with no details, or if the instruction is a skipped data
+                instruction.
+            </exception>
+        </member>
+        <member name="P:Gee.External.Capstone.Instruction`7.HasDetails">
+            <summary>
+                Determine if Instruction Has Details.
+            </summary>
+            <remarks>
+                Indicates whether the instruction was disassembled with details. A boolean true indicates the
+                instruction was disassembled with details. A boolean false otherwise.
+            </remarks>
         </member>
         <member name="P:Gee.External.Capstone.Instruction`7.Id">
             <summary>
@@ -2830,6 +2881,15 @@
             <value>
                 A boolean true if diet mode is enabled. A boolean false otherwise.
             </value>
+        </member>
+        <member name="P:Gee.External.Capstone.Instruction`7.IsSkippedData">
+            <summary>
+                Determine if Instruction is Skipped Data.
+            </summary>
+            <remarks>
+                Indicates whether the instruction is a skipped data instruction. A boolean true indicates the
+                instruction is a skipped data instruction. A boolean false otherwise.
+            </remarks>
         </member>
         <member name="P:Gee.External.Capstone.Instruction`7.Mnemonic">
             <summary>
@@ -3096,6 +3156,11 @@
         <member name="P:Gee.External.Capstone.InstructionBuilder`7.Id">
             <summary>
                 Get and Set Instruction's Unique Identifier.
+            </summary>
+        </member>
+        <member name="P:Gee.External.Capstone.InstructionBuilder`7.IsSkippedData">
+            <summary>
+                Determine if Instruction is Skipped Data.
             </summary>
         </member>
         <member name="P:Gee.External.Capstone.InstructionBuilder`7.Mnemonic">
@@ -3742,6 +3807,68 @@
             <returns>
                 The type's size, in bytes.
             </returns>
+        </member>
+        <member name="T:Gee.External.Capstone.Mips.MipsInstructionGroup">
+            <summary>
+                MIPS Instruction Group.
+            </summary>
+        </member>
+        <member name="M:Gee.External.Capstone.Mips.MipsInstructionGroup.#ctor(Gee.External.Capstone.Mips.MipsInstructionGroupId,System.String)">
+            <summary>
+                Create a MIPS Instruction Group.
+            </summary>
+            <param name="id">
+                The instruction group's unique identifier.
+            </param>
+            <param name="name">
+                The instruction group's name.
+            </param>
+        </member>
+        <member name="T:Gee.External.Capstone.Mips.MipsInstructionGroupId">
+            <summary>
+                MIPS Instruction Group Unique Identifier.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Mips.MipsInstructionGroupId.Invalid">
+            <summary>
+                Indicates an invalid, or an uninitialized, instruction group.
+            </summary>
+        </member>
+        <member name="T:Gee.External.Capstone.Mips.MipsInstructionId">
+            <summary>
+                MIPS Instruction Unique Identifier.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Mips.MipsInstructionId.Invalid">
+            <summary>
+                Indicates an invalid, or an uninitialized, instruction.
+            </summary>
+        </member>
+        <member name="T:Gee.External.Capstone.Mips.MipsRegister">
+            <summary>
+                MIPS Register.
+            </summary>
+        </member>
+        <member name="M:Gee.External.Capstone.Mips.MipsRegister.#ctor(Gee.External.Capstone.Mips.MipsRegisterId,System.String)">
+            <summary>
+                Create a MIPS Register.
+            </summary>
+            <param name="id">
+                The register's unique identifier.
+            </param>
+            <param name="name">
+                The register's name.
+            </param>
+        </member>
+        <member name="T:Gee.External.Capstone.Mips.MipsRegisterId">
+            <summary>
+                MIPS Register Unique Identifier.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Mips.MipsRegisterId.Invalid">
+            <summary>
+                Indicates an invalid, or an uninitialized, register.
+            </summary>
         </member>
         <member name="T:Gee.External.Capstone.NativeCapstone">
             <summary>

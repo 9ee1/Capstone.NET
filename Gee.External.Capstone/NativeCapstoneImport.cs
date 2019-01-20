@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace Gee.External.Capstone {
     /// <summary>
     ///     Native Capstone Import.
     /// </summary>
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
     internal static class NativeCapstoneImport {
         /// <summary>
         ///     Close a Disassembler
@@ -204,6 +202,19 @@ namespace Gee.External.Capstone {
         /// </exception>
         [DllImport("capstone", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_disasm_iter")]
         internal static extern bool Iterate(NativeDisassemblerHandle hDisassembler, ref IntPtr pCode, ref IntPtr codeSize, ref long address, NativeInstructionHandle hInstruction);
+
+        /// <summary>
+        ///     Load a Library.
+        /// </summary>
+        /// <param name="libraryFilePath">
+        ///     The absolute file path of the library to load.
+        /// </param>
+        /// <returns>
+        ///      A pointer to the loaded library. An <c>IntPtr.Zero</c> indicates the library was not loaded.
+        /// </returns>
+        /// <see href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684175(v=vs.85).aspx"/>
+        [DllImport("kernel32.dll", CallingConvention = CallingConvention.Winapi, CharSet = CharSet.Ansi, EntryPoint = "LoadLibraryA", SetLastError = true)]
+        internal static extern IntPtr LoadLibrary(string libraryFilePath);
 
         /// <summary>
         ///     Query an Option.

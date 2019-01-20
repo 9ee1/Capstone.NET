@@ -4,7 +4,7 @@
     /// </summary>
     public enum DisassembleSyntax {
         /// <summary>
-        ///     Indicates a disassembler should use AT\&\T syntax for generated assembly code.
+        ///     Indicates a disassembler should use AT&amp;T syntax for generated assembly code.
         /// </summary>
         Att = NativeDisassemblerOptionValue.UseAttSyntax,
 

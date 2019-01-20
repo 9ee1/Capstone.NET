@@ -355,7 +355,7 @@ namespace ConsoleApp1 {
                 disassembler.EnableInstructionDetails = true;
                 disassembler.DisassembleSyntax = DisassembleSyntax.Intel;
                 disassembler.EnableSkipDataMode = true;
-                disassembler.InvalidInstructionMnemonic = "Ahmed";
+                disassembler.SkipDataInstructionMnemonic = "Ahmed";
                 disassembler.SkipDataCallback = (b, o) => {
                     return 1;
                 }; 

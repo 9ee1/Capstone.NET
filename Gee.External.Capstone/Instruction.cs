@@ -34,6 +34,11 @@ namespace Gee.External.Capstone {
         where TRegister : Register<TRegisterId>
         where TRegisterId : Enum {
         /// <summary>
+        ///     Instruction's Details.
+        /// </summary>
+        private readonly TDetail _details;
+
+        /// <summary>
         ///     Instruction's Mnemonic.
         /// </summary>
         private readonly string _mnemonic;
@@ -56,7 +61,35 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Get Instruction's Details.
         /// </summary>
-        public TDetail Details { get; }
+        /// <remarks>
+        ///     Represents the instruction's details if, and only if, the instruction was disassembled with details
+        ///     and the instruction is not a skipped data instruction. A null reference otherwise. To determine if the
+        ///     instruction was disassembled with details, use <see cref="HasDetails" />. To determine if the
+        ///     instruction is a skipped data instruction, use <see cref="IsSkippedData" />. 
+        /// </remarks>
+        /// <exception cref="System.InvalidOperationException">
+        ///     Thrown if the instruction was disassembled with no details, or if the instruction is a skipped data
+        ///     instruction.
+        /// </exception>
+        public TDetail Details {
+            get {
+                if (this._details == null) {
+                    const string detailMessage = "An operation is invalid.";
+                    throw new InvalidOperationException(detailMessage);
+                }
+
+                return this._details;
+            }
+        }
+
+        /// <summary>
+        ///     Determine if Instruction Has Details.
+        /// </summary>
+        /// <remarks>
+        ///     Indicates whether the instruction was disassembled with details. A boolean true indicates the
+        ///     instruction was disassembled with details. A boolean false otherwise.
+        /// </remarks>
+        public bool HasDetails => this._details != null;
 
         /// <summary>
         ///     Get Instruction's Unique Identifier.
@@ -70,6 +103,15 @@ namespace Gee.External.Capstone {
         ///     A boolean true if diet mode is enabled. A boolean false otherwise.
         /// </value>
         public bool IsDietModeEnabled => CapstoneDisassembler.IsDietModeEnabled;
+
+        /// <summary>
+        ///     Determine if Instruction is Skipped Data.
+        /// </summary>
+        /// <remarks>
+        ///     Indicates whether the instruction is a skipped data instruction. A boolean true indicates the
+        ///     instruction is a skipped data instruction. A boolean false otherwise.
+        /// </remarks>
+        public bool IsSkippedData { get; }
 
         /// <summary>
         ///     Get Instruction's Mnemonic.
@@ -103,8 +145,9 @@ namespace Gee.External.Capstone {
         private protected Instruction(InstructionBuilder<TDetail, TGroup, TGroupId, TSelf, TId, TRegister, TRegisterId> builder) {
             this.Address = builder.Address;
             this.Bytes = builder.Bytes;
-            this.Details = builder.Details;
+            this._details = builder.Details;
             this.Id = builder.Id;
+            this.IsSkippedData = builder.IsSkippedData;
             this._mnemonic = builder.Mnemonic;
             this._operand = builder.Operand;
         }

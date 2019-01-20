@@ -203,6 +203,9 @@ namespace Gee.External.Capstone {
         /// <exception cref="Gee.External.Capstone.CapstoneException">
         ///     Thrown if the instruction details option could not be set.
         /// </exception>
+        /// <exception cref="System.ObjectDisposedException">
+        ///     Thrown if the disassembler is disposed.
+        /// </exception>
         public abstract bool EnableInstructionDetails { get; set; }
 
         /// <summary>
@@ -210,6 +213,9 @@ namespace Gee.External.Capstone {
         /// </summary>
         /// <exception cref="Gee.External.Capstone.CapstoneException">
         ///     Thrown if the Skip Data Mode option could not be set.
+        /// </exception>
+        /// <exception cref="System.ObjectDisposedException">
+        ///     Thrown if the disassembler is disposed.
         /// </exception>
         public abstract bool EnableSkipDataMode { get; set; }
 
@@ -219,9 +225,15 @@ namespace Gee.External.Capstone {
         internal abstract NativeDisassemblerHandle Handle { get; }
 
         /// <summary>
-        ///     Get and Set Invalid Instruction Mnemonic.
+        ///     Get and Set Skip Data Instruction Mnemonic.
         /// </summary>
-        public abstract string InvalidInstructionMnemonic { get; set; }
+        /// <exception cref="System.ArgumentNullException">
+        ///     Thrown if the value is a null reference.
+        /// </exception>
+        /// <exception cref="System.ObjectDisposedException">
+        ///     Thrown if the disassembler is disposed.
+        /// </exception>
+        public abstract string SkipDataInstructionMnemonic { get; set; }
 
         /// <summary>
         ///     Create an ARM64 Disassembler.
@@ -403,9 +415,14 @@ namespace Gee.External.Capstone {
         private readonly NativeDisassemblerHandle _handle;
 
         /// <summary>
-        ///     Invalid Instruction Mnemonic.
+        ///     Skip Data Callback.
         /// </summary>
-        private string _invalidInstructionMnemonic;
+        private Func<byte[], long, long> _skipDataCallback;
+
+        /// <summary>
+        ///     Skip Data Instruction Mnemonic.
+        /// </summary>
+        private string _skipDataInstructionMnemonic;
 
         /// <summary>
         ///     Get Disassemble Architecture.
@@ -492,23 +509,37 @@ namespace Gee.External.Capstone {
         internal override NativeDisassemblerHandle Handle => this._handle;
 
         /// <summary>
-        ///     Get and Set Invalid Instruction Mnemonic.
+        ///     Get and Set Skip Data Callback.
         /// </summary>
-        /// <exception cref="System.ArgumentNullException">
-        ///     Thrown if the value is a null reference.
+        /// <exception cref="System.ObjectDisposedException">
+        ///     Thrown if the disassembler is disposed.
         /// </exception>
-        public override string InvalidInstructionMnemonic {
-            get => this._invalidInstructionMnemonic;
+        public Func<byte[], long, long> SkipDataCallback {
+            get => this._skipDataCallback;
             set {
-                CapstoneDisassembler.ThrowIfValueIsNullReference(nameof(this.InvalidInstructionMnemonic), value);
-                this._invalidInstructionMnemonic = value;
+                this.ThrowIfDisassemblerIsDisposed();
+                this._skipDataCallback = value;
             }
         }
 
         /// <summary>
-        ///     Get and Set Skip Data Callback.
+        ///     Get and Set Skip Data Instruction Mnemonic.
         /// </summary>
-        public Func<byte[], long, long> SkipDataCallback { get; set; }
+        /// <exception cref="System.ArgumentNullException">
+        ///     Thrown if the value is a null reference.
+        /// </exception>
+        /// <exception cref="System.ObjectDisposedException">
+        ///     Thrown if the disassembler is disposed.
+        /// </exception>
+        public override string SkipDataInstructionMnemonic {
+            get => this._skipDataInstructionMnemonic;
+            set {
+                this.ThrowIfDisassemblerIsDisposed();
+                CapstoneDisassembler.ThrowIfValueIsNullReference(nameof(this.SkipDataInstructionMnemonic), value);
+
+                this._skipDataInstructionMnemonic = value;
+            }
+        }
 
         /// <summary>
         ///     Create a Disassembler.
@@ -533,7 +564,7 @@ namespace Gee.External.Capstone {
         private protected CapstoneDisassembler(DisassembleArchitecture disassembleArchitecture, TDisassembleMode disassembleMode) {
             this._disassembleArchitecture = disassembleArchitecture;
             this._disassembleMode = disassembleMode;
-            this._invalidInstructionMnemonic = ".byte";
+            this._skipDataInstructionMnemonic = ".byte";
             // ...
             //
             // ...
@@ -726,7 +757,7 @@ namespace Gee.External.Capstone {
             // closure that encloses over the entire binary code buffer and pass it to the actual callback defined
             // by the caller.
             NativeCapstone.Callback callback = null;
-            if (this.EnableSkipDataMode && this.SkipDataCallback != null) {
+            if (this.EnableSkipDataMode) {
                 // ...
                 //
                 // Normally, delegates that are created for the purpose of being passed as function pointers to
@@ -742,14 +773,16 @@ namespace Gee.External.Capstone {
                 // class. So the problem of garbage collection is actually avoided for the lifetime of the iterator.
                 //
                 // To make this work though, we MUST define a local variable for the delegate!
-                callback = OnNativeSkipDataCallback;
+                if (this._skipDataCallback != null) {
+                    callback = OnNativeSkipDataCallback;
+                }
 
                 // ...
                 //
                 // Throws an exception if the operation fails.
                 var optionValue = new NativeSkipDataOptionValue();
                 optionValue.Callback = callback;
-                optionValue.InstructionMnemonic = this.InvalidInstructionMnemonic;
+                optionValue.InstructionMnemonic = this._skipDataInstructionMnemonic;
                 optionValue.State = IntPtr.Zero;
                 NativeCapstone.SetSkipDataOption(this._handle, ref optionValue);
             }
@@ -782,7 +815,7 @@ namespace Gee.External.Capstone {
                     // because the disassembler is disposed, which will have no side effects if it happens here.
                     var optionValue = new NativeSkipDataOptionValue();
                     optionValue.Callback = null;
-                    optionValue.InstructionMnemonic = this.InvalidInstructionMnemonic;
+                    optionValue.InstructionMnemonic = this._skipDataInstructionMnemonic;
                     optionValue.State = IntPtr.Zero;
                     NativeCapstone.SetSkipDataOption(this._handle, ref optionValue);
                 }

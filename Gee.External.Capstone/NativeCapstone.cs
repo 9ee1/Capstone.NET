@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace Gee.External.Capstone {
@@ -29,6 +31,13 @@ namespace Gee.External.Capstone {
         ///     </para>
         /// </remarks>
         private const int MagicInstructionArchitectureDetailsFieldOffset = 80;
+
+        /// <summary>
+        ///     Create a Native Capstone.
+        /// </summary>
+        static NativeCapstone() {
+            NativeCapstone.LoadLibrary();
+        }
 
         /// <summary>
         ///     Create a Disassembler.
@@ -469,6 +478,47 @@ namespace Gee.External.Capstone {
                     hBinaryCode.Free();
                 }
             }
+        }
+
+        /// <summary>
+        ///     Load Library.
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         Loads the Capstone library in the address space of the calling process if, and only if, the target
+        ///         .NET runtime this assembly is compiled for is .NET Framework 4.x. The .NET Framework runtime has
+        ///         support for .NET assemblies compiled for an "Any CPU" platform, as opposed to an explicit x64 or
+        ///         an x86 platform. When a process is executed, the .NET Framework runtime executes it as either an
+        ///         x64 or an x86 process, depending on the host's platform. This introduces an interesting challenge
+        ///         in that this assembly must either load either the x64 or x86 version of the Capstone library
+        ///         depending on the calling process' platform.
+        ///     </para>
+        ///     <para>
+        ///         Since the .NET Framework runtime supports only Windows, a Windows only API can be used to
+        ///         conditionally load either the x64 or x86 version of the Capstone library depending on the calling
+        ///         process' platform without sacrificing compatibility with other operating systems. To have any
+        ///         impact, this method must be called before any function exported by the Capstone library is called,
+        ///         ideally immediately when the calling process is first executed.
+        ///     </para>
+        ///     <para>
+        ///         The .NET Core runtime does not have support for .NET assemblies compiled for an "Any CPU"
+        ///         platform. When an assembly is deployed, it must explicitly specify either an x64 or x86 platform.
+        ///         As such, there is no need to conditionally load either the x64 or x86 version of the Capstone
+        ///         library since only the one that is compatible with the deployment platform will be supported.
+        ///     </para>
+        /// </remarks>
+        [Conditional("NET40")]
+        [Conditional("NET45")]
+        internal static void LoadLibrary() {
+            // ...
+            //
+            // Some error checking should probably be added here, to make sure the library was loaded correctly.
+            // However, technically, if the library was not loaded correctly for whatever reason, there is very little
+            // that can be done anyway and the process will crash either way.
+            var platformDirectoryName = Environment.Is64BitProcess ? "x64" : "x86";
+            var thisAssemblyDirectoryPath = AppDomain.CurrentDomain.BaseDirectory;
+            var libraryFilePath = Path.Combine(thisAssemblyDirectoryPath, platformDirectoryName, "capstone.dll");
+            NativeCapstoneImport.LoadLibrary(libraryFilePath);
         }
 
         /// <summary>

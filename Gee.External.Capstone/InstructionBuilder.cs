@@ -54,6 +54,11 @@ namespace Gee.External.Capstone {
         internal TId Id { get; private set; }
 
         /// <summary>
+        ///     Determine if Instruction is Skipped Data.
+        /// </summary>
+        internal bool IsSkippedData { get; private set; }
+
+        /// <summary>
         ///     Get and Set Instruction's Mnemonic Text.
         /// </summary>
         internal string Mnemonic { get; private set; }
@@ -71,6 +76,7 @@ namespace Gee.External.Capstone {
             this.Bytes = new byte[0];
             this.Details = null;
             this.Id = default;
+            this.IsSkippedData = false;
             this.Mnemonic = null;
             this.Operand = null;
         }
@@ -92,6 +98,7 @@ namespace Gee.External.Capstone {
 
             this.Address = nativeInstruction.Address;
             this.Id = this.CreateId(nativeInstruction.Id);
+            this.IsSkippedData = disassembler.EnableSkipDataMode && !(nativeInstruction.Id > 0);
             this.Mnemonic = !CapstoneDisassembler.IsDietModeEnabled ? nativeInstruction.Mnemonic : null;
             this.Operand = !CapstoneDisassembler.IsDietModeEnabled ? nativeInstruction.Operand : null;
             // ...
@@ -117,18 +124,13 @@ namespace Gee.External.Capstone {
             //      Set Instruction's Details.
             // </summary>
             void SetDetails(InstructionBuilder<TDetail, TGroup, TGroupId, TInstruction, TId, TRegister, TRegisterId> @this, CapstoneDisassembler cDisassembler, NativeInstructionHandle cHInstruction, ref NativeInstruction cNativeInstruction) {
+                var cHasDetails = cNativeInstruction.Details != IntPtr.Zero;
+                var cIsInstructionDetailsEnabled = cDisassembler.EnableInstructionDetails;
                 @this.Details = null;
-                if (cDisassembler.EnableInstructionDetails && cNativeInstruction.Id > 0) {
+                if (cHasDetails && cIsInstructionDetailsEnabled && cNativeInstruction.Id > 0) {
                     @this.Details = @this.CreateDetails(cDisassembler, cHInstruction);
                 }
             }
-        }
-
-        internal virtual void BuildInvalid(CapstoneDisassembler disassembler) {
-            this.Address = 0;
-            this.Id = this.CreateId(0);
-            this.Mnemonic = disassembler.InvalidInstructionMnemonic;
-            this.Operand = "0x";
         }
 
         /// <summary>
