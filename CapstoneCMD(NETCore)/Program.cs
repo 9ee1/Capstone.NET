@@ -1,6 +1,7 @@
 ﻿using Gee.External.Capstone;
 using Gee.External.Capstone.Arm;
 using Gee.External.Capstone.Arm64;
+using Gee.External.Capstone.M68K;
 using Gee.External.Capstone.X86;
 using System;
 
@@ -25,6 +26,9 @@ namespace ConsoleApp1 {
                     break;
                 case "X86":
                     Program.ShowX86();
+                    break;
+                case "M68K000":
+                    Program.ShowM68K000();
                     break;
                 default:
                     Console.WriteLine("ERROR: You did not select a disassemble architecture. Good bye Steve!");
@@ -342,6 +346,26 @@ namespace ConsoleApp1 {
             }
         }
 
+        private static void ShowM68K000() {
+            const M68KDisassembleMode disassembleMode = M68KDisassembleMode.BigEndian | M68KDisassembleMode.M68K040;
+            using (var disassembler = CapstoneDisassembler.CreateM68KDisassembler(disassembleMode)) {
+                disassembler.DisassembleSyntax = DisassembleSyntax.Intel;
+                disassembler.EnableInstructionDetails = true;
+
+                var binaryCode = new byte[] {
+                    0X4C, 0X00, 0X54, 0X04, 0X48, 0XE7, 0XE0, 0X30, 0X4C, 0XDF, 0X0C, 0X07, 0XD4, 0X40, 0X87, 0X5A,
+                    0X4E, 0X71, 0X02, 0XB4, 0XC0, 0XDE, 0XC0, 0XDE, 0X5C, 0X00, 0X1D, 0X80, 0X71, 0X12, 0X01, 0X23,
+                    0XF2, 0X3C, 0X44, 0X22, 0X40, 0X49, 0X0E, 0X56, 0X54, 0XC5, 0XF2, 0X3C, 0X44, 0X00, 0X44, 0X7A,
+                    0X00, 0X00, 0XF2, 0X00, 0X0A, 0X28, 0X4E, 0XB9, 0X00, 0X00, 0X00, 0X12, 0X4E, 0X75
+                };
+
+                var instructions = disassembler.Disassemble(binaryCode);
+                foreach (var instruction in instructions) {
+
+                }
+            }
+        }
+
         private static void ShowX86() {
             // ...
             //
@@ -358,7 +382,7 @@ namespace ConsoleApp1 {
                 disassembler.SkipDataInstructionMnemonic = "Ahmed";
                 disassembler.SkipDataCallback = (b, o) => {
                     return 1;
-                }; 
+                };
 
 //                var binaryCode = new byte[] {
 //                    0x8d, 0x4c, 0x32, 0x08, 0x01, 0xd8, 0x81, 0xc6, 0x34, 0x12, 0x00, 0x00, 0x05, 0x23, 0x01, 0x00,
@@ -368,8 +392,8 @@ namespace ConsoleApp1 {
 //                };
 //
                 var binaryCode = new byte[] {
-                    0xed,0x00,0x00,0x00,0x00,0x1a,0x5a,0x0f,0x1f,0xff,0xc2,0x09,0x80,0x00,0x00,0x00,0x07,0xf7,0xeb,0x2a,0xff,0xff,0x7f,
-                    0x57,0xe3,0x01,0xff,0xff,0x7f,0x57,0xeb,0x00,0xf0,0x00,0x00,0x24,0xb2,0x4f,0x00,0x78
+                    0xed, 0x00, 0x00, 0x00, 0x00, 0x1a, 0x5a, 0x0f, 0x1f, 0xff, 0xc2, 0x09, 0x80, 0x00, 0x00, 0x00, 0x07, 0xf7, 0xeb, 0x2a, 0xff, 0xff, 0x7f,
+                    0x57, 0xe3, 0x01, 0xff, 0xff, 0x7f, 0x57, 0xeb, 0x00, 0xf0, 0x00, 0x00, 0x24, 0xb2, 0x4f, 0x00, 0x78
                 };
 
                 var instructions = disassembler.Disassemble(binaryCode);

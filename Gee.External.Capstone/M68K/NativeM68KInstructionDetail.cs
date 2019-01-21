@@ -9,7 +9,7 @@ namespace Gee.External.Capstone.M68K {
         /// <summary>
         ///     Instruction's Operands.
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
         public NativeM68KOperand[] Operands;
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using Gee.External.Capstone.Arm;
 using Gee.External.Capstone.Arm64;
+using Gee.External.Capstone.M68K;
 using Gee.External.Capstone.X86;
 using System;
 using System.Collections.Generic;
@@ -280,6 +281,30 @@ namespace Gee.External.Capstone {
         /// </exception>
         public static CapstoneArmDisassembler CreateArmDisassembler(ArmDisassembleMode disassembleMode) {
             var disassembler = new CapstoneArmDisassembler(disassembleMode);
+            return disassembler;
+        }
+
+        /// <summary>
+        ///     Create an M68K Disassembler.
+        /// </summary>
+        /// <param name="disassembleMode">
+        ///     The hardware mode for the disassembler to use.
+        /// </param>
+        /// <returns>
+        ///     A ARM disassembler.
+        /// </returns>
+        /// <exception cref="Gee.External.Capstone.CapstoneException">
+        ///     Thrown if a disassembler could not be created.
+        /// </exception>
+        /// <exception cref="System.ArgumentException">
+        ///     Thrown if the disassemble mode is invalid or unsupported by the disassemble architecture.
+        /// </exception>
+        /// <exception cref="System.OutOfMemoryException">
+        ///     Thrown if sufficient memory cannot be allocated to perform the operation as a rare indication that the
+        ///     system is under heavy load.
+        /// </exception>
+        public static CapstoneM68KDisassembler CreateM68KDisassembler(M68KDisassembleMode disassembleMode) {
+            var disassembler = new CapstoneM68KDisassembler(disassembleMode);
             return disassembler;
         }
 

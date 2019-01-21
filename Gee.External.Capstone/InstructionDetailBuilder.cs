@@ -84,7 +84,8 @@ namespace Gee.External.Capstone {
             void SetAccessedRegisters(InstructionDetailBuilder<TDetail, TGroup, TGroupId, TInstruction, TInstructionId, TRegister, TRegisterId> @this, CapstoneDisassembler cDisassembler, NativeInstructionHandle cHInstruction) {
                 @this.AllReadRegisters = new TRegister[0];
                 @this.AllWrittenRegisters = new TRegister[0];
-                if (!CapstoneDisassembler.IsDietModeEnabled) {
+                var areAccessedRegistersSupported = !CapstoneDisassembler.IsDietModeEnabled && cDisassembler.DisassembleArchitecture != DisassembleArchitecture.M68K;
+                if (areAccessedRegistersSupported) {
                     // ...
                     //
                     // Throws an exception if the operation fails.

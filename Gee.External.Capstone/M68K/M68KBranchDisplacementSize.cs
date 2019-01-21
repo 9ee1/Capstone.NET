@@ -2,7 +2,7 @@
     /// <summary>
     ///     M68K Branch Displacement Size.
     /// </summary>
-    public enum M68KBranchDisplacementSize : byte {
+    public enum M68KBranchDisplacementSize {
         /// <summary>
         ///     Indicates an invalid, or an uninitialized, branch displacement size.
         /// </summary>
