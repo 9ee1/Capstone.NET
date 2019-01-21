@@ -25,6 +25,19 @@ namespace Gee.External.Capstone {
         }
 
         /// <summary>
+        ///     Get Capstone Library's Version.
+        /// </summary>
+        /// <value>
+        ///     The Capstone library's version.
+        /// </value>
+        public static Version Version {
+            get {
+                var value = NativeCapstone.GetVersion();
+                return value;
+            }
+        }
+
+        /// <summary>
         ///     Determine if the ARM Architecture is Supported.
         /// </summary>
         /// <value>

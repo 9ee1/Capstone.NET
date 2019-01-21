@@ -15,6 +15,7 @@ namespace ConsoleApp1 {
             Console.WriteLine();
             Console.Write("Choose an Architecture (ARM32, ARM32-V8, ARM32-Thumb, ARM32-Thumb-MClass, ARM64, X86): --> ");
 
+            var v = CapstoneDisassembler.Version;
             var disassembleArchitecture = Console.ReadLine();
             switch (disassembleArchitecture) {
                 case "Arm":

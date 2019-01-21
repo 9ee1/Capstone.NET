@@ -177,6 +177,21 @@ namespace Gee.External.Capstone {
         internal static extern IntPtr GetRegisterName(NativeDisassemblerHandle hDisassembler, int registerId);
 
         /// <summary>
+        ///     Get Capstone Library's Version.
+        /// </summary>
+        /// <param name="majorVersion">
+        ///     A 32-bit integer that will be updated to indicate the Capstone library's major version.
+        /// </param>
+        /// <param name="minorVersion">
+        ///     A 32-bit integer that will be updated to indicate the Capstone library's minor version.
+        /// </param>
+        /// <returns>
+        ///     A 32-bit integer indicating the Capstone library's major and minor version.
+        /// </returns>
+        [DllImport("capstone", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_version")]
+        internal static extern int GetVersion(ref int majorVersion, ref int minorVersion);
+
+        /// <summary>
         ///     Disassemble Binary Code Iteratively.
         /// </summary>
         /// <param name="hDisassembler">

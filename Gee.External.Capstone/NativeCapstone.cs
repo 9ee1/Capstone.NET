@@ -410,6 +410,21 @@ namespace Gee.External.Capstone {
         }
 
         /// <summary>
+        ///     Get Capstone Library's Version.
+        /// </summary>
+        /// <returns>
+        ///     The Capstone library's version.
+        /// </returns>
+        internal static Version GetVersion() {
+            var majorVersion = 0;
+            var minorVersion = 0;
+            NativeCapstoneImport.GetVersion(ref majorVersion, ref minorVersion);
+
+            var version = new Version(majorVersion, minorVersion);
+            return version;
+        }
+
+        /// <summary>
         ///     Disassemble Binary Code Iteratively.
         /// </summary>
         /// <param name="hDisassembler">
