@@ -2,7 +2,7 @@
     /// <summary>
     ///     X86 Instruction.
     /// </summary>
-    public sealed class X86Instruction : Instruction<X86Instruction, X86InstructionDetail, X86InstructionGroup, X86InstructionGroupId, X86InstructionId, X86Register, X86RegisterId> {
+    public sealed class X86Instruction : Instruction<X86Instruction, X86InstructionDetail, X86DisassembleMode, X86InstructionGroup, X86InstructionGroupId, X86InstructionId, X86Register, X86RegisterId> {
         /// <summary>
         ///     Create an X86 Instruction.
         /// </summary>

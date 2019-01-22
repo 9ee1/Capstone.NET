@@ -7,6 +7,9 @@ namespace Gee.External.Capstone {
     /// <typeparam name="TDetail">
     ///     The type of the instruction's details.
     /// </typeparam>
+    /// <typeparam name="TDisassembleMode">
+    ///     The type of the hardware mode for the disassembler to use.
+    /// </typeparam>
     /// <typeparam name="TGroup">
     ///     The type of the instruction's architecture specific instruction groups.
     /// </typeparam>
@@ -25,11 +28,12 @@ namespace Gee.External.Capstone {
     /// <typeparam name="TRegisterId">
     ///     The type of the instruction's architecture specific register unique identifiers.
     /// </typeparam>
-    internal abstract class InstructionBuilder<TDetail, TGroup, TGroupId, TInstruction, TId, TRegister, TRegisterId>
-        where TDetail : InstructionDetail<TDetail, TGroup, TGroupId, TInstruction, TId, TRegister, TRegisterId>
+    internal abstract class InstructionBuilder<TDetail, TDisassembleMode, TGroup, TGroupId, TInstruction, TId, TRegister, TRegisterId>
+        where TDetail : InstructionDetail<TDetail, TDisassembleMode, TGroup, TGroupId, TInstruction, TId, TRegister, TRegisterId>
+        where TDisassembleMode : Enum
         where TGroup : InstructionGroup<TGroupId>
         where TGroupId : Enum
-        where TInstruction : Instruction<TInstruction, TDetail, TGroup, TGroupId, TId, TRegister, TRegisterId>
+        where TInstruction : Instruction<TInstruction, TDetail, TDisassembleMode, TGroup, TGroupId, TId, TRegister, TRegisterId>
         where TId : Enum
         where TRegister : Register<TRegisterId>
         where TRegisterId : Enum {
@@ -47,6 +51,16 @@ namespace Gee.External.Capstone {
         ///     Get and Set Instruction's Details.
         /// </summary>
         internal TDetail Details { get; private set; }
+
+        /// <summary>
+        ///     Get and Set Instruction's Disassemble Architecture.
+        /// </summary>
+        internal DisassembleArchitecture DisassembleArchitecture { get; private set; }
+
+        /// <summary>
+        ///     Get and Set Instruction's Disassemble Mode.
+        /// </summary>
+        internal TDisassembleMode DisassembleMode { get; private set; }
 
         /// <summary>
         ///     Get and Set Instruction's Unique Identifier.
@@ -97,6 +111,8 @@ namespace Gee.External.Capstone {
             var nativeInstruction = NativeCapstone.GetInstruction(hInstruction);
 
             this.Address = nativeInstruction.Address;
+            this.DisassembleArchitecture = disassembler.DisassembleArchitecture;
+            this.DisassembleMode = this.CreateDisassembleMode(disassembler.NativeDisassembleMode);
             this.Id = this.CreateId(nativeInstruction.Id);
             this.IsSkippedData = disassembler.EnableSkipDataMode && !(nativeInstruction.Id > 0);
             this.Mnemonic = !CapstoneDisassembler.IsDietModeEnabled ? nativeInstruction.Mnemonic : null;
@@ -110,7 +126,7 @@ namespace Gee.External.Capstone {
             // <summary>
             //      Set Instruction's Machine Bytes.
             // </summary>
-            void SetBytes(InstructionBuilder<TDetail, TGroup, TGroupId, TInstruction, TId, TRegister, TRegisterId> @this, ref NativeInstruction cNativeInstruction) {
+            void SetBytes(InstructionBuilder<TDetail, TDisassembleMode, TGroup, TGroupId, TInstruction, TId, TRegister, TRegisterId> @this, ref NativeInstruction cNativeInstruction) {
                 @this.Bytes = new byte[0];
                 if (cNativeInstruction.Id >= 0) {
                     @this.Bytes = new byte[cNativeInstruction.Size];
@@ -123,7 +139,7 @@ namespace Gee.External.Capstone {
             // <summary>
             //      Set Instruction's Details.
             // </summary>
-            void SetDetails(InstructionBuilder<TDetail, TGroup, TGroupId, TInstruction, TId, TRegister, TRegisterId> @this, CapstoneDisassembler cDisassembler, NativeInstructionHandle cHInstruction, ref NativeInstruction cNativeInstruction) {
+            void SetDetails(InstructionBuilder<TDetail, TDisassembleMode, TGroup, TGroupId, TInstruction, TId, TRegister, TRegisterId> @this, CapstoneDisassembler cDisassembler, NativeInstructionHandle cHInstruction, ref NativeInstruction cNativeInstruction) {
                 var cHasDetails = cNativeInstruction.Details != IntPtr.Zero;
                 var cIsInstructionDetailsEnabled = cDisassembler.EnableInstructionDetails;
                 @this.Details = null;
@@ -146,6 +162,17 @@ namespace Gee.External.Capstone {
         ///     The instruction's details.
         /// </returns>
         private protected abstract TDetail CreateDetails(CapstoneDisassembler disassembler, NativeInstructionHandle hInstruction);
+
+        /// <summary>
+        ///     Create Disassemble Mode.
+        /// </summary>
+        /// <param name="nativeDisassembleMode">
+        ///     A native disassemble mode.
+        /// </param>
+        /// <returns>
+        ///     A disassemble mode.
+        /// </returns>
+        private protected abstract TDisassembleMode CreateDisassembleMode(NativeDisassembleMode nativeDisassembleMode);
 
         /// <summary>
         ///     Create Instruction's Unique Identifier.

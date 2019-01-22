@@ -2,7 +2,7 @@
     /// <summary>
     ///     XCore Instruction Detail.
     /// </summary>
-    public sealed class XCoreInstructionDetail : InstructionDetail<XCoreInstructionDetail, XCoreInstructionGroup, XCoreInstructionGroupId, XCoreInstruction, XCoreInstructionId, XCoreRegister, XCoreRegisterId> {
+    public sealed class XCoreInstructionDetail : InstructionDetail<XCoreInstructionDetail, XCoreDisassembleMode, XCoreInstructionGroup, XCoreInstructionGroupId, XCoreInstruction, XCoreInstructionId, XCoreRegister, XCoreRegisterId> {
         /// <summary>
         ///     Get Instruction's Operands.
         /// </summary>

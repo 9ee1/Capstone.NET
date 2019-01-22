@@ -28,6 +28,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -80,6 +82,9 @@
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Gee.External.Capstone, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Gee.External.Capstone.2.0.0\lib\net40\Gee.External.Capstone.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -95,10 +100,14 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Gee.External.Capstone\Gee.External.Capstone.csproj">
-      <Project>{52eca690-0077-4e38-9139-31c7cf3b6853}</Project>
-      <Name>Gee.External.Capstone</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Gee.External.Capstone.2.0.0\build\Gee.External.Capstone.targets" Condition="Exists('..\packages\Gee.External.Capstone.2.0.0\build\Gee.External.Capstone.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Gee.External.Capstone.2.0.0\build\Gee.External.Capstone.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Gee.External.Capstone.2.0.0\build\Gee.External.Capstone.targets'))" />
+  </Target>
 </Project>

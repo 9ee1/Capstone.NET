@@ -2,7 +2,7 @@
     /// <summary>
     ///     XCore Instruction Detail Builder.
     /// </summary>
-    internal sealed class XCoreInstructionDetailBuilder : InstructionDetailBuilder<XCoreInstructionDetail, XCoreInstructionGroup, XCoreInstructionGroupId, XCoreInstruction, XCoreInstructionId, XCoreRegister, XCoreRegisterId> {
+    internal sealed class XCoreInstructionDetailBuilder : InstructionDetailBuilder<XCoreInstructionDetail, XCoreDisassembleMode, XCoreInstructionGroup, XCoreInstructionGroupId, XCoreInstruction, XCoreInstructionId, XCoreRegister, XCoreRegisterId> {
         /// <summary>
         ///     Get and Set Instruction's Operands.
         /// </summary>
@@ -35,6 +35,19 @@
         /// </returns>
         internal XCoreInstructionDetail Create() {
             return new XCoreInstructionDetail(this);
+        }
+
+        /// <summary>
+        ///     Create Disassemble Mode.
+        /// </summary>
+        /// <param name="nativeDisassembleMode">
+        ///     A native disassemble mode.
+        /// </param>
+        /// <returns>
+        ///     A disassemble mode.
+        /// </returns>
+        private protected override XCoreDisassembleMode CreateDisassembleMode(NativeDisassembleMode nativeDisassembleMode) {
+            return (XCoreDisassembleMode) nativeDisassembleMode;
         }
 
         /// <summary>

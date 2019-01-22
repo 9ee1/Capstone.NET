@@ -7,6 +7,9 @@ namespace Gee.External.Capstone {
     /// <typeparam name="TDetail">
     ///     The type of the instruction's details.
     /// </typeparam>
+    /// <typeparam name="TDisassembleMode">
+    ///     The type of the hardware mode for the disassembler to use.
+    /// </typeparam>
     /// <typeparam name="TGroup">
     ///     The type of the instruction's architecture specific instruction groups.
     /// </typeparam>
@@ -25,11 +28,12 @@ namespace Gee.External.Capstone {
     /// <typeparam name="TRegisterId">
     ///     The type of the instruction's architecture specific register unique identifiers.
     /// </typeparam>
-    internal abstract class InstructionDetailBuilder<TDetail, TGroup, TGroupId, TInstruction, TInstructionId, TRegister, TRegisterId>
-        where TDetail : InstructionDetail<TDetail, TGroup, TGroupId, TInstruction, TInstructionId, TRegister, TRegisterId>
+    internal abstract class InstructionDetailBuilder<TDetail, TDisassembleMode, TGroup, TGroupId, TInstruction, TInstructionId, TRegister, TRegisterId>
+        where TDetail : InstructionDetail<TDetail, TDisassembleMode, TGroup, TGroupId, TInstruction, TInstructionId, TRegister, TRegisterId>
+        where TDisassembleMode : Enum
         where TGroup : InstructionGroup<TGroupId>
         where TGroupId : Enum
-        where TInstruction : Instruction<TInstruction, TDetail, TGroup, TGroupId, TInstructionId, TRegister, TRegisterId>
+        where TInstruction : Instruction<TInstruction, TDetail, TDisassembleMode, TGroup, TGroupId, TInstructionId, TRegister, TRegisterId>
         where TInstructionId : Enum
         where TRegister : Register<TRegisterId>
         where TRegisterId : Enum {
@@ -42,6 +46,16 @@ namespace Gee.External.Capstone {
         ///     Get and Set All Written Registers.
         /// </summary>
         internal TRegister[] AllWrittenRegisters { get; private set; }
+
+        /// <summary>
+        ///     Get and Set Instruction's Disassemble Architecture.
+        /// </summary>
+        internal DisassembleArchitecture DisassembleArchitecture { get; private set; }
+
+        /// <summary>
+        ///     Get and Set Instruction's Disassemble Mode.
+        /// </summary>
+        internal TDisassembleMode DisassembleMode { get; private set; }
 
         /// <summary>
         ///     Get and Set Instruction's Groups.
@@ -73,34 +87,49 @@ namespace Gee.External.Capstone {
             // Throws an exception if the operation fails.
             var nativeInstructionDetail = NativeCapstone.GetInstructionDetail(hInstruction).GetValueOrDefault();
 
-            SetAccessedRegisters(this, disassembler, hInstruction);
+            this.DisassembleArchitecture = disassembler.DisassembleArchitecture;
+            this.DisassembleMode = this.CreateDisassembleMode(disassembler.NativeDisassembleMode);
             SetGroups(this, disassembler, ref nativeInstructionDetail);
             SetImplicitlyReadRegisters(this, disassembler, ref nativeInstructionDetail);
             SetImplicitlyWrittenRegisters(this, disassembler, ref nativeInstructionDetail);
+            // ...
+            //
+            // ...
+            SetAccessedRegisters(this, disassembler, hInstruction);
 
             // <summary>
             //      Set Accessed Registers.
             // </summary>
-            void SetAccessedRegisters(InstructionDetailBuilder<TDetail, TGroup, TGroupId, TInstruction, TInstructionId, TRegister, TRegisterId> @this, CapstoneDisassembler cDisassembler, NativeInstructionHandle cHInstruction) {
+            void SetAccessedRegisters(InstructionDetailBuilder<TDetail, TDisassembleMode, TGroup, TGroupId, TInstruction, TInstructionId, TRegister, TRegisterId> @this, CapstoneDisassembler cDisassembler, NativeInstructionHandle cHInstruction) {
                 @this.AllReadRegisters = new TRegister[0];
                 @this.AllWrittenRegisters = new TRegister[0];
-                var areAccessedRegistersSupported = !CapstoneDisassembler.IsDietModeEnabled && cDisassembler.DisassembleArchitecture != DisassembleArchitecture.M68K;
-                if (areAccessedRegistersSupported) {
-                    // ...
-                    //
-                    // Throws an exception if the operation fails.
-                    var cAccessedRegisters = NativeCapstone.GetAccessedRegisters(cDisassembler.Handle, cHInstruction);
-
-                    @this.AllReadRegisters = new TRegister[cAccessedRegisters.Item1.Length];
-                    for (var cI = 0; cI < @this.AllReadRegisters.Length; cI++) {
-                        var cExplicitlyReadRegister = cAccessedRegisters.Item1[cI];
-                        @this.AllReadRegisters[cI] = @this.CreateRegister(cDisassembler, cExplicitlyReadRegister);
+                if (!CapstoneDisassembler.IsDietModeEnabled) {
+                    if (cDisassembler.DisassembleArchitecture == DisassembleArchitecture.M68K) {
+                        // ...
+                        //
+                        // Some disassemble architecture's do not support retrieving all accessed registers. If that
+                        // is the case, we assume the accessed registers are equal to the implicitly accessed
+                        // registers.
+                        @this.AllReadRegisters = @this.ImplicitlyReadRegisters;
+                        @this.AllWrittenRegisters = @this.ImplicitlyWrittenRegisters;
                     }
+                    else {
+                        // ...
+                        //
+                        // Throws an exception if the operation fails.
+                        var cAccessedRegisters = NativeCapstone.GetAccessedRegisters(cDisassembler.Handle, cHInstruction);
 
-                    @this.AllWrittenRegisters = new TRegister[cAccessedRegisters.Item2.Length];
-                    for (var cI = 0; cI < @this.AllWrittenRegisters.Length; cI++) {
-                        var cExplicitlyWrittenRegister = cAccessedRegisters.Item2[cI];
-                        @this.AllWrittenRegisters[cI] = @this.CreateRegister(cDisassembler, cExplicitlyWrittenRegister);
+                        @this.AllReadRegisters = new TRegister[cAccessedRegisters.Item1.Length];
+                        for (var cI = 0; cI < @this.AllReadRegisters.Length; cI++) {
+                            var cExplicitlyReadRegister = cAccessedRegisters.Item1[cI];
+                            @this.AllReadRegisters[cI] = @this.CreateRegister(cDisassembler, cExplicitlyReadRegister);
+                        }
+
+                        @this.AllWrittenRegisters = new TRegister[cAccessedRegisters.Item2.Length];
+                        for (var cI = 0; cI < @this.AllWrittenRegisters.Length; cI++) {
+                            var cExplicitlyWrittenRegister = cAccessedRegisters.Item2[cI];
+                            @this.AllWrittenRegisters[cI] = @this.CreateRegister(cDisassembler, cExplicitlyWrittenRegister);
+                        }
                     }
                 }
             }
@@ -108,7 +137,7 @@ namespace Gee.External.Capstone {
             // <summary>
             //      Set Instruction's Groups.
             // </summary>
-            void SetGroups(InstructionDetailBuilder<TDetail, TGroup, TGroupId, TInstruction, TInstructionId, TRegister, TRegisterId> @this, CapstoneDisassembler cDisassembler, ref NativeInstructionDetail cNativeInstructionDetail) {
+            void SetGroups(InstructionDetailBuilder<TDetail, TDisassembleMode, TGroup, TGroupId, TInstruction, TInstructionId, TRegister, TRegisterId> @this, CapstoneDisassembler cDisassembler, ref NativeInstructionDetail cNativeInstructionDetail) {
                 @this.Groups = new TGroup[cNativeInstructionDetail.GroupCount];
                 if (!CapstoneDisassembler.IsDietModeEnabled) {
                     for (var cI = 0; cI < @this.Groups.Length; cI++) {
@@ -121,7 +150,7 @@ namespace Gee.External.Capstone {
             // <summary>
             //      Set Instruction's Implicitly Read Registers.
             // </summary>
-            void SetImplicitlyReadRegisters(InstructionDetailBuilder<TDetail, TGroup, TGroupId, TInstruction, TInstructionId, TRegister, TRegisterId> @this, CapstoneDisassembler cDisassembler, ref NativeInstructionDetail cNativeInstructionDetail) {
+            void SetImplicitlyReadRegisters(InstructionDetailBuilder<TDetail, TDisassembleMode, TGroup, TGroupId, TInstruction, TInstructionId, TRegister, TRegisterId> @this, CapstoneDisassembler cDisassembler, ref NativeInstructionDetail cNativeInstructionDetail) {
                 @this.ImplicitlyReadRegisters = new TRegister[cNativeInstructionDetail.ReadRegistersCount];
                 if (!CapstoneDisassembler.IsDietModeEnabled) {
                     for (var cI = 0; cI < @this.ImplicitlyReadRegisters.Length; cI++) {
@@ -134,7 +163,7 @@ namespace Gee.External.Capstone {
             // <summary>
             //      Set Instruction's Implicitly Written Registers.
             // </summary>
-            void SetImplicitlyWrittenRegisters(InstructionDetailBuilder<TDetail, TGroup, TGroupId, TInstruction, TInstructionId, TRegister, TRegisterId> @this, CapstoneDisassembler cDisassembler, ref NativeInstructionDetail cNativeInstructionDetail) {
+            void SetImplicitlyWrittenRegisters(InstructionDetailBuilder<TDetail, TDisassembleMode, TGroup, TGroupId, TInstruction, TInstructionId, TRegister, TRegisterId> @this, CapstoneDisassembler cDisassembler, ref NativeInstructionDetail cNativeInstructionDetail) {
                 @this.ImplicitlyWrittenRegisters = new TRegister[cNativeInstructionDetail.WrittenRegisterCount];
                 if (!CapstoneDisassembler.IsDietModeEnabled) {
                     for (var cI = 0; cI < @this.ImplicitlyWrittenRegisters.Length; cI++) {
@@ -144,6 +173,17 @@ namespace Gee.External.Capstone {
                 }
             }
         }
+
+        /// <summary>
+        ///     Create Disassemble Mode.
+        /// </summary>
+        /// <param name="nativeDisassembleMode">
+        ///     A native disassemble mode.
+        /// </param>
+        /// <returns>
+        ///     A disassemble mode.
+        /// </returns>
+        private protected abstract TDisassembleMode CreateDisassembleMode(NativeDisassembleMode nativeDisassembleMode);
 
         /// <summary>
         ///     Create an Instruction Group.

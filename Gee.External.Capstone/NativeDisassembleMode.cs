@@ -2,7 +2,7 @@
 
 namespace Gee.External.Capstone {
     /// <summary>
-    ///     Disassemble Mode.
+    ///     Native Disassemble Mode.
     /// </summary>
     [Flags]
     internal enum NativeDisassembleMode {
@@ -47,16 +47,24 @@ namespace Gee.External.Capstone {
         /// </summary>
         ArmV8 = 1 << 6,
 
-        /// ARMv8 A32 encodings for ARM
+        /// <summary>
+        ///     Indicates binary code should be disassembled with support for the microMIPS instruction set.
+        /// </summary>
         MipsMicro = 1 << 4,
 
-        /// MicroMips mode (MIPS)
+        /// <summary>
+        ///     Indicates binary code should be disassembled in MIPS3 mode.
+        /// </summary>
         Mips3 = 1 << 5,
 
-        /// Mips III ISA
+        /// <summary>
+        ///     Indicates binary code should be disassembled in MIPS32R6 mode.
+        /// </summary>
         Mips32R6 = 1 << 6,
 
-        /// Mips32r6 ISA
+        /// <summary>
+        ///     Indicates binary code should be disassembled in MIPS2 mode.
+        /// </summary>
         Mips2 = 1 << 7,
 
         /// Mips II ISA
@@ -94,7 +102,12 @@ namespace Gee.External.Capstone {
         ///     Indicates binary code should be disassembled with support for the M68K060 instruction set.
         /// </summary>
         M68K060 = 1 << 6,
+
+        /// <summary>
+        ///     Indicates binary code should be disassembled in big-endian mode.
+        /// </summary>
         BigEndian = 1 << 31,
+
         Mips32 = NativeDisassembleMode.Bit32,
         Mips64 = NativeDisassembleMode.Bit64,
         M680X6301 = 1 << 1,

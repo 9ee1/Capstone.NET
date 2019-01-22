@@ -2,7 +2,7 @@
     /// <summary>
     ///     MIPS Instruction Detail.
     /// </summary>
-    public sealed class MipsInstructionDetail : InstructionDetail<MipsInstructionDetail, MipsInstructionGroup, MipsInstructionGroupId, MipsInstruction, MipsInstructionId, MipsRegister, MipsRegisterId> {
+    public sealed class MipsInstructionDetail : InstructionDetail<MipsInstructionDetail, MipsDisassembleMode, MipsInstructionGroup, MipsInstructionGroupId, MipsInstruction, MipsInstructionId, MipsRegister, MipsRegisterId> {
         /// <summary>
         ///     Get Instruction's Operands.
         /// </summary>

@@ -2,7 +2,7 @@
     /// <summary>
     ///     ARM64 Instruction Detail Builder.
     /// </summary>
-    internal sealed class Arm64InstructionDetailBuilder : InstructionDetailBuilder<Arm64InstructionDetail, Arm64InstructionGroup, Arm64InstructionGroupId, Arm64Instruction, Arm64InstructionId, Arm64Register, Arm64RegisterId> {
+    internal sealed class Arm64InstructionDetailBuilder : InstructionDetailBuilder<Arm64InstructionDetail, Arm64DisassembleMode, Arm64InstructionGroup, Arm64InstructionGroupId, Arm64Instruction, Arm64InstructionId, Arm64Register, Arm64RegisterId> {
         /// <summary>
         ///     Get and Set Condition Code.
         /// </summary>
@@ -54,6 +54,19 @@
         /// </returns>
         internal Arm64InstructionDetail Create() {
             return new Arm64InstructionDetail(this);
+        }
+
+        /// <summary>
+        ///     Create Disassemble Mode.
+        /// </summary>
+        /// <param name="nativeDisassembleMode">
+        ///     A native disassemble mode.
+        /// </param>
+        /// <returns>
+        ///     A disassemble mode.
+        /// </returns>
+        private protected override Arm64DisassembleMode CreateDisassembleMode(NativeDisassembleMode nativeDisassembleMode) {
+            return (Arm64DisassembleMode) nativeDisassembleMode;
         }
 
         /// <summary>

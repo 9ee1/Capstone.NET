@@ -25,19 +25,6 @@ namespace Gee.External.Capstone {
         }
 
         /// <summary>
-        ///     Get Capstone Library's Version.
-        /// </summary>
-        /// <value>
-        ///     The Capstone library's version.
-        /// </value>
-        public static Version Version {
-            get {
-                var value = NativeCapstone.GetVersion();
-                return value;
-            }
-        }
-
-        /// <summary>
         ///     Determine if the ARM Architecture is Supported.
         /// </summary>
         /// <value>
@@ -207,6 +194,19 @@ namespace Gee.External.Capstone {
         }
 
         /// <summary>
+        ///     Get Capstone Library's Version.
+        /// </summary>
+        /// <value>
+        ///     The Capstone library's version.
+        /// </value>
+        public static Version Version {
+            get {
+                var value = NativeCapstone.GetVersion();
+                return value;
+            }
+        }
+
+        /// <summary>
         ///     Get Disassemble Architecture.
         /// </summary>
         public abstract DisassembleArchitecture DisassembleArchitecture { get; }
@@ -237,6 +237,11 @@ namespace Gee.External.Capstone {
         ///     Get Disassembler's Handle.
         /// </summary>
         internal abstract NativeDisassemblerHandle Handle { get; }
+
+        /// <summary>
+        ///     Get Native Disassemble Mode.
+        /// </summary>
+        internal abstract NativeDisassembleMode NativeDisassembleMode { get; }
 
         /// <summary>
         ///     Get and Set Skip Data Instruction Mnemonic.
@@ -304,7 +309,7 @@ namespace Gee.External.Capstone {
         ///     The hardware mode for the disassembler to use.
         /// </param>
         /// <returns>
-        ///     A ARM disassembler.
+        ///     An M68K disassembler.
         /// </returns>
         /// <exception cref="Gee.External.Capstone.CapstoneException">
         ///     Thrown if a disassembler could not be created.
@@ -415,8 +420,8 @@ namespace Gee.External.Capstone {
     /// </typeparam>
     public abstract class CapstoneDisassembler<TDisassembleMode, TInstruction, TInstructionDetail, TInstructionGroup, TInstructionGroupId, TInstructionId, TRegister, TRegisterId> : CapstoneDisassembler
         where TDisassembleMode : Enum
-        where TInstruction : Instruction<TInstruction, TInstructionDetail, TInstructionGroup, TInstructionGroupId, TInstructionId, TRegister, TRegisterId>
-        where TInstructionDetail : InstructionDetail<TInstructionDetail, TInstructionGroup, TInstructionGroupId, TInstruction, TInstructionId, TRegister, TRegisterId>
+        where TInstruction : Instruction<TInstruction, TInstructionDetail, TDisassembleMode, TInstructionGroup, TInstructionGroupId, TInstructionId, TRegister, TRegisterId>
+        where TInstructionDetail : InstructionDetail<TInstructionDetail, TDisassembleMode, TInstructionGroup, TInstructionGroupId, TInstruction, TInstructionId, TRegister, TRegisterId>
         where TInstructionGroup : InstructionGroup<TInstructionGroupId>
         where TInstructionGroupId : Enum
         where TInstructionId : Enum
@@ -451,6 +456,11 @@ namespace Gee.External.Capstone {
         ///     Disassembler's Handle.
         /// </summary>
         private readonly NativeDisassemblerHandle _handle;
+
+        /// <summary>
+        ///     Native Disassemble Mode.
+        /// </summary>
+        private readonly NativeDisassembleMode _nativeDisassembleMode;
 
         /// <summary>
         ///     Skip Data Callback.
@@ -547,6 +557,11 @@ namespace Gee.External.Capstone {
         internal override NativeDisassemblerHandle Handle => this._handle;
 
         /// <summary>
+        ///     Get Native Disassemble Mode.
+        /// </summary>
+        internal override NativeDisassembleMode NativeDisassembleMode => this._nativeDisassembleMode;
+
+        /// <summary>
         ///     Get and Set Skip Data Callback.
         /// </summary>
         /// <exception cref="System.ObjectDisposedException">
@@ -606,24 +621,23 @@ namespace Gee.External.Capstone {
             // ...
             //
             // ...
-            this._handle = CreateHandle(this);
+            this._nativeDisassembleMode = CreateNativeDisassembleMode(this);
+            // ...
+            //
+            // ...
+            this._handle = NativeCapstone.CreateDisassembler(this._disassembleArchitecture, this._nativeDisassembleMode);
 
             // <summary>
-            //      Create Handle.
+            //      Create Native Disassemble Mode.
             // </summary>
-            NativeDisassemblerHandle CreateHandle(CapstoneDisassembler<TDisassembleMode, TInstruction, TInstructionDetail, TInstructionGroup, TInstructionGroupId, TInstructionId, TRegister, TRegisterId> @this) {
+            NativeDisassembleMode CreateNativeDisassembleMode(CapstoneDisassembler<TDisassembleMode, TInstruction, TInstructionDetail, TInstructionGroup, TInstructionGroupId, TInstructionId, TRegister, TRegisterId> @this) {
                 // ...
                 //
                 // This is an ugly operation but it is the only way I am familiar with to convert a <c>System.Enum</c> to
                 // a 32-bit integer to pass to the Capstone API. It should be relatively quick since <c>System.Enum</c>
                 // implements <c>System.IConvertible</c>.
                 var cIDisassembleMode = Convert.ToInt32(@this._disassembleMode);
-
-                // ...
-                //
-                // Throws an exception if the operation fails.
-                var cNativeDisassembleMode = (NativeDisassembleMode) cIDisassembleMode;
-                return NativeCapstone.CreateDisassembler(@this._disassembleArchitecture, cNativeDisassembleMode);
+                return (NativeDisassembleMode) cIDisassembleMode;
             }
         }
 

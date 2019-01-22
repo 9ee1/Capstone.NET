@@ -12,7 +12,7 @@
     <description>Capstone.NET is a .NET Core and a .NET Framework binding for the Capstone disassembly framework. It is written in C#, supports Capstone 4, and has a friendly and simple type safe API that is ridiculously easy to learn and quick to pick up.</description>
     <copyright>Copyright (c) Ahmed Garhy</copyright>
     <repository url="https://github.com/9ee1/Capstone.NET" />
-    <tags>Capstone Disassembler Disassembly</tags>
+    <tags>capstone disassembler reverse-engineering security arm x86</tags>
     <dependencies>
       <group targetFramework=".NETFramework4.0" />
       <group targetFramework=".NETFramework4.5" />

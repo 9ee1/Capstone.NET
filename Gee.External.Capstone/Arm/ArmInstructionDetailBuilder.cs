@@ -2,7 +2,7 @@
     /// <summary>
     ///     ARM Instruction Detail Builder.
     /// </summary>
-    internal sealed class ArmInstructionDetailBuilder : InstructionDetailBuilder<ArmInstructionDetail, ArmInstructionGroup, ArmInstructionGroupId, ArmInstruction, ArmInstructionId, ArmRegister, ArmRegisterId> {
+    internal sealed class ArmInstructionDetailBuilder : InstructionDetailBuilder<ArmInstructionDetail, ArmDisassembleMode, ArmInstructionGroup, ArmInstructionGroupId, ArmInstruction, ArmInstructionId, ArmRegister, ArmRegisterId> {
         /// <summary>
         ///     Get and Set Condition Code.
         /// </summary>
@@ -89,6 +89,19 @@
         /// </returns>
         internal ArmInstructionDetail Create() {
             return new ArmInstructionDetail(this);
+        }
+
+        /// <summary>
+        ///     Create Disassemble Mode.
+        /// </summary>
+        /// <param name="nativeDisassembleMode">
+        ///     A native disassemble mode.
+        /// </param>
+        /// <returns>
+        ///     A disassemble mode.
+        /// </returns>
+        private protected override ArmDisassembleMode CreateDisassembleMode(NativeDisassembleMode nativeDisassembleMode) {
+            return (ArmDisassembleMode) nativeDisassembleMode;
         }
 
         /// <summary>

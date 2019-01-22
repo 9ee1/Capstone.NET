@@ -8,6 +8,9 @@ namespace Gee.External.Capstone {
     /// <typeparam name="TSelf">
     ///     This type.
     /// </typeparam>
+    /// <typeparam name="TDisassembleMode">
+    ///     The type of the hardware mode for the disassembler to use.
+    /// </typeparam>
     /// <typeparam name="TGroup">
     ///     The type of the instruction's architecture specific instruction groups.
     /// </typeparam>
@@ -26,11 +29,12 @@ namespace Gee.External.Capstone {
     /// <typeparam name="TRegisterId">
     ///     The type of the instruction's architecture specific register unique identifiers.
     /// </typeparam>
-    public abstract class InstructionDetail<TSelf, TGroup, TGroupId, TInstruction, TInstructionId, TRegister, TRegisterId>
-        where TSelf : InstructionDetail<TSelf, TGroup, TGroupId, TInstruction, TInstructionId, TRegister, TRegisterId>
+    public abstract class InstructionDetail<TSelf, TDisassembleMode, TGroup, TGroupId, TInstruction, TInstructionId, TRegister, TRegisterId>
+        where TSelf : InstructionDetail<TSelf, TDisassembleMode, TGroup, TGroupId, TInstruction, TInstructionId, TRegister, TRegisterId>
+        where TDisassembleMode : Enum
         where TGroup : InstructionGroup<TGroupId>
         where TGroupId : Enum
-        where TInstruction : Instruction<TInstruction, TSelf, TGroup, TGroupId, TInstructionId, TRegister, TRegisterId>
+        where TInstruction : Instruction<TInstruction, TSelf, TDisassembleMode, TGroup, TGroupId, TInstructionId, TRegister, TRegisterId>
         where TInstructionId : Enum
         where TRegister : Register<TRegisterId>
         where TRegisterId : Enum {
@@ -94,6 +98,22 @@ namespace Gee.External.Capstone {
                 return this._allWrittenRegisters;
             }
         }
+
+        /// <summary>
+        ///     Get Disassemble Architecture.
+        /// </summary>
+        /// <remarks>
+        ///     Represents the hardware architecture of the disassembled instruction.
+        /// </remarks>
+        public DisassembleArchitecture DisassembleArchitecture { get; }
+
+        /// <summary>
+        ///     Get Instruction's Disassemble Mode.
+        /// </summary>
+        /// <remarks>
+        ///     Represents the hardware mode of the disassembled instruction.
+        /// </remarks>
+        public TDisassembleMode DisassembleMode { get; }
 
         /// <summary>
         ///     Get Instruction's Explicitly Read Registers.
@@ -174,9 +194,11 @@ namespace Gee.External.Capstone {
         /// <param name="builder">
         ///     A builder to initialize the object with.
         /// </param>
-        private protected InstructionDetail(InstructionDetailBuilder<TSelf, TGroup, TGroupId, TInstruction, TInstructionId, TRegister, TRegisterId> builder) {
+        private protected InstructionDetail(InstructionDetailBuilder<TSelf, TDisassembleMode, TGroup, TGroupId, TInstruction, TInstructionId, TRegister, TRegisterId> builder) {
             this._allReadRegisters = builder.AllReadRegisters;
             this._allWrittenRegisters = builder.AllWrittenRegisters;
+            this.DisassembleArchitecture = builder.DisassembleArchitecture;
+            this.DisassembleMode = builder.DisassembleMode;
             this._explicitlyReadRegisters = new Lazy<TRegister[]>(this.OnExplicitlyReadRegistersLazyInitialization);
             this._explicitlyWrittenRegisters = new Lazy<TRegister[]>(this.OnExplicitlyWrittenRegistersLazyInitialization);
             this._groups = builder.Groups;

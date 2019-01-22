@@ -2,6 +2,11 @@
 ###
 ### ...
 
+### Custom Build Files.
+###
+### ...
+.build/nuget
+
 ### Visual Studio User Specific Files.
 ###
 ### ...

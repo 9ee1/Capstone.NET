@@ -2,7 +2,7 @@
     /// <summary>
     ///     ARM64 Instruction Detail.
     /// </summary>
-    public sealed class Arm64InstructionDetail : InstructionDetail<Arm64InstructionDetail, Arm64InstructionGroup, Arm64InstructionGroupId, Arm64Instruction, Arm64InstructionId, Arm64Register, Arm64RegisterId> {
+    public sealed class Arm64InstructionDetail : InstructionDetail<Arm64InstructionDetail, Arm64DisassembleMode, Arm64InstructionGroup, Arm64InstructionGroupId, Arm64Instruction, Arm64InstructionId, Arm64Register, Arm64RegisterId> {
         /// <summary>
         ///     Get Condition Code.
         /// </summary>

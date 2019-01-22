@@ -2,7 +2,7 @@
     /// <summary>
     ///     ARM64 Instruction.
     /// </summary>
-    public sealed class Arm64Instruction : Instruction<Arm64Instruction, Arm64InstructionDetail, Arm64InstructionGroup, Arm64InstructionGroupId, Arm64InstructionId, Arm64Register, Arm64RegisterId> {
+    public sealed class Arm64Instruction : Instruction<Arm64Instruction, Arm64InstructionDetail, Arm64DisassembleMode, Arm64InstructionGroup, Arm64InstructionGroupId, Arm64InstructionId, Arm64Register, Arm64RegisterId> {
         /// <summary>
         ///     Create an ARM64 Instruction.
         /// </summary>

@@ -2,7 +2,7 @@
     /// <summary>
     ///     X86 Instruction Detail Builder.
     /// </summary>
-    internal sealed class X86InstructionDetailBuilder : InstructionDetailBuilder<X86InstructionDetail, X86InstructionGroup, X86InstructionGroupId, X86Instruction, X86InstructionId, X86Register, X86RegisterId> {
+    internal sealed class X86InstructionDetailBuilder : InstructionDetailBuilder<X86InstructionDetail, X86DisassembleMode, X86InstructionGroup, X86InstructionGroupId, X86Instruction, X86InstructionId, X86Register, X86RegisterId> {
         /// <summary>
         ///     Get and Set Address Size.
         /// </summary>
@@ -143,6 +143,19 @@
         /// </returns>
         internal X86InstructionDetail Create() {
             return new X86InstructionDetail(this);
+        }
+
+        /// <summary>
+        ///     Create Disassemble Mode.
+        /// </summary>
+        /// <param name="nativeDisassembleMode">
+        ///     A native disassemble mode.
+        /// </param>
+        /// <returns>
+        ///     A disassemble mode.
+        /// </returns>
+        private protected override X86DisassembleMode CreateDisassembleMode(NativeDisassembleMode nativeDisassembleMode) {
+            return (X86DisassembleMode) nativeDisassembleMode;
         }
 
         /// <summary>

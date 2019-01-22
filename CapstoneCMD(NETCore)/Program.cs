@@ -360,6 +360,7 @@ namespace ConsoleApp1 {
                     0X00, 0X00, 0XF2, 0X00, 0X0A, 0X28, 0X4E, 0XB9, 0X00, 0X00, 0X00, 0X12, 0X4E, 0X75
                 };
 
+                // M68K000
                 var instructions = disassembler.Disassemble(binaryCode);
                 foreach (var instruction in instructions) {
 

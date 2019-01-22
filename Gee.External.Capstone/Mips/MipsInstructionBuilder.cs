@@ -2,7 +2,7 @@
     /// <summary>
     ///     MIPS Instruction Builder.
     /// </summary>
-    internal sealed class MipsInstructionBuilder : InstructionBuilder<MipsInstructionDetail, MipsInstructionGroup, MipsInstructionGroupId, MipsInstruction, MipsInstructionId, MipsRegister, MipsRegisterId> {
+    internal sealed class MipsInstructionBuilder : InstructionBuilder<MipsInstructionDetail, MipsDisassembleMode, MipsInstructionGroup, MipsInstructionGroupId, MipsInstruction, MipsInstructionId, MipsRegister, MipsRegisterId> {
         /// <summary>
         ///     Create a MIPS Instruction.
         /// </summary>
@@ -27,6 +27,19 @@
         /// </returns>
         private protected override MipsInstructionDetail CreateDetails(CapstoneDisassembler disassembler, NativeInstructionHandle hInstruction) {
             return MipsInstructionDetail.Create(disassembler, hInstruction);
+        }
+
+        /// <summary>
+        ///     Create Disassemble Mode.
+        /// </summary>
+        /// <param name="nativeDisassembleMode">
+        ///     A native disassemble mode.
+        /// </param>
+        /// <returns>
+        ///     A disassemble mode.
+        /// </returns>
+        private protected override MipsDisassembleMode CreateDisassembleMode(NativeDisassembleMode nativeDisassembleMode) {
+            return (MipsDisassembleMode) nativeDisassembleMode;
         }
 
         /// <summary>

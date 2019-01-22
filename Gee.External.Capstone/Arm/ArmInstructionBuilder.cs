@@ -2,7 +2,7 @@
     /// <summary>
     ///     ARM Instruction Builder.
     /// </summary>
-    internal sealed class ArmInstructionBuilder : InstructionBuilder<ArmInstructionDetail, ArmInstructionGroup, ArmInstructionGroupId, ArmInstruction, ArmInstructionId, ArmRegister, ArmRegisterId> {
+    internal sealed class ArmInstructionBuilder : InstructionBuilder<ArmInstructionDetail, ArmDisassembleMode, ArmInstructionGroup, ArmInstructionGroupId, ArmInstruction, ArmInstructionId, ArmRegister, ArmRegisterId> {
         /// <summary>
         ///     Create an ARM Instruction.
         /// </summary>
@@ -27,6 +27,19 @@
         /// </returns>
         private protected override ArmInstructionDetail CreateDetails(CapstoneDisassembler disassembler, NativeInstructionHandle hInstruction) {
             return ArmInstructionDetail.Create(disassembler, hInstruction);
+        }
+
+        /// <summary>
+        ///     Create Disassemble Mode.
+        /// </summary>
+        /// <param name="nativeDisassembleMode">
+        ///     A native disassemble mode.
+        /// </param>
+        /// <returns>
+        ///     A disassemble mode.
+        /// </returns>
+        private protected override ArmDisassembleMode CreateDisassembleMode(NativeDisassembleMode nativeDisassembleMode) {
+            return (ArmDisassembleMode) nativeDisassembleMode;
         }
 
         /// <summary>

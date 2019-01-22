@@ -2,7 +2,7 @@
     /// <summary>
     ///     M68K Instruction Detail Builder.
     /// </summary>
-    internal sealed class M68KInstructionDetailBuilder : InstructionDetailBuilder<M68KInstructionDetail, M68KInstructionGroup, M68KInstructionGroupId, M68KInstruction, M68KInstructionId, M68KRegister, M68KRegisterId> {
+    internal sealed class M68KInstructionDetailBuilder : InstructionDetailBuilder<M68KInstructionDetail, M68KDisassembleMode, M68KInstructionGroup, M68KInstructionGroupId, M68KInstruction, M68KInstructionId, M68KRegister, M68KRegisterId> {
         /// <summary>
         ///     Get and Set Instruction's Operands.
         /// </summary>
@@ -41,6 +41,19 @@
         /// </returns>
         internal M68KInstructionDetail Create() {
             return new M68KInstructionDetail(this);
+        }
+
+        /// <summary>
+        ///     Create Disassemble Mode.
+        /// </summary>
+        /// <param name="nativeDisassembleMode">
+        ///     A native disassemble mode.
+        /// </param>
+        /// <returns>
+        ///     A disassemble mode.
+        /// </returns>
+        private protected override M68KDisassembleMode CreateDisassembleMode(NativeDisassembleMode nativeDisassembleMode) {
+            return (M68KDisassembleMode) nativeDisassembleMode;
         }
 
         /// <summary>

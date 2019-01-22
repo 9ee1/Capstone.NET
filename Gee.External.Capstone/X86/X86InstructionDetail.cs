@@ -2,7 +2,7 @@
     /// <summary>
     ///     X86 Instruction Detail.
     /// </summary>
-    public sealed class X86InstructionDetail : InstructionDetail<X86InstructionDetail, X86InstructionGroup, X86InstructionGroupId, X86Instruction, X86InstructionId, X86Register, X86RegisterId> {
+    public sealed class X86InstructionDetail : InstructionDetail<X86InstructionDetail, X86DisassembleMode, X86InstructionGroup, X86InstructionGroupId, X86Instruction, X86InstructionId, X86Register, X86RegisterId> {
         /// <summary>
         ///     Get Address Size.
         /// </summary>

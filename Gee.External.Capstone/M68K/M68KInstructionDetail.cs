@@ -2,7 +2,7 @@
     /// <summary>
     ///     M68K Instruction Detail.
     /// </summary>
-    public sealed class M68KInstructionDetail : InstructionDetail<M68KInstructionDetail, M68KInstructionGroup, M68KInstructionGroupId, M68KInstruction, M68KInstructionId, M68KRegister, M68KRegisterId> {
+    public sealed class M68KInstructionDetail : InstructionDetail<M68KInstructionDetail, M68KDisassembleMode, M68KInstructionGroup, M68KInstructionGroupId, M68KInstruction, M68KInstructionId, M68KRegister, M68KRegisterId> {
         /// <summary>
         ///     Get Instruction's Operands.
         /// </summary>
