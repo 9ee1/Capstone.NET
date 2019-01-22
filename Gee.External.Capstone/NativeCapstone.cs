@@ -8,8 +8,28 @@ namespace Gee.External.Capstone {
     ///     Native Capstone.
     /// </summary>
     internal static class NativeCapstone {
+        /// <summary>
+        ///     Skip Data Callback Delegate.
+        /// </summary>
+        /// <param name="pBinaryCode">
+        ///     A pointer to a buffer indicating the binary code that is being disassembled.
+        /// </param>
+        /// <param name="binaryCodeSize">
+        ///     A platform dependent integer indicating the size, in bytes, of the binary code buffer.
+        /// </param>
+        /// <param name="dataOffset">
+        ///     A platform dependent integer indicating the 0-based offset of the encountered data in the binary code
+        ///     buffer.
+        /// </param>
+        /// <param name="pState">
+        ///     A pointer to an opaque data structure indicating custom state.
+        /// </param>
+        /// <returns>
+        ///     A platform dependent integer indicating the number of bytes to skip, starting at the data offset, in
+        ///     the binary code buffer. A <c>0</c> indicates the disassemble operation should terminate immediately.
+        /// </returns>
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        internal delegate IntPtr Callback(IntPtr pBinaryCode, IntPtr binaryCodeSize, IntPtr invalidOffset, IntPtr pState);
+        internal delegate IntPtr SkipDataCallback(IntPtr pBinaryCode, IntPtr binaryCodeSize, IntPtr dataOffset, IntPtr pState);
 
         /// <summary>
         ///     Magic Instruction Architecture Details Field Offset.
@@ -104,7 +124,7 @@ namespace Gee.External.Capstone {
         /// <exception cref="System.ObjectDisposedException">
         ///     Thrown if the disassembler handle is disposed.
         /// </exception>
-        public static NativeInstructionHandle CreateInstruction(NativeDisassemblerHandle hDisassembler) {
+        internal static NativeInstructionHandle CreateInstruction(NativeDisassemblerHandle hDisassembler) {
             // ...
             //
             // Throws an exception if the operation fails.
@@ -144,7 +164,7 @@ namespace Gee.External.Capstone {
         /// <exception cref="System.ObjectDisposedException">
         ///     Thrown if the disassembler handle is disposed, or if the instruction handle is disposed.
         /// </exception>
-        public static Tuple<short[], short[]> GetAccessedRegisters(NativeDisassemblerHandle hDisassembler, NativeInstructionHandle hInstruction) {
+        internal static Tuple<short[], short[]> GetAccessedRegisters(NativeDisassemblerHandle hDisassembler, NativeInstructionHandle hInstruction) {
             // ...
             //
             // Throws an exception if the operation fails.
@@ -202,7 +222,7 @@ namespace Gee.External.Capstone {
         /// <returns>
         ///     An instruction.
         /// </returns>
-        public static NativeInstruction GetInstruction(NativeInstructionHandle hInstruction) {
+        internal static NativeInstruction GetInstruction(NativeInstructionHandle hInstruction) {
             var pInstruction = hInstruction.DangerousAddRefAndGetHandle();
             try {
                 // ...
@@ -226,7 +246,7 @@ namespace Gee.External.Capstone {
         ///     The instruction's details. A null reference indicates the instruction was disassembled without
         ///     details.
         /// </returns>
-        public static NativeInstructionDetail? GetInstructionDetail(NativeInstructionHandle hInstruction) {
+        internal static NativeInstructionDetail? GetInstructionDetail(NativeInstructionHandle hInstruction) {
             var pInstruction = hInstruction.DangerousAddRefAndGetHandle();
             try {
                 // ...
@@ -268,7 +288,7 @@ namespace Gee.External.Capstone {
         ///     The instruction's details. A null reference indicates the instruction was disassembled without
         ///     details.
         /// </returns>
-        public static TInstructionDetail? GetInstructionDetail<TInstructionDetail>(NativeInstructionHandle hInstruction) where TInstructionDetail : struct {
+        internal static TInstructionDetail? GetInstructionDetail<TInstructionDetail>(NativeInstructionHandle hInstruction) where TInstructionDetail : struct {
             var pInstruction = hInstruction.DangerousAddRefAndGetHandle();
             try {
                 // ...
@@ -312,7 +332,7 @@ namespace Gee.External.Capstone {
         ///     The instruction's details. A null reference indicates the instruction was disassembled without
         ///     details.
         /// </returns>
-        public static NativeInstructionDetail? GetInstructionDetail(ref NativeInstruction instruction) {
+        internal static NativeInstructionDetail? GetInstructionDetail(ref NativeInstruction instruction) {
             NativeInstructionDetail? instructionDetails = null;
             if (instruction.Details != IntPtr.Zero) {
                 // ...
@@ -338,7 +358,7 @@ namespace Gee.External.Capstone {
         ///     The instruction's architecture specific details. A null reference indicates the instruction was
         ///     disassembled without its details. 
         /// </returns>
-        public static TInstructionDetails? GetInstructionDetail<TInstructionDetails>(ref NativeInstruction instruction) where TInstructionDetails : struct {
+        internal static TInstructionDetails? GetInstructionDetail<TInstructionDetails>(ref NativeInstruction instruction) where TInstructionDetails : struct {
             TInstructionDetails? instructionDetails = null;
             if (instruction.Details != IntPtr.Zero) {
                 // ...
@@ -367,7 +387,7 @@ namespace Gee.External.Capstone {
         /// <exception cref="System.ObjectDisposedException">
         ///     Thrown if the disassembler handle is disposed.
         /// </exception>
-        public static unsafe string GetInstructionGroupName(NativeDisassemblerHandle hDisassembler, int instructionGroupId) {
+        internal static unsafe string GetInstructionGroupName(NativeDisassemblerHandle hDisassembler, int instructionGroupId) {
             // ...
             //
             // Throws an exception if the operation fails.
@@ -396,7 +416,7 @@ namespace Gee.External.Capstone {
         /// <exception cref="System.ObjectDisposedException">
         ///     Thrown if the disassembler handle is disposed.
         /// </exception>
-        public static unsafe string GetRegisterName(NativeDisassemblerHandle hDisassembler, int registerId) {
+        internal static unsafe string GetRegisterName(NativeDisassemblerHandle hDisassembler, int registerId) {
             // ...
             //
             // Throws an exception if the operation fails.
@@ -545,9 +565,45 @@ namespace Gee.External.Capstone {
         /// <returns>
         ///     A boolean true if the option is supported. A boolean false otherwise.
         /// </returns>
-        public static bool Query(NativeQueryOption queryOption) {
+        internal static bool Query(NativeQueryOption queryOption) {
             var isSupported = NativeCapstoneImport.Query(queryOption);
             return isSupported;
+        }
+
+        /// <summary>
+        ///     Set Disassemble Mode Option.
+        /// </summary>
+        /// <param name="hDisassembler">
+        ///     A disassembler handle.
+        /// </param>
+        /// <param name="disassembleMode">
+        ///     A hardware mode for the disassembler to use.
+        /// </param>
+        /// <exception cref="Gee.External.Capstone.CapstoneException">
+        ///     Thrown if the disassemble mode option could not be set.
+        /// </exception>
+        /// <exception cref="System.ArgumentException">
+        ///     Thrown if the disassemble mode is invalid.
+        /// </exception>
+        /// <exception cref="System.ObjectDisposedException">
+        ///     Thrown if the disassembler handle is disposed.
+        /// </exception>
+        internal static void SetDisassembleModeOption(NativeDisassemblerHandle hDisassembler, NativeDisassembleMode disassembleMode) {
+            // ...
+            //
+            // Throws an exception if the operation fails.
+            const NativeDisassemblerOptionType optionType = NativeDisassemblerOptionType.SetDisassembleMode;
+            var resultCode = NativeCapstoneImport.SetDisassemblerOption(hDisassembler, optionType, (IntPtr) disassembleMode);
+            if (resultCode != NativeCapstoneResultCode.Ok) {
+                if (resultCode == NativeCapstoneResultCode.InvalidOption) {
+                    var detailMessage = $"An option ({nameof(optionType)}) is invalid.";
+                    throw new ArgumentException(detailMessage, nameof(optionType));
+                }
+                else {
+                    var detailMessage = $"A disassembler option ({optionType}) could not be set.";
+                    throw new CapstoneException(detailMessage);
+                }
+            }
         }
 
         /// <summary>
@@ -574,7 +630,7 @@ namespace Gee.External.Capstone {
         /// <exception cref="System.ObjectDisposedException">
         ///     Thrown if the disassembler handle is disposed.
         /// </exception>
-        public static void SetDisassemblerOption(NativeDisassemblerHandle hDisassembler, NativeDisassemblerOptionType optionType, NativeDisassemblerOptionValue optionValue) {
+        internal static void SetDisassemblerOption(NativeDisassemblerHandle hDisassembler, NativeDisassemblerOptionType optionType, NativeDisassemblerOptionValue optionValue) {
             if (optionType == NativeDisassemblerOptionType.SetSkipDataConfig) {
                 var detailMessage = $"A disassembler option ({optionType}) is unsupported.";
                 throw new NotSupportedException(detailMessage);
@@ -618,7 +674,7 @@ namespace Gee.External.Capstone {
         /// <exception cref="System.ObjectDisposedException">
         ///     Thrown if the disassembler handle is disposed.
         /// </exception>
-        public static void SetInstructionMnemonicOption(NativeDisassemblerHandle hDisassembler, ref NativeInstructionMnemonicOptionValue optionValue) {
+        internal static void SetInstructionMnemonicOption(NativeDisassemblerHandle hDisassembler, ref NativeInstructionMnemonicOptionValue optionValue) {
             var pOptionValue = IntPtr.Zero;
             try {
                 pOptionValue = MarshalExtension.AllocHGlobal<NativeInstructionMnemonicOptionValue>();
@@ -647,7 +703,7 @@ namespace Gee.External.Capstone {
             }
         }
 
-        public static void SetSkipDataOption(NativeDisassemblerHandle hDisassembler, ref NativeSkipDataOptionValue optionValue) {
+        internal static void SetSkipDataOption(NativeDisassemblerHandle hDisassembler, ref NativeSkipDataOptionValue optionValue) {
             var pOptionValue = IntPtr.Zero;
             try {
                 pOptionValue = MarshalExtension.AllocHGlobal<NativeSkipDataOptionValue>();

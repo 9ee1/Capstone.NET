@@ -1,7 +1,9 @@
 ﻿using Gee.External.Capstone.Arm;
 using Gee.External.Capstone.Arm64;
 using Gee.External.Capstone.M68K;
+using Gee.External.Capstone.Mips;
 using Gee.External.Capstone.X86;
+using Gee.External.Capstone.XCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +16,10 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Determine if the ARM64 Architecture is Supported.
         /// </summary>
-        /// <value>
-        ///     A boolean true if the ARM64 architecture is supported. A boolean false otherwise.
-        /// </value>
+        /// <remarks>
+        ///     Indicates if the ARM64 architecture is supported. A boolean true indicates it is supported. A boolean
+        ///     false otherwise.
+        /// </remarks>
         public static bool IsArm64Supported {
             get {
                 var value = NativeCapstone.Query(NativeQueryOption.QueryArm64Architecture);
@@ -27,9 +30,10 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Determine if the ARM Architecture is Supported.
         /// </summary>
-        /// <value>
-        ///     A boolean true if the ARM architecture is supported. A boolean false otherwise.
-        /// </value>
+        /// <remarks>
+        ///     Indicates if the ARM architecture is supported. A boolean true indicates it is supported. A boolean
+        ///     false otherwise.
+        /// </remarks>
         public static bool IsArmSupported {
             get {
                 var value = NativeCapstone.Query(NativeQueryOption.QueryArmArchitecture);
@@ -40,9 +44,9 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Determine if Diet Mode is Enabled.
         /// </summary>
-        /// <value>
-        ///     A boolean true if diet mode is enabled. A boolean false otherwise.
-        /// </value>
+        /// <remarks>
+        ///     Indicates if Diet Mode is enabled. A boolean true indicates it is enabled. A boolean false otherwise.
+        /// </remarks>
         public static bool IsDietModeEnabled {
             get {
                 var value = NativeCapstone.Query(NativeQueryOption.QueryDietMode);
@@ -53,9 +57,10 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Determine if the Ethereum EVM Architecture is Supported.
         /// </summary>
-        /// <value>
-        ///     A boolean true if the Ethereum EVM architecture is supported. A boolean false otherwise.
-        /// </value>
+        /// <remarks>
+        ///     Indicates if the Ethereum EVM architecture is supported. A boolean true indicates it is supported. A
+        ///     boolean false otherwise.
+        /// </remarks>
         public static bool IsEvmSupported {
             get {
                 var value = NativeCapstone.Query(NativeQueryOption.QueryEvmArchitecture);
@@ -66,9 +71,10 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Determine if the M680X Architecture is Supported.
         /// </summary>
-        /// <value>
-        ///     A boolean true if the M680X architecture is supported. A boolean false otherwise.
-        /// </value>
+        /// <remarks>
+        ///     Indicates if the M680X architecture is supported. A boolean true indicates it is supported. A boolean
+        ///     false otherwise.
+        /// </remarks>
         public static bool IsM680XSupported {
             get {
                 var value = NativeCapstone.Query(NativeQueryOption.QueryM680XArchitecture);
@@ -79,9 +85,10 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Determine if the M68K Architecture is Supported.
         /// </summary>
-        /// <value>
-        ///     A boolean true if the M68K architecture is supported. A boolean false otherwise.
-        /// </value>
+        /// <remarks>
+        ///     Indicates if the M68K architecture is supported. A boolean true indicates it is supported. A boolean
+        ///     false otherwise.
+        /// </remarks>
         public static bool IsM68KSupported {
             get {
                 var value = NativeCapstone.Query(NativeQueryOption.QueryM68KArchitecture);
@@ -92,9 +99,10 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Determine if the MIPS Architecture is Supported.
         /// </summary>
-        /// <value>
-        ///     A boolean true if the MIPS architecture is supported. A boolean false otherwise.
-        /// </value>
+        /// <remarks>
+        ///     Indicates if the MIPS architecture is supported. A boolean true indicates it is supported. A boolean
+        ///     false otherwise.
+        /// </remarks>
         public static bool IsMipsSupported {
             get {
                 var value = NativeCapstone.Query(NativeQueryOption.QueryMipsArchitecture);
@@ -105,9 +113,10 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Determine if the PowerPC Architecture is Supported.
         /// </summary>
-        /// <value>
-        ///     A boolean true if the PowerPC architecture is supported. A boolean false otherwise.
-        /// </value>
+        /// <remarks>
+        ///     Indicates if the PowerPC architecture is supported. A boolean true indicates it is supported. A
+        ///     boolean false otherwise.
+        /// </remarks>
         public static bool IsPowerPcSupported {
             get {
                 var value = NativeCapstone.Query(NativeQueryOption.QueryPowerPcArchitecture);
@@ -118,9 +127,10 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Determine if the SPARC Architecture is Supported.
         /// </summary>
-        /// <value>
-        ///     A boolean true if the SPARC architecture is supported. A boolean false otherwise.
-        /// </value>
+        /// <remarks>
+        ///     Indicates if the SPARC architecture is supported. A boolean true indicates it is supported. A boolean
+        ///     false otherwise.
+        /// </remarks>
         public static bool IsSparcSupported {
             get {
                 var value = NativeCapstone.Query(NativeQueryOption.QuerySparcArchitecture);
@@ -131,9 +141,10 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Determine if the SystemZ Architecture is Supported.
         /// </summary>
-        /// <value>
-        ///     A boolean true if the SystemZ architecture is supported. A boolean false otherwise.
-        /// </value>
+        /// <remarks>
+        ///     Indicates if the SystemZ architecture is supported. A boolean true indicates it is supported. A
+        ///     boolean false otherwise.
+        /// </remarks>
         public static bool IsSystemZSupported {
             get {
                 var value = NativeCapstone.Query(NativeQueryOption.QuerySystemZArchitecture);
@@ -142,11 +153,12 @@ namespace Gee.External.Capstone {
         }
 
         /// <summary>
-        ///     Determine if the Tms320C64X Architecture is Supported.
+        ///     Determine if the TMS320C64X Architecture is Supported.
         /// </summary>
-        /// <value>
-        ///     A boolean true if the Tms320C64X architecture is supported. A boolean false otherwise.
-        /// </value>
+        /// <remarks>
+        ///     Indicates if the TMS320C64X architecture is supported. A boolean true indicates it is supported. A
+        ///     boolean false otherwise.
+        /// </remarks>
         public static bool IsTms320C64XSupported {
             get {
                 var value = NativeCapstone.Query(NativeQueryOption.QueryTms320C64XArchitecture);
@@ -157,9 +169,10 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Determine if X86 Reduce Mode is Enabled.
         /// </summary>
-        /// <value>
-        ///     A boolean true if X86 reduce mode is enabled. A boolean false otherwise.
-        /// </value>
+        /// <remarks>
+        ///     Indicates if X86 Reduce Mode is enabled. A boolean true indicates it is enabled. A boolean false
+        ///     otherwise.
+        /// </remarks>
         public static bool IsX86ReduceModeEnabled {
             get {
                 var value = NativeCapstone.Query(NativeQueryOption.QueryX86ReduceMode);
@@ -170,9 +183,10 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Determine if the X86 Architecture is Supported.
         /// </summary>
-        /// <value>
-        ///     A boolean true if the X86 architecture is supported. A boolean false otherwise.
-        /// </value>
+        /// <remarks>
+        ///     Indicates if the X86 architecture is supported. A boolean true indicates it is supported. A boolean
+        ///     false otherwise.
+        /// </remarks>
         public static bool IsX86Supported {
             get {
                 var value = NativeCapstone.Query(NativeQueryOption.QueryX86Architecture);
@@ -183,9 +197,10 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Determine if the XCore Architecture is Supported.
         /// </summary>
-        /// <value>
-        ///     A boolean true if the XCore architecture is supported. A boolean false otherwise.
-        /// </value>
+        /// <remarks>
+        ///     Indicates if the XCore architecture is supported. A boolean true indicates it is supported. A boolean
+        ///     false otherwise.
+        /// </remarks>
         public static bool IsXCoreSupported {
             get {
                 var value = NativeCapstone.Query(NativeQueryOption.QueryXCoreArchitecture);
@@ -209,6 +224,9 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Get Disassemble Architecture.
         /// </summary>
+        /// <remarks>
+        ///     Represents the disassembler's hardware architecture.
+        /// </remarks>
         public abstract DisassembleArchitecture DisassembleArchitecture { get; }
 
         /// <summary>
@@ -236,11 +254,17 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Get Disassembler's Handle.
         /// </summary>
+        /// <remarks>
+        ///     Represents the disassembler's native handle.
+        /// </remarks>
         internal abstract NativeDisassemblerHandle Handle { get; }
 
         /// <summary>
         ///     Get Native Disassemble Mode.
         /// </summary>
+        /// <remarks>
+        ///     Represents the disassembler's native hardware mode.
+        /// </remarks>
         internal abstract NativeDisassembleMode NativeDisassembleMode { get; }
 
         /// <summary>
@@ -261,21 +285,17 @@ namespace Gee.External.Capstone {
         ///     The hardware mode for the disassembler to use.
         /// </param>
         /// <returns>
-        ///     A ARM disassembler.
+        ///     An ARM64 disassembler.
         /// </returns>
         /// <exception cref="Gee.External.Capstone.CapstoneException">
         ///     Thrown if a disassembler could not be created.
-        /// </exception>
-        /// <exception cref="System.ArgumentException">
-        ///     Thrown if the disassemble mode is invalid or unsupported by the disassemble architecture.
         /// </exception>
         /// <exception cref="System.OutOfMemoryException">
         ///     Thrown if sufficient memory cannot be allocated to perform the operation as a rare indication that the
         ///     system is under heavy load.
         /// </exception>
         public static CapstoneArm64Disassembler CreateArm64Disassembler(Arm64DisassembleMode disassembleMode) {
-            var disassembler = new CapstoneArm64Disassembler(disassembleMode);
-            return disassembler;
+            return new CapstoneArm64Disassembler(disassembleMode);
         }
 
         /// <summary>
@@ -285,21 +305,17 @@ namespace Gee.External.Capstone {
         ///     The hardware mode for the disassembler to use.
         /// </param>
         /// <returns>
-        ///     A ARM disassembler.
+        ///     An ARM disassembler.
         /// </returns>
         /// <exception cref="Gee.External.Capstone.CapstoneException">
         ///     Thrown if a disassembler could not be created.
-        /// </exception>
-        /// <exception cref="System.ArgumentException">
-        ///     Thrown if the disassemble mode is invalid or unsupported by the disassemble architecture.
         /// </exception>
         /// <exception cref="System.OutOfMemoryException">
         ///     Thrown if sufficient memory cannot be allocated to perform the operation as a rare indication that the
         ///     system is under heavy load.
         /// </exception>
         public static CapstoneArmDisassembler CreateArmDisassembler(ArmDisassembleMode disassembleMode) {
-            var disassembler = new CapstoneArmDisassembler(disassembleMode);
-            return disassembler;
+            return new CapstoneArmDisassembler(disassembleMode);
         }
 
         /// <summary>
@@ -314,16 +330,32 @@ namespace Gee.External.Capstone {
         /// <exception cref="Gee.External.Capstone.CapstoneException">
         ///     Thrown if a disassembler could not be created.
         /// </exception>
-        /// <exception cref="System.ArgumentException">
-        ///     Thrown if the disassemble mode is invalid or unsupported by the disassemble architecture.
-        /// </exception>
         /// <exception cref="System.OutOfMemoryException">
         ///     Thrown if sufficient memory cannot be allocated to perform the operation as a rare indication that the
         ///     system is under heavy load.
         /// </exception>
         public static CapstoneM68KDisassembler CreateM68KDisassembler(M68KDisassembleMode disassembleMode) {
-            var disassembler = new CapstoneM68KDisassembler(disassembleMode);
-            return disassembler;
+            return new CapstoneM68KDisassembler(disassembleMode);
+        }
+
+        /// <summary>
+        ///     Create a MIPS Disassembler.
+        /// </summary>
+        /// <param name="disassembleMode">
+        ///     The hardware mode for the disassembler to use.
+        /// </param>
+        /// <returns>
+        ///     A MIPS disassembler.
+        /// </returns>
+        /// <exception cref="Gee.External.Capstone.CapstoneException">
+        ///     Thrown if a disassembler could not be created.
+        /// </exception>
+        /// <exception cref="System.OutOfMemoryException">
+        ///     Thrown if sufficient memory cannot be allocated to perform the operation as a rare indication that the
+        ///     system is under heavy load.
+        /// </exception>
+        public static CapstoneMipsDisassembler CreateMipsDisassembler(MipsDisassembleMode disassembleMode) {
+            return new CapstoneMipsDisassembler(disassembleMode);
         }
 
         /// <summary>
@@ -338,27 +370,43 @@ namespace Gee.External.Capstone {
         /// <exception cref="Gee.External.Capstone.CapstoneException">
         ///     Thrown if a disassembler could not be created.
         /// </exception>
-        /// <exception cref="System.ArgumentException">
-        ///     Thrown if the disassemble mode is invalid or unsupported by the disassemble architecture.
-        /// </exception>
         /// <exception cref="System.OutOfMemoryException">
         ///     Thrown if sufficient memory cannot be allocated to perform the operation as a rare indication that the
         ///     system is under heavy load.
         /// </exception>
         public static CapstoneX86Disassembler CreateX86Disassembler(X86DisassembleMode disassembleMode) {
-            var disassembler = new CapstoneX86Disassembler(disassembleMode);
-            return disassembler;
+            return new CapstoneX86Disassembler(disassembleMode);
+        }
+
+        /// <summary>
+        ///     Create an XCore Disassembler.
+        /// </summary>
+        /// <param name="disassembleMode">
+        ///     The hardware mode for the disassembler to use.
+        /// </param>
+        /// <returns>
+        ///     An XCore disassembler.
+        /// </returns>
+        /// <exception cref="Gee.External.Capstone.CapstoneException">
+        ///     Thrown if a disassembler could not be created.
+        /// </exception>
+        /// <exception cref="System.OutOfMemoryException">
+        ///     Thrown if sufficient memory cannot be allocated to perform the operation as a rare indication that the
+        ///     system is under heavy load.
+        /// </exception>
+        public static CapstoneXCoreDisassembler CreateXCoreDisassembler(XCoreDisassembleMode disassembleMode) {
+            return new CapstoneXCoreDisassembler(disassembleMode);
         }
 
         /// <summary>
         ///     Throw an Exception if Diet Mode is Enabled.
         /// </summary>
         /// <exception cref="System.NotSupportedException">
-        ///     Thrown if diet mode is enabled.
+        ///     Thrown if Diet Mode is enabled.
         /// </exception>
         internal static void ThrowIfDietModeIsEnabled() {
             if (CapstoneDisassembler.IsDietModeEnabled) {
-                const string detailMessage = "An operation is not supported when diet mode is enabled.";
+                const string detailMessage = "An operation is not supported when Diet Mode is enabled.";
                 throw new NotSupportedException(detailMessage);
             }
         }
@@ -435,7 +483,7 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Disassemble Mode. 
         /// </summary>
-        private readonly TDisassembleMode _disassembleMode;
+        private TDisassembleMode _disassembleMode;
 
         /// <summary>
         ///     Disassemble Syntax. 
@@ -460,7 +508,7 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Native Disassemble Mode.
         /// </summary>
-        private readonly NativeDisassembleMode _nativeDisassembleMode;
+        private NativeDisassembleMode _nativeDisassembleMode;
 
         /// <summary>
         ///     Skip Data Callback.
@@ -475,12 +523,43 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Get Disassemble Architecture.
         /// </summary>
+        /// <remarks>
+        ///     Represents the disassembler's hardware architecture.
+        /// </remarks>
         public override DisassembleArchitecture DisassembleArchitecture => this._disassembleArchitecture;
 
         /// <summary>
-        ///     Get Disassemble Mode. 
+        ///     Get and Set Disassemble Mode.
         /// </summary>
-        public TDisassembleMode DisassembleMode => this._disassembleMode;
+        /// <remarks>
+        ///     Represents the disassembler's hardware mode.
+        /// </remarks>
+        /// <exception cref="Gee.External.Capstone.CapstoneException">
+        ///     Thrown if the disassemble mode option could not be set.
+        /// </exception>
+        /// <exception cref="System.ObjectDisposedException">
+        ///     Thrown if the disassembler handle is disposed.
+        /// </exception>
+        public TDisassembleMode DisassembleMode {
+            get => this._disassembleMode;
+            set {
+                // ...
+                //
+                // This is an ugly operation but it is the only way I am familiar with to convert a <c>System.Enum</c>
+                // to a 32-bit integer to pass to the Capstone API. It should be relatively quick since
+                // <c>System.Enum</c> implements <c>System.IConvertible</c>.
+                var iDisassembleMode = Convert.ToInt32(value);
+                var disassembleMode = (NativeDisassembleMode) iDisassembleMode;
+
+                // ..
+                //
+                // Throws an exception if the operation fails.
+                NativeCapstone.SetDisassembleModeOption(this._handle, disassembleMode);
+
+                this._disassembleMode = value;
+                this._nativeDisassembleMode = disassembleMode;
+            }
+        }
 
         /// <summary>
         ///     Get and Set Disassemble Syntax.
@@ -532,7 +611,7 @@ namespace Gee.External.Capstone {
         ///     Enable or Disable Skip Data Mode.
         /// </summary>
         /// <exception cref="Gee.External.Capstone.CapstoneException">
-        ///     Thrown if the skip data mode option could not be set.
+        ///     Thrown if the Skip Data Mode option could not be set.
         /// </exception>
         /// <exception cref="System.ObjectDisposedException">
         ///     Thrown if the disassembler is disposed.
@@ -554,11 +633,17 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Get Disassembler's Handle.
         /// </summary>
+        /// <remarks>
+        ///     Represents the disassembler's native handle.
+        /// </remarks>
         internal override NativeDisassemblerHandle Handle => this._handle;
 
         /// <summary>
         ///     Get Native Disassemble Mode.
         /// </summary>
+        /// <remarks>
+        ///     Represents the disassembler's native hardware mode.
+        /// </remarks>
         internal override NativeDisassembleMode NativeDisassembleMode => this._nativeDisassembleMode;
 
         /// <summary>
@@ -617,6 +702,7 @@ namespace Gee.External.Capstone {
         private protected CapstoneDisassembler(DisassembleArchitecture disassembleArchitecture, TDisassembleMode disassembleMode) {
             this._disassembleArchitecture = disassembleArchitecture;
             this._disassembleMode = disassembleMode;
+            this._disassembleSyntax = DisassembleSyntax.Intel;
             this._skipDataInstructionMnemonic = ".byte";
             // ...
             //
@@ -659,10 +745,10 @@ namespace Gee.External.Capstone {
         ///     An array of bytes representing the binary code to disassemble.
         /// </param>
         /// <returns>
-        ///     A an array of disassembled instructions.
+        ///     An array of disassembled instructions.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        ///     Thrown if the array of bytes is a null reference.
+        ///     Thrown if the binary code array is a null reference.
         /// </exception>
         /// <exception cref="System.ObjectDisposedException">
         ///     Thrown if the disassembler is disposed.
@@ -671,7 +757,75 @@ namespace Gee.External.Capstone {
             // ...
             //
             // Throws an exception if the operation fails.
-            var instructions = this.Iterate(binaryCode).ToArray();
+            var instructions = this.Disassemble(binaryCode, 0X1000);
+            return instructions;
+        }
+
+        /// <summary>
+        ///     Disassemble Binary Code.
+        /// </summary>
+        /// <param name="binaryCode">
+        ///     An array of bytes representing the binary code to disassemble.
+        /// </param>
+        /// <param name="startingAddress">
+        ///     The address of the first instruction in the binary code array.
+        /// </param>
+        /// <returns>
+        ///     An array of disassembled instructions.
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        ///     Thrown if the binary code array is a null reference.
+        /// </exception>
+        /// <exception cref="System.ObjectDisposedException">
+        ///     Thrown if the disassembler is disposed.
+        /// </exception>
+        public TInstruction[] Disassemble(byte[] binaryCode, long startingAddress) {
+            // ...
+            //
+            // Throws an exception if the operation fails.
+            var instructions = this.Disassemble(binaryCode, startingAddress, 0);
+            return instructions;
+        }
+
+        /// <summary>
+        ///     Disassemble Binary Code.
+        /// </summary>
+        /// <param name="binaryCode">
+        ///     An array of bytes representing the binary code to disassemble.
+        /// </param>
+        /// <param name="startingAddress">
+        ///     The address of the first instruction in the binary code array.
+        /// </param>
+        /// <param name="count">
+        ///     The maximum number of instructions to disassemble.
+        /// </param>
+        /// <returns>
+        ///     An array of disassembled instructions.
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        ///     Thrown if the binary code array is a null reference.
+        /// </exception>
+        /// <exception cref="System.ObjectDisposedException">
+        ///     Thrown if the disassembler is disposed.
+        /// </exception>
+        public TInstruction[] Disassemble(byte[] binaryCode, long startingAddress, int count) {
+            // ...
+            //
+            // Throws an exception if the operation fails.
+            var instructionIterator = this.Iterate(binaryCode);
+
+            // ...
+            //
+            // We want to emulate the Capstone API by treating a <c>0</c> as an indication that all instructions
+            // should be disassembled.
+            if (count != 0) {
+                // ...
+                //
+                // If there are less instructions than indicated, all the instructions will be returned.
+                instructionIterator = instructionIterator.Skip(0).Take(count);
+            }
+
+            var instructions = instructionIterator.ToArray();
             return instructions;
         }
 
@@ -701,7 +855,7 @@ namespace Gee.External.Capstone {
         ///     Thrown if the disassembler is disposed.
         /// </exception>
         /// <exception cref="System.NotSupportedException">
-        ///     Thrown if diet mode is enabled.
+        ///     Thrown if Diet Mode is enabled.
         /// </exception>
         public string GetInstructionGroupName(TInstructionGroupId instructionGroupId) {
             this.ThrowIfDisassemblerIsDisposed();
@@ -783,17 +937,40 @@ namespace Gee.External.Capstone {
         ///     A deferred collection of disassembled instructions.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        ///     Thrown if the array of bytes is a null reference.
+        ///     Thrown if the binary code array is a null reference.
         /// </exception>
         /// <exception cref="System.ObjectDisposedException">
         ///     Thrown if the disassembler is disposed.
         /// </exception>
         public IEnumerable<TInstruction> Iterate(byte[] binaryCode) {
+            // ...
+            //
+            // Throws an exception if the operation fails.
+            return this.Iterate(binaryCode, 0x1000);
+        }
+
+        /// <summary>
+        ///     Disassemble Binary Code Iteratively.
+        /// </summary>
+        /// <param name="binaryCode">
+        ///     An array of bytes representing the binary code to disassemble.
+        /// </param>
+        /// <param name="startingAddress">
+        ///     The address of the first instruction in the binary code array.
+        /// </param>
+        /// <returns>
+        ///     A deferred collection of disassembled instructions.
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        ///     Thrown if the binary code array is a null reference.
+        /// </exception>
+        /// <exception cref="System.ObjectDisposedException">
+        ///     Thrown if the disassembler is disposed.
+        /// </exception>
+        public IEnumerable<TInstruction> Iterate(byte[] binaryCode, long startingAddress) {
             CapstoneDisassembler.ThrowIfValueIsNullReference(nameof(binaryCode), binaryCode);
 
             var binaryCodeOffset = 0;
-            //var startingAddress = 0x1000L;
-            var startingAddress = 1L;
 
             // ...
             //
@@ -808,7 +985,7 @@ namespace Gee.External.Capstone {
             // However, we'll do the hard work for the caller here and define the Skip Data Mode Callback as a proxy
             // closure that encloses over the entire binary code buffer and pass it to the actual callback defined
             // by the caller.
-            NativeCapstone.Callback callback = null;
+            NativeCapstone.SkipDataCallback callback = null;
             if (this.EnableSkipDataMode) {
                 // ...
                 //
@@ -876,7 +1053,7 @@ namespace Gee.External.Capstone {
             // <summary>
             //      Native Skip Data Mode Callback.
             // </summary>
-            IntPtr OnNativeSkipDataCallback(IntPtr cPBinaryCode, IntPtr cBinaryCodeSize, IntPtr cInvalidInstructionIndex, IntPtr pState) {
+            IntPtr OnNativeSkipDataCallback(IntPtr cPBinaryCode, IntPtr cBinaryCodeSize, IntPtr cDataOffset, IntPtr pState) {
                 // ...
                 //
                 // Normally, a closure enclosing over a variable modified from a loop, such as this method, is a

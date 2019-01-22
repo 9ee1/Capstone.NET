@@ -14,7 +14,7 @@ namespace Gee.External.Capstone {
         public string InstructionMnemonic;
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public NativeCapstone.Callback Callback;
+        public NativeCapstone.SkipDataCallback Callback;
 
         public IntPtr State;
     }

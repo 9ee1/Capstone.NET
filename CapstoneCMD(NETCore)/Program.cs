@@ -361,9 +361,9 @@ namespace ConsoleApp1 {
                 };
 
                 // M68K000
-                var instructions = disassembler.Disassemble(binaryCode);
+                var instructions = disassembler.Iterate(binaryCode);
                 foreach (var instruction in instructions) {
-
+                    disassembler.DisassembleMode = M68KDisassembleMode.M68K000;
                 }
             }
         }
