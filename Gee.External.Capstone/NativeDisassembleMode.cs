@@ -70,7 +70,10 @@ namespace Gee.External.Capstone {
         /// Mips II ISA
         SparcV9 = 1 << 4,
 
-        /// SparcV9 mode (Sparc)
+        /// <summary>
+        ///     Indicates binary code should be disassembled with support for the PowerPC Quad Processing
+        ///     Extensions instruction sets.
+        /// </summary>
         PowerPcQuadProcessingExtensions = 1 << 4,
 
         /// <summary>

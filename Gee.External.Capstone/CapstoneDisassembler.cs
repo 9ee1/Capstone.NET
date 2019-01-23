@@ -2,6 +2,7 @@
 using Gee.External.Capstone.Arm64;
 using Gee.External.Capstone.M68K;
 using Gee.External.Capstone.Mips;
+using Gee.External.Capstone.PowerPc;
 using Gee.External.Capstone.X86;
 using Gee.External.Capstone.XCore;
 using System;
@@ -356,6 +357,26 @@ namespace Gee.External.Capstone {
         /// </exception>
         public static CapstoneMipsDisassembler CreateMipsDisassembler(MipsDisassembleMode disassembleMode) {
             return new CapstoneMipsDisassembler(disassembleMode);
+        }
+
+        /// <summary>
+        ///     Create a PowerPC Disassembler.
+        /// </summary>
+        /// <param name="disassembleMode">
+        ///     The hardware mode for the disassembler to use.
+        /// </param>
+        /// <returns>
+        ///     A PowerPC disassembler.
+        /// </returns>
+        /// <exception cref="Gee.External.Capstone.CapstoneException">
+        ///     Thrown if a disassembler could not be created.
+        /// </exception>
+        /// <exception cref="System.OutOfMemoryException">
+        ///     Thrown if sufficient memory cannot be allocated to perform the operation as a rare indication that the
+        ///     system is under heavy load.
+        /// </exception>
+        public static CapstonePowerPcDisassembler CreatePowerPcDisassembler(PowerPcDisassembleMode disassembleMode) {
+            return new CapstonePowerPcDisassembler(disassembleMode);
         }
 
         /// <summary>

@@ -63,6 +63,5 @@
     <DefineConstants>NET45</DefineConstants>
   </PropertyGroup>
 
-  <Import Condition="Exists('..\Gee.External.Capstone.targets')"
-          Project="..\Gee.External.Capstone.targets" />
+  <Import Condition="Exists('..\Gee.External.Capstone.targets')" Project="..\Gee.External.Capstone.targets" />
 </Project>
