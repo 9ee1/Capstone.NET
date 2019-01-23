@@ -2,8 +2,11 @@
 using Gee.External.Capstone.Arm;
 using Gee.External.Capstone.Arm64;
 using Gee.External.Capstone.M68K;
+using Gee.External.Capstone.PowerPc;
 using Gee.External.Capstone.X86;
+using Gee.External.Capstone.XCore;
 using System;
+using Gee.External.Capstone.Mips;
 
 namespace ConsoleApp1 {
     /// <summary>
@@ -15,6 +18,9 @@ namespace ConsoleApp1 {
             Console.WriteLine();
             Console.Write("Choose an Architecture (ARM32, ARM32-V8, ARM32-Thumb, ARM32-Thumb-MClass, ARM64, X86): --> ");
 
+            //Program.ShowPowerPc();
+            //Program.ShowXCore();
+            Program.ShowMips();
             var v = CapstoneDisassembler.Version;
             var disassembleArchitecture = Console.ReadLine();
             switch (disassembleArchitecture) {
@@ -368,6 +374,26 @@ namespace ConsoleApp1 {
             }
         }
 
+        private static void ShowMips() {
+            using (var disassembler = CapstoneDisassembler.CreateMipsDisassembler(MipsDisassembleMode.BigEndian | MipsDisassembleMode.Bit32)) {
+                disassembler.EnableInstructionDetails = true;
+                //disassembler.DisassembleSyntax = DisassembleSyntax.Intel;
+
+                var binaryCode = new byte[] {0x0C, 0x10, 0x00, 0x97, 0x00, 0x00, 0x00, 0x00, 0x24, 0x02, 0x00, 0x0c, 0x8f, 0xa2, 0x00, 0x00, 0x34, 0x21, 0x34, 0x56};
+                var instructions = disassembler.Disassemble(binaryCode);
+            }
+        }
+
+        private static void ShowPowerPc() {
+            using (var disassembler = CapstoneDisassembler.CreatePowerPcDisassembler(PowerPcDisassembleMode.BigEndian | PowerPcDisassembleMode.QuadProcessingExtensions)) {
+                disassembler.EnableInstructionDetails = true;
+                disassembler.DisassembleSyntax = DisassembleSyntax.Intel;
+
+                var binaryCode = new byte[] {0x10, 0x60, 0x2a, 0x10, 0x10, 0x64, 0x28, 0x88, 0x7c, 0x4a, 0x5d, 0x0f};
+                var instructions = disassembler.Disassemble(binaryCode);
+            }
+        }
+
         private static void ShowX86() {
             // ...
             //
@@ -464,6 +490,20 @@ namespace ConsoleApp1 {
 
                     Console.WriteLine();
                 }
+            }
+        }
+
+        private static void ShowXCore() {
+            using (var disassembler = CapstoneDisassembler.CreateXCoreDisassembler(XCoreDisassembleMode.BigEndian)) {
+                disassembler.EnableInstructionDetails = true;
+                disassembler.DisassembleSyntax = DisassembleSyntax.Intel;
+
+                var binaryCode = new byte[] {
+                    0xfe, 0x0f, 0xfe, 0x17, 0x13, 0x17, 0xc6, 0xfe, 0xec, 0x17, 0x97, 0xf8, 0xec, 0x4f, 0x1f, 0xfd,
+                    0xec, 0x37, 0x07, 0xf2, 0x45, 0x5b, 0xf9, 0xfa, 0x02, 0x06, 0x1b, 0x10, 0x09, 0xfd, 0xec, 0xa7
+                };
+
+                var instructions = disassembler.Disassemble(binaryCode);
             }
         }
     }

@@ -90,7 +90,9 @@ namespace Gee.External.Capstone {
         public TRegister[] AllReadRegisters {
             get {
                 CapstoneDisassembler.ThrowIfDietModeIsEnabled();
-                if (this.DisassembleArchitecture == DisassembleArchitecture.M68K) {
+
+                var isDisassembleArchitectureUnsupported = this.IsDisassembleArchitectureUnsupported();
+                if (isDisassembleArchitectureUnsupported) {
                     const string detailMessage = "An operation is unsupported.";
                     throw new NotSupportedException(detailMessage);
                 }
@@ -116,7 +118,9 @@ namespace Gee.External.Capstone {
         public TRegister[] AllWrittenRegisters {
             get {
                 CapstoneDisassembler.ThrowIfDietModeIsEnabled();
-                if (this.DisassembleArchitecture == DisassembleArchitecture.M68K) {
+
+                var isDisassembleArchitectureUnsupported = this.IsDisassembleArchitectureUnsupported();
+                if (isDisassembleArchitectureUnsupported) {
                     const string detailMessage = "An operation is unsupported.";
                     throw new NotSupportedException(detailMessage);
                 }
@@ -156,7 +160,9 @@ namespace Gee.External.Capstone {
         public TRegister[] ExplicitlyReadRegisters {
             get {
                 CapstoneDisassembler.ThrowIfDietModeIsEnabled();
-                if (this.DisassembleArchitecture == DisassembleArchitecture.M68K) {
+
+                var isDisassembleArchitectureUnsupported = this.IsDisassembleArchitectureUnsupported();
+                if (isDisassembleArchitectureUnsupported) {
                     const string detailMessage = "An operation is unsupported.";
                     throw new NotSupportedException(detailMessage);
                 }
@@ -180,7 +186,9 @@ namespace Gee.External.Capstone {
         public TRegister[] ExplicitlyWrittenRegisters {
             get {
                 CapstoneDisassembler.ThrowIfDietModeIsEnabled();
-                if (this.DisassembleArchitecture == DisassembleArchitecture.M68K) {
+
+                var isDisassembleArchitectureUnsupported = this.IsDisassembleArchitectureUnsupported();
+                if (isDisassembleArchitectureUnsupported) {
                     const string detailMessage = "An operation is unsupported.";
                     throw new NotSupportedException(detailMessage);
                 }
@@ -306,6 +314,13 @@ namespace Gee.External.Capstone {
             // Throws an exception if the operation fails.
             var belongsToGroup = this.Groups.Any(g => g.Id.Equals(instructionGroupId));
             return belongsToGroup;
+        }
+
+        private bool IsDisassembleArchitectureUnsupported() {
+            return this.DisassembleArchitecture == DisassembleArchitecture.M68K    ||
+                   this.DisassembleArchitecture == DisassembleArchitecture.Mips    ||
+                   this.DisassembleArchitecture == DisassembleArchitecture.PowerPc ||
+                   this.DisassembleArchitecture == DisassembleArchitecture.XCore;
         }
 
         /// <summary>
@@ -495,7 +510,7 @@ namespace Gee.External.Capstone {
             // ...
             //
             // Throws an exception if the operation fails.
-            var isRegisterRead = this.DisassembleArchitecture == DisassembleArchitecture.M68K
+            var isRegisterRead = this.IsDisassembleArchitectureUnsupported()
                                      ? this.ImplicitlyReadRegisters.Any(r => r.Name == registerName)
                                      : this.AllReadRegisters.Any(r => r.Name        == registerName);
 
@@ -525,7 +540,7 @@ namespace Gee.External.Capstone {
             // ...
             //
             // Throws an exception if the operation fails.
-            var isRegisterRead = this.DisassembleArchitecture == DisassembleArchitecture.M68K
+            var isRegisterRead = this.IsDisassembleArchitectureUnsupported()
                                      ? this.ImplicitlyReadRegisters.Any(r => r.Id.Equals(registerId))
                                      : this.AllReadRegisters.Any(r => r.Id.Equals(registerId));
 
@@ -555,7 +570,7 @@ namespace Gee.External.Capstone {
             // ...
             //
             // Throws an exception if the operation fails.
-            var isRegisterWritten = this.DisassembleArchitecture == DisassembleArchitecture.M68K
+            var isRegisterWritten = this.IsDisassembleArchitectureUnsupported()
                                         ? this.ImplicitlyWrittenRegisters.Any(r => r.Name == registerName)
                                         : this.AllWrittenRegisters.Any(r => r.Name        == registerName);
 
@@ -585,7 +600,7 @@ namespace Gee.External.Capstone {
             // ...
             //
             // Throws an exception if the operation fails.
-            var isRegisterWritten = this.DisassembleArchitecture == DisassembleArchitecture.M68K
+            var isRegisterWritten = this.IsDisassembleArchitectureUnsupported()
                                         ? this.ImplicitlyWrittenRegisters.Any(r => r.Id.Equals(registerId))
                                         : this.AllWrittenRegisters.Any(r => r.Id.Equals(registerId));
             return isRegisterWritten;

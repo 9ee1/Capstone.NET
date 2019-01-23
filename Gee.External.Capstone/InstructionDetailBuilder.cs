@@ -104,7 +104,11 @@ namespace Gee.External.Capstone {
                 @this.AllReadRegisters = new TRegister[0];
                 @this.AllWrittenRegisters = new TRegister[0];
                 if (!CapstoneDisassembler.IsDietModeEnabled) {
-                    if (cDisassembler.DisassembleArchitecture != DisassembleArchitecture.M68K) {
+                    var isArchSupported = cDisassembler.DisassembleArchitecture != DisassembleArchitecture.M68K;
+                    isArchSupported = isArchSupported && cDisassembler.DisassembleArchitecture != DisassembleArchitecture.Mips;
+                    isArchSupported = isArchSupported && cDisassembler.DisassembleArchitecture != DisassembleArchitecture.PowerPc;
+                    isArchSupported = isArchSupported && cDisassembler.DisassembleArchitecture != DisassembleArchitecture.XCore;
+                    if (isArchSupported) {
                         // ...
                         //
                         // Throws an exception if the operation fails.

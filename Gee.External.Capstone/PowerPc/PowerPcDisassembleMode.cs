@@ -1,7 +1,10 @@
-﻿namespace Gee.External.Capstone.PowerPc {
+﻿using System;
+
+namespace Gee.External.Capstone.PowerPc {
     /// <summary>
     ///     PowerPC Disassemble Mode.
     /// </summary>
+    [Flags]
     public enum PowerPcDisassembleMode {
         /// <summary>
         ///     Indicates binary code should be disassembled in big-endian mode.
