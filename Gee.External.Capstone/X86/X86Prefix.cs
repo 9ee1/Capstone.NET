@@ -1,44 +1,27 @@
-﻿// ReSharper disable InconsistentNaming
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace Gee.External.Capstone.X86 {
     /// <summary>
     ///     X86 Prefix.
     /// </summary>
-    public enum X86Prefix {
+    [SuppressMessage("ReSharper", "IdentifierTypo")]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    public enum X86Prefix : byte {
         /// <summary>
-        ///     Irrelevant Prefix.
+        ///     Indicates an invalid, or an uninitialized, prefix.
         /// </summary>
-        Irrelevant = 0,
-
-        // Note.
-        //
-        // First Byte. 
-
-        LOCK = 0xF0,
-        REP = 0xF3,
-        REPNE = 0xF2,
-
-        // Note.
-        //
-        // Second Byte.
-
-        CS = 0x2E,
-        SS = 0x36,
-        DS = 0x3E,
-        ES = 0x26,
-        FS = 0x64,
-        GS = 0x65,
-
-        // Note.
-        //
-        // Third Byte.
-
-        OPERANDSIZE = 0x66,
-
-        // Note.
-        //
-        // Fourth Byte.
-
-        ADDRESSSIZE = 0x67
+        Invalid = 0,
+        X86_PREFIX_LOCK = 0xf0,
+        X86_PREFIX_REP = 0xf3,
+        X86_PREFIX_REPE = 0xf3,
+        X86_PREFIX_REPNE = 0xf2,
+        X86_PREFIX_CS = 0x2e,
+        X86_PREFIX_SS = 0x36,
+        X86_PREFIX_DS = 0x3e,
+        X86_PREFIX_ES = 0x26,
+        X86_PREFIX_FS = 0x64,
+        X86_PREFIX_GS = 0x65,
+        X86_PREFIX_OPSIZE = 0x66,
+        X86_PREFIX_ADDRSIZE = 0x67
     }
 }

@@ -1,174 +1,70 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1297DCEE-009D-4739-8124-3F064EA9EA10}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFrameworks>netstandard2.0;net40;net45</TargetFrameworks>
     <RootNamespace>Gee.External.Capstone</RootNamespace>
     <AssemblyName>Gee.External.Capstone</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <Platforms>x64;x86;AnyCPU</Platforms>
+    <LangVersion>7.3</LangVersion>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Version>2.0.0</Version>
+    <Authors>Ahmed Garhy (@9ee1)</Authors>
+    <Company />
+    <Product>Capstone.NET</Product>
+    <Description>Capstone.NET is a .NET Core and a .NET Framework binding for the Capstone disassembly framework. It is written in C#, supports Capstone 4, and has a friendly and simple type safe API that is ridiculously easy to learn and quick to pick up.</Description>
+    <Copyright>Copyright (c) Ahmed Garhy</Copyright>
+    <PackageLicenseUrl>https://github.com/9ee1/Capstone.NET/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/9ee1/Capstone.NET</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/9ee1/Capstone.NET</RepositoryUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '.NET45Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\.NET45Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DefineConstants />
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '.NET45Release|x86'">
-    <OutputPath>bin\x86\.NET45Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <DefineConstants />
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>C:\Users\ahmed\Documents\Capstone.NET\Gee.External.Capstone\Gee.External.Capstone.xml</DocumentationFile>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Arm64\Arm64AtInstructionOperation.cs" />
-    <Compile Include="Arm64\Arm64CodeCondition.cs" />
-    <Compile Include="Arm64\Arm64DcInstructionOperation.cs" />
-    <Compile Include="Arm64\Arm64IcInstructionOperation.cs" />
-    <Compile Include="Arm64\Arm64Instruction.cs" />
-    <Compile Include="Arm64\Arm64InstructionDetail.cs" />
-    <Compile Include="Arm64\Arm64InstructionGroup.cs" />
-    <Compile Include="Arm64\Arm64InstructionMemoryOperandValue.cs" />
-    <Compile Include="Arm64\Arm64InstructionOperand.cs" />
-    <Compile Include="Arm64\Arm64Extender.cs" />
-    <Compile Include="Arm64\Arm64MrsRegister.cs" />
-    <Compile Include="Arm64\Arm64MsrRegister.cs" />
-    <Compile Include="Arm64\Arm64Shifter.cs" />
-    <Compile Include="Arm64\Arm64ShifterType.cs" />
-    <Compile Include="Arm64\Arm64InstructionOperandType.cs" />
-    <Compile Include="Arm64\Arm64MemoryBarrierOperation.cs" />
-    <Compile Include="Arm64\Arm64PrefetchOperation.cs" />
-    <Compile Include="Arm64\Arm64PState.cs" />
-    <Compile Include="Arm64\Arm64Register.cs" />
-    <Compile Include="Arm64\Arm64TlbiInstructionOperation.cs" />
-    <Compile Include="Arm64\Arm64VectorArrangementSpecifier.cs" />
-    <Compile Include="Arm64\Arm64VectorElementSizeSpecifier.cs" />
-    <Compile Include="Arm64\CapstoneArm64Disassembler.cs" />
-    <Compile Include="Arm64\NativeArm64InstructionDetailExtension.cs" />
-    <Compile Include="Arm64\NativeArm64InstructionMemoryOperandValueExtension.cs" />
-    <Compile Include="Arm64\NativeArm64InstructionOperandExtension.cs" />
-    <Compile Include="Arm64\NativeArm64ShifterExtension.cs" />
-    <Compile Include="Arm\ArmCodeCondition.cs" />
-    <Compile Include="Arm\ArmCpsFlag.cs" />
-    <Compile Include="Arm\ArmCpsMode.cs" />
-    <Compile Include="Arm\ArmInstruction.cs" />
-    <Compile Include="Arm\ArmInstructionDetail.cs" />
-    <Compile Include="Arm\ArmInstructionGroup.cs" />
-    <Compile Include="Arm\ArmInstructionMemoryOperandValue.cs" />
-    <Compile Include="Arm\ArmInstructionOperand.cs" />
-    <Compile Include="Arm\ArmInstructionOperandType.cs" />
-    <Compile Include="Arm\ArmShifter.cs" />
-    <Compile Include="Arm\ArmShifterType.cs" />
-    <Compile Include="Arm\ArmMemoryBarrier.cs" />
-    <Compile Include="Arm\ArmRegister.cs" />
-    <Compile Include="Arm\ArmSetEndInstructionOperandType.cs" />
-    <Compile Include="Arm\ArmSysRegister.cs" />
-    <Compile Include="Arm\ArmVectorDataType.cs" />
-    <Compile Include="Arm\CapstoneArmDisassembler.cs" />
-    <Compile Include="Arm\NativeArmInstructionDetailExtension.cs" />
-    <Compile Include="Arm\NativeArmInstructionMemoryOperandValueExtension.cs" />
-    <Compile Include="Arm\NativeArmInstructionOperandExtension.cs" />
-    <Compile Include="Arm\NativeArmShifterExtension.cs" />
-    <Compile Include="CapstoneDisassembler.cs" />
-    <Compile Include="CapstoneImport.cs" />
-    <Compile Include="CapstoneProxyImport.cs" />
-    <Compile Include="DisassembleArchitecture.cs" />
-    <Compile Include="DisassembleErrorCode.cs" />
-    <Compile Include="DisassembleMode.cs" />
-    <Compile Include="DisassembleOptionType.cs" />
-    <Compile Include="DisassembleOptionValue.cs" />
-    <Compile Include="DisassembleSyntaxOptionValue.cs" />
-    <Compile Include="ExceptionThrower.cs" />
-    <Compile Include="IndependentInstructionGroup.cs" />
-    <Compile Include="Instruction.cs" />
-    <Compile Include="MarshalExtension.cs" />
-    <Compile Include="NativeArchitectureInstructionDetail.cs" />
-    <Compile Include="Arm64\NativeArm64InstructionDetail.cs" />
-    <Compile Include="Arm64\NativeArm64InstructionMemoryOperandValue.cs" />
-    <Compile Include="Arm64\NativeArm64InstructionOperand.cs" />
-    <Compile Include="Arm64\NativeArm64Shifter.cs" />
-    <Compile Include="Arm64\NativeArm64InstructionOperandValue.cs" />
-    <Compile Include="Arm\NativeArmInstructionDetail.cs" />
-    <Compile Include="Arm\NativeArmInstructionMemoryOperandValue.cs" />
-    <Compile Include="Arm\NativeArmInstructionOperand.cs" />
-    <Compile Include="Arm\NativeArmShifter.cs" />
-    <Compile Include="Arm\NativeArmInstructionOperandValue.cs" />
-    <Compile Include="NativeCapstone.cs" />
-    <Compile Include="NativeIndependentInstructionDetailExtension.cs" />
-    <Compile Include="NativeInstruction.cs" />
-    <Compile Include="NativeIndependentInstructionDetail.cs" />
-    <Compile Include="NativeInstructionCollection.cs" />
-    <Compile Include="NativeInstructionCollectionEnumerator.cs" />
-    <Compile Include="NativeInstructionExtension.cs" />
-    <Compile Include="Mips\NativeMipsInstructionDetail.cs" />
-    <Compile Include="Mips\NativeMipsInstructionMemoryOperandValue.cs" />
-    <Compile Include="Mips\NativeMipsInstructionOperand.cs" />
-    <Compile Include="Mips\NativeMipsInstructionOperandValue.cs" />
-    <Compile Include="PowerPc\NativePowerPcInstructionConditionRegisterOperandValue.cs" />
-    <Compile Include="PowerPc\NativePowerPcInstructionDetail.cs" />
-    <Compile Include="PowerPc\NativePowerPcInstructionMemoryOperandValue.cs" />
-    <Compile Include="PowerPc\NativePowerPcInstructionOperand.cs" />
-    <Compile Include="PowerPc\NativePowerPcInstructionOperandValue.cs" />
-    <Compile Include="Sparc\NativeSparcInstructionDetail.cs" />
-    <Compile Include="Sparc\NativeSparcInstructionMemoryOperandValue.cs" />
-    <Compile Include="Sparc\NativeSparcInstructionOperand.cs" />
-    <Compile Include="Sparc\NativeSparcInstructionOperandValue.cs" />
-    <Compile Include="SystemZ\NativeSystemZInstructionDetail.cs" />
-    <Compile Include="SystemZ\NativeSystemZInstructionMemoryOperandValue.cs" />
-    <Compile Include="SystemZ\NativeSystemZInstructionOperand.cs" />
-    <Compile Include="SystemZ\NativeSystemZInstructionOperandValue.cs" />
-    <Compile Include="X86\CapstoneX86Disassembler.cs" />
-    <Compile Include="X86\NativeX86InstructionDetail.cs" />
-    <Compile Include="X86\NativeX86InstructionDetailExtension.cs" />
-    <Compile Include="X86\NativeX86InstructionMemoryOperandValue.cs" />
-    <Compile Include="X86\NativeX86InstructionMemoryOperandValueExtension.cs" />
-    <Compile Include="X86\NativeX86InstructionOperand.cs" />
-    <Compile Include="X86\NativeX86InstructionOperandExtension.cs" />
-    <Compile Include="X86\NativeX86InstructionOperandValue.cs" />
-    <Compile Include="X86\X86AvxBroadcast.cs" />
-    <Compile Include="X86\X86AvxCodeCondition.cs" />
-    <Compile Include="X86\X86AvxRoundingMode.cs" />
-    <Compile Include="X86\X86Instruction.cs" />
-    <Compile Include="X86\X86InstructionDetail.cs" />
-    <Compile Include="X86\X86InstructionGroup.cs" />
-    <Compile Include="X86\X86InstructionMemoryOperandValue.cs" />
-    <Compile Include="X86\X86InstructionOperand.cs" />
-    <Compile Include="X86\X86InstructionOperandType.cs" />
-    <Compile Include="X86\X86Prefix.cs" />
-    <Compile Include="X86\X86Register.cs" />
-    <Compile Include="X86\X86SseCodeCondition.cs" />
-    <Compile Include="XCore\NativeXCoreInstructionDetail.cs" />
-    <Compile Include="XCore\NativeXCoreInstructionMemoryOperandValue.cs" />
-    <Compile Include="XCore\NativeXCoreInstructionOperand.cs" />
-    <Compile Include="XCore\NativeXCoreInstructionOperandValue.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SafeCapstoneHandle.cs" />
-    <Compile Include="SafeNativeInstructionHandle.cs" />
-    <Compile Include="IndependentInstructionDetail.cs" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DefineConstants />
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DefineConstants />
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <DefineConstants />
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>C:\Users\ahmed\Documents\Capstone.NET\Gee.External.Capstone\Gee.External.Capstone.xml</DocumentationFile>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <DefineConstants />
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>C:\Users\ahmed\Documents\Capstone.NET\Gee.External.Capstone\Gee.External.Capstone.xml</DocumentationFile>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net40'">
+    <DefineConstants>NET40</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net45'">
+    <DefineConstants>NET45</DefineConstants>
+  </PropertyGroup>
+
+  <Import Condition="Exists('..\Gee.External.Capstone.targets')" Project="..\Gee.External.Capstone.targets" />
 </Project>

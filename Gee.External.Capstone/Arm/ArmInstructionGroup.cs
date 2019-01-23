@@ -1,47 +1,33 @@
-﻿// ReSharper disable InconsistentNaming
-
-namespace Gee.External.Capstone.Arm {
+﻿namespace Gee.External.Capstone.Arm {
     /// <summary>
     ///     ARM Instruction Group.
     /// </summary>
-    public enum ArmInstructionGroup {
+    public sealed class ArmInstructionGroup : InstructionGroup<ArmInstructionGroupId> {
         /// <summary>
-        ///     Invalid Instruction Group.
+        ///     Create an ARM Instruction Group.
         /// </summary>
-        Invalid = 0,
+        /// <param name="disassembler">
+        ///     A disassembler.
+        /// </param>
+        /// <param name="id">
+        ///     The instruction group's unique identifier.
+        /// </param>
+        /// <returns>
+        ///     An ARM instruction group.
+        /// </returns>
+        internal static ArmInstructionGroup Create(CapstoneDisassembler disassembler, ArmInstructionGroupId id) {
+            // ...
+            //
+            // Throws an exception if the operation fails.
+            var name = NativeCapstone.GetInstructionGroupName(disassembler.Handle, (int) id);
 
-        JUMP = IndependentInstructionGroup.JUMP,
+            var @object = new ArmInstructionGroup(id, name);
+            return @object;
+        }
 
-        CRYPTO = 128,
-        DATABARRIER,
-        DIVIDE,
-        FPARMV8,
-        MULTPRO,
-        NEON,
-        T2EXTRACTPACK,
-        THUMB2DSP,
-        TRUSTZONE,
-        V4T,
-        V5T,
-        V5TE,
-        V6,
-        V6T2,
-        V7,
-        V8,
-        VFP2,
-        VFP3,
-        VFP4,
-        ARM,
-        MCLASS,
-        NOTMCLASS,
-        THUMB,
-        THUMB1ONLY,
-        THUMB2,
-        PREV8,
-        FPVMLX,
-        MULOPS,
-        CRC,
-        DPVFP,
-        V6M
+        /// <summary>
+        ///     Create an ARM Instruction Group.
+        /// </summary>
+        internal ArmInstructionGroup(ArmInstructionGroupId id, string name) : base(id, name) { }
     }
 }

@@ -1,61 +1,33 @@
-﻿// ReSharper disable InconsistentNaming
-
-namespace Gee.External.Capstone.X86 {
+﻿namespace Gee.External.Capstone.X86 {
     /// <summary>
     ///     X86 Instruction Group.
     /// </summary>
-    public enum X86InstructionGroup {
+    public sealed class X86InstructionGroup : InstructionGroup<X86InstructionGroupId> {
         /// <summary>
-        ///     Invalid Instruction Group.
+        ///     Create an X86 Instruction Group.
         /// </summary>
-        Invalid = 0,
+        /// <param name="disassembler">
+        ///     A disassembler.
+        /// </param>
+        /// <param name="id">
+        ///     The instruction group's unique identifier.
+        /// </param>
+        /// <returns>
+        ///     An X86 instruction group.
+        /// </returns>
+        internal static X86InstructionGroup Create(CapstoneDisassembler disassembler, X86InstructionGroupId id) {
+            // ...
+            //
+            // Throws an exception if the operation fails.
+            var name = NativeCapstone.GetInstructionGroupName(disassembler.Handle, (int) id);
 
-        JUMP = IndependentInstructionGroup.JUMP,
-        CALL = IndependentInstructionGroup.CALL,
-        RET = IndependentInstructionGroup.RET,
-        INT = IndependentInstructionGroup.INT,
-        IRET = IndependentInstructionGroup.IRET,
+            var @object = new X86InstructionGroup(id, name);
+            return @object;
+        }
 
-        VM = 128,
-        GROUP3DNOW,
-        AES,
-        ADX,
-        AVX,
-        AVX2,
-        AVX512,
-        BMI,
-        BMI2,
-        CMOV,
-        F16C,
-        FMA,
-        FMA4,
-        FSGSBASE,
-        HLE,
-        MMX,
-        MODE32,
-        MODE64,
-        RTM,
-        SHA,
-        SSE1,
-        SSE2,
-        SSE3,
-        SSE41,
-        SSE42,
-        SSE4A,
-        SSSE3,
-        PCLMUL,
-        XOP,
-        CDI,
-        ERI,
-        TBM,
-        GROUP16BITMODE,
-        NOT64BITMODE,
-        SGX,
-        DQI,
-        BWI,
-        PFI,
-        VLX,
-        SMAP,
-        NOVLX
+        /// <summary>
+        ///     Create an X86 Instruction Group.
+        /// </summary>
+        internal X86InstructionGroup(X86InstructionGroupId id, string name) : base(id, name) { }
     }
 }

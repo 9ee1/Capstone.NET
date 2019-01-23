@@ -6,41 +6,61 @@
         /// <summary>
         ///     ARM Architecture.
         /// </summary>
-        Arm = 0,
+        Arm,
 
         /// <summary>
-        ///     ARM-64 Architecture.
+        ///     ARM64 Architecture.
         /// </summary>
-        Arm64 = 1,
+        Arm64,
 
         /// <summary>
-        ///     MIPS Architecture.
+        ///    MIPS Architecture.
         /// </summary>
-        Mips = 2,
+        Mips,
 
         /// <summary>
-        ///     Intel X86 Architecture.
+        ///     X86 Architecture.
         /// </summary>
-        X86 = 3,
+        X86,
 
         /// <summary>
         ///     PowerPC Architecture.
         /// </summary>
-        PowerPc = 4,
+        PowerPc,
 
         /// <summary>
-        ///     SPARC Architecture.
+        ///     Sparc Architecture.
         /// </summary>
-        Sparc = 5,
+        Sparc,
 
         /// <summary>
         ///     SystemZ Architecture.
         /// </summary>
-        SystemZ = 6,
+        SystemZ,
 
         /// <summary>
         ///     XCore Architecture.
         /// </summary>
-        XCore = 7
+        XCore,
+
+        /// <summary>
+        ///     M68K Architecture.
+        /// </summary>
+        M68K,
+
+        /// <summary>
+        ///     TMS320C64x Architecture.
+        /// </summary>
+        Tms320C64X,
+
+        /// <summary>
+        ///     680X Architecture.
+        /// </summary>
+        M680X,
+
+        /// <summary>
+        ///     Ethereum EVM Architecture.
+        /// </summary>
+        Evm
     }
 }

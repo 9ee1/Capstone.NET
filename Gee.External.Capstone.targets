@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Content Condition="'$(Platform)' == 'AnyCPU' and '$(TargetFrameworkIdentifier)' == '.NETFramework'"
+             Include="$(MSBuildThisFileDirectory)\.external\capstone-4.0.1\capstone-x64.dll">
+      <Link>x64\capstone.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </Content>
+    <Content Condition="'$(Platform)' == 'AnyCPU' and '$(TargetFrameworkIdentifier)' == '.NETFramework'"
+             Include="$(MSBuildThisFileDirectory)\.external\capstone-4.0.1\capstone-x86.dll">
+      <Link>x86\capstone.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x64'"
+             Include="$(MSBuildThisFileDirectory)\.external\capstone-4.0.1\capstone-x64.dll">
+      <Link>capstone.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </Content>
+    <Content Condition="'$(Platform)' == 'x86'"
+             Include="$(MSBuildThisFileDirectory)\.external\capstone-4.0.1\capstone-x86.dll">
+      <Link>capstone.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </Content>
+  </ItemGroup>
+</Project>

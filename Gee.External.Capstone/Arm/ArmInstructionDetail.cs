@@ -2,60 +2,93 @@
     /// <summary>
     ///     ARM Instruction Detail.
     /// </summary>
-    public sealed class ArmInstructionDetail {
+    public sealed class ArmInstructionDetail : InstructionDetail<ArmInstructionDetail, ArmDisassembleMode, ArmInstructionGroup, ArmInstructionGroupId, ArmInstruction, ArmInstructionId, ArmRegister, ArmRegisterId> {
         /// <summary>
-        ///     Get Instruction's Code Condition.
+        ///     Get Condition Code.
         /// </summary>
-        public ArmCodeCondition CodeCondition { get; internal set; }
+        public ArmConditionCode ConditionCode { get; }
 
         /// <summary>
-        ///     Get Instruction's CPS Flag.
+        ///     Get CPS Flag.
         /// </summary>
-        public ArmCpsFlag CpsFlag { get; internal set; }
+        public ArmCpsFlag CpsFlag { get; }
 
         /// <summary>
-        ///     Get Instruction's CPS Mode.
+        ///     Get CPS Mode.
         /// </summary>
-        public ArmCpsMode CpsMode { get; internal set; }
+        public ArmCpsMode CpsMode { get; }
 
         /// <summary>
-        ///     Get Instruction's Load User Mode Registers Flag.
+        ///     Get User Mode Flag.
         /// </summary>
-        public bool LoadUserModeRegisters { get; internal set; }
+        public bool IsUserMode { get; }
 
         /// <summary>
-        ///     Get Instruction's Memory Barrier.
+        ///     Get Memory Barrier Operation.
         /// </summary>
-        public ArmMemoryBarrier MemoryBarrier { get; internal set; }
+        public ArmMemoryBarrierOperation MemoryBarrierOperation { get; }
 
         /// <summary>
         ///     Get Instruction's Operands.
         /// </summary>
-        public ArmInstructionOperand[] Operands { get; internal set; }
+        public ArmOperand[] Operands { get; }
 
         /// <summary>
-        ///     Get Instruction's Update Flags Flag.
+        ///     Get Update Flags Flag.
         /// </summary>
-        public bool UpdateFlags { get; internal set; }
+        public bool UpdateFlags { get; }
 
         /// <summary>
-        ///     Get Instruction's Vector Data Type.
+        ///     Get Vector Data Type.
         /// </summary>
-        public ArmVectorDataType VectorDataType { get; internal set; }
+        public ArmVectorDataType VectorDataType { get; }
 
         /// <summary>
-        ///     Get Instruction's Vector Size.
+        ///     Get Vector Size.
         /// </summary>
-        public int VectorSize { get; internal set; }
+        public int VectorSize { get; }
 
         /// <summary>
-        ///     Get Instruction's Write Back Flag.
+        ///     Get Write Back Flag.
         /// </summary>
-        public bool WriteBack { get; internal set; }
+        public bool WriteBack { get; }
 
         /// <summary>
         ///     Create an ARM Instruction Detail.
         /// </summary>
-        internal ArmInstructionDetail() {}
+        /// <param name="disassembler">
+        ///     A disassembler.
+        /// </param>
+        /// <param name="hInstruction">
+        ///     An instruction handle.
+        /// </param>
+        /// <returns>
+        ///     An ARM instruction detail.
+        /// </returns>
+        internal static ArmInstructionDetail Create(CapstoneDisassembler disassembler, NativeInstructionHandle hInstruction) {
+            var builder = new ArmInstructionDetailBuilder();
+            builder.Build(disassembler, hInstruction);
+
+            return builder.Create();
+        }
+
+        /// <summary>
+        ///     Create an ARM Instruction Detail.
+        /// </summary>
+        /// <param name="builder">
+        ///     A builder to initialize the object with.
+        /// </param>
+        internal ArmInstructionDetail(ArmInstructionDetailBuilder builder) : base(builder) {
+            this.ConditionCode = builder.ConditionCode;
+            this.CpsFlag = builder.CpsFlag;
+            this.CpsMode = builder.CpsMode;
+            this.MemoryBarrierOperation = builder.MemoryBarrierOperation;
+            this.IsUserMode = builder.IsUserMode;
+            this.Operands = builder.Operands;
+            this.UpdateFlags = builder.UpdateFlags;
+            this.VectorDataType = builder.VectorDataType;
+            this.VectorSize = builder.VectorSize;
+            this.WriteBack = builder.WriteBack;
+        }
     }
 }

@@ -2,38 +2,37 @@
     /// <summary>
     ///     Capstone ARM64 Disassembler.
     /// </summary>
-    internal sealed class CapstoneArm64Disassembler : CapstoneDisassembler<Arm64Instruction, Arm64Register, Arm64InstructionGroup, Arm64InstructionDetail> {
+    public sealed class CapstoneArm64Disassembler : CapstoneDisassembler<Arm64DisassembleMode, Arm64Instruction, Arm64InstructionDetail, Arm64InstructionGroup, Arm64InstructionGroupId, Arm64InstructionId, Arm64Register, Arm64RegisterId> {
         /// <summary>
-        ///     Create a Capstone ARM64 Disassembler.
+        ///     Create a Capstone ARM Disassembler.
         /// </summary>
-        /// <param name="mode">
-        ///     The disassembler's mode.
+        /// <param name="disassembleMode">
+        ///     The hardware mode for the disassembler to use.
         /// </param>
-        internal CapstoneArm64Disassembler(DisassembleMode mode) : base(DisassembleArchitecture.Arm64, mode) {}
+        /// <exception cref="Gee.External.Capstone.CapstoneException">
+        ///     Thrown if a disassembler could not be created.
+        /// </exception>
+        /// <exception cref="System.OutOfMemoryException">
+        ///     Thrown if sufficient memory cannot be allocated to perform the operation as a rare indication that the
+        ///     system is under heavy load.
+        /// </exception>
+        public CapstoneArm64Disassembler(Arm64DisassembleMode disassembleMode) : base(DisassembleArchitecture.Arm64, disassembleMode) { }
 
         /// <summary>
-        ///     Create a Dissembled Instruction.
+        ///     Create an Instruction.
         /// </summary>
-        /// <param name="nativeInstruction">
-        ///     A native instruction.
+        /// <param name="hInstruction">
+        ///     An instruction handle.
         /// </param>
         /// <returns>
-        ///     A dissembled instruction.
+        ///     An ARM64 instruction.
         /// </returns>
-        protected override Instruction<Arm64Instruction, Arm64Register, Arm64InstructionGroup, Arm64InstructionDetail> CreateInstruction(NativeInstruction nativeInstruction) {
-            var @object = nativeInstruction.AsArm64Instruction();
-
-            // Get Native Instruction's Managed Independent Detail.
+        private protected override Arm64Instruction CreateInstruction(NativeInstructionHandle hInstruction) {
+            // ...
             //
-            // Retrieves the native instruction's managed independent detail once to avoid having to allocate
-            // new memory every time it is retrieved.
-            var nativeIndependentInstructionDetail = nativeInstruction.ManagedIndependentDetail;
-            if (nativeIndependentInstructionDetail != null) {
-                @object.ArchitectureDetail = nativeInstruction.NativeArm64Detail.AsArm64InstructionDetail(@object.Id);
-                @object.IndependentDetail = nativeIndependentInstructionDetail.Value.AsArm64IndependentInstructionDetail();
-            }
-
-            return @object;
+            // Throws an exception if the operation fails.
+            var instruction = Arm64Instruction.Create(this, hInstruction);
+            return instruction;
         }
     }
 }

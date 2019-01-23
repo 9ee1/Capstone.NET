@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Gee.External.Capstone</id>
+    <title>Capstone.NET</title>
+    <version>2.0.0</version>
+    <authors>Ahmed Garhy (@9ee1)</authors>
+    <owners>Ahmed Garhy (@9ee1)</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>https://github.com/9ee1/Capstone.NET/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/9ee1/Capstone.NET</projectUrl>
+    <description>Capstone.NET is an opinionated .NET Core and a .NET Framework binding for the Capstone disassembly framework. It is written in C#, supports Capstone 4, and has a friendly and simple type safe API that is ridiculously easy to learn and quick to pick up.</description>
+    <releaseNotes>Capstone.NET 2.0+ IS NOT backwards-compatible with previous releases of Capstone.NET, specifically Capstone.NET 1.x. Please do not upgrade until you are prepared to put in the effort to refactor your existing applications and libraries. See https://github.com/9ee1/Capstone.NET/wiki/What's-New-in-Capstone.NET-2.x for more information.</releaseNotes>
+    <copyright>Copyright (c) Ahmed Garhy</copyright>
+    <repository url="https://github.com/9ee1/Capstone.NET" />
+    <tags>capstone disassembler reverse-engineering security arm x86</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.0" />
+      <group targetFramework=".NETFramework4.5" />
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+</package>

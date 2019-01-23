@@ -1,45 +1,37 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28306.52
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gee.External.Capstone", "Gee.External.Capstone\Gee.External.Capstone.csproj", "{1297DCEE-009D-4739-8124-3F064EA9EA10}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Gee.External.Capstone", "Tests.Gee.External.Capstone\Tests.Gee.External.Capstone.csproj", "{7D755424-C594-4605-820D-9AF880E091BC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapstoneCMD", "CapstoneCMD\CapstoneCMD.csproj", "{D1A6EC03-1420-4516-8548-4117A18DA8B3}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".NET4", ".NET4", "{964BD054-E21A-438D-A477-D9CAEB50DA95}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gee.External.Capstone.4", "Gee.External.Capstone\Gee.External.Capstone.4.csproj", "{D8E7BF01-1424-4312-AF14-982E7DA9B9BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gee.External.Capstone", "Gee.External.Capstone\Gee.External.Capstone.csproj", "{52ECA690-0077-4E38-9139-31C7CF3B6853}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1297DCEE-009D-4739-8124-3F064EA9EA10}.Debug|x86.ActiveCfg = .NET45Debug|x86
-		{1297DCEE-009D-4739-8124-3F064EA9EA10}.Debug|x86.Build.0 = .NET45Debug|x86
-		{1297DCEE-009D-4739-8124-3F064EA9EA10}.Release|x86.ActiveCfg = .NET45Release|x86
-		{1297DCEE-009D-4739-8124-3F064EA9EA10}.Release|x86.Build.0 = .NET45Release|x86
-		{7D755424-C594-4605-820D-9AF880E091BC}.Debug|x86.ActiveCfg = .NET45Debug|x86
-		{7D755424-C594-4605-820D-9AF880E091BC}.Debug|x86.Build.0 = .NET45Debug|x86
-		{7D755424-C594-4605-820D-9AF880E091BC}.Release|x86.ActiveCfg = .NET45Release|x86
-		{7D755424-C594-4605-820D-9AF880E091BC}.Release|x86.Build.0 = .NET45Release|x86
-		{D1A6EC03-1420-4516-8548-4117A18DA8B3}.Debug|x86.ActiveCfg = .NET45Debug|x86
-		{D1A6EC03-1420-4516-8548-4117A18DA8B3}.Debug|x86.Build.0 = .NET45Debug|x86
-		{D1A6EC03-1420-4516-8548-4117A18DA8B3}.Release|x86.ActiveCfg = .NET45Release|x86
-		{D1A6EC03-1420-4516-8548-4117A18DA8B3}.Release|x86.Build.0 = .NET45Release|x86
-		{D8E7BF01-1424-4312-AF14-982E7DA9B9BC}.Debug|x86.ActiveCfg = .NET4Debug|x86
-		{D8E7BF01-1424-4312-AF14-982E7DA9B9BC}.Debug|x86.Build.0 = .NET4Debug|x86
-		{D8E7BF01-1424-4312-AF14-982E7DA9B9BC}.Release|x86.ActiveCfg = .NET4Release|x86
-		{D8E7BF01-1424-4312-AF14-982E7DA9B9BC}.Release|x86.Build.0 = .NET4Release|x86
+		{52ECA690-0077-4E38-9139-31C7CF3B6853}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52ECA690-0077-4E38-9139-31C7CF3B6853}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52ECA690-0077-4E38-9139-31C7CF3B6853}.Debug|x64.ActiveCfg = Debug|x64
+		{52ECA690-0077-4E38-9139-31C7CF3B6853}.Debug|x64.Build.0 = Debug|x64
+		{52ECA690-0077-4E38-9139-31C7CF3B6853}.Debug|x86.ActiveCfg = Debug|x86
+		{52ECA690-0077-4E38-9139-31C7CF3B6853}.Debug|x86.Build.0 = Debug|x86
+		{52ECA690-0077-4E38-9139-31C7CF3B6853}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52ECA690-0077-4E38-9139-31C7CF3B6853}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52ECA690-0077-4E38-9139-31C7CF3B6853}.Release|x64.ActiveCfg = Release|x64
+		{52ECA690-0077-4E38-9139-31C7CF3B6853}.Release|x64.Build.0 = Release|x64
+		{52ECA690-0077-4E38-9139-31C7CF3B6853}.Release|x86.ActiveCfg = Release|x86
+		{52ECA690-0077-4E38-9139-31C7CF3B6853}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{D8E7BF01-1424-4312-AF14-982E7DA9B9BC} = {964BD054-E21A-438D-A477-D9CAEB50DA95}
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {78A7A476-9C20-46F4-A8EB-CAA16031EA22}
 	EndGlobalSection
 EndGlobal

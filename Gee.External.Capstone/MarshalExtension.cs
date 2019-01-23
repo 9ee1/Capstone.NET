@@ -54,7 +54,7 @@ namespace Gee.External.Capstone {
         ///     The destination structure.
         /// </returns>
         internal static T FreePtrToStructure<T>(IntPtr p) {
-            var @struct = Marshal.PtrToStructure(p, typeof (T));
+            var @struct = Marshal.PtrToStructure(p, typeof(T));
             Marshal.FreeHGlobal(p);
 
             return (T) @struct;
@@ -73,7 +73,7 @@ namespace Gee.External.Capstone {
         ///     The destination structure.
         /// </returns>
         internal static T PtrToStructure<T>(IntPtr p) {
-            var @struct = Marshal.PtrToStructure(p, typeof (T));
+            var @struct = Marshal.PtrToStructure(p, typeof(T));
             return (T) @struct;
         }
 
@@ -99,7 +99,7 @@ namespace Gee.External.Capstone {
                 var element = MarshalExtension.PtrToStructure<T>(index);
                 array[i] = element;
 
-                index += Marshal.SizeOf(typeof (T));
+                index += Marshal.SizeOf(typeof(T));
             }
 
             return array;
@@ -115,7 +115,7 @@ namespace Gee.External.Capstone {
         ///     The type's size, in bytes.
         /// </returns>
         internal static int SizeOf<T>() {
-            var size = Marshal.SizeOf(typeof (T));
+            var size = Marshal.SizeOf(typeof(T));
             return size;
         }
     }
