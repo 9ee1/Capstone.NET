@@ -1,5 +1,5 @@
 # Capstone.NET
-Capstone.NET is an opinionated .NET Core and a .NET Framework binding for the [Capstone disassembly framework](http://www.capstone-engine.org). It is written in C#, supports Capstone 4, and has a friendly and simple type safe API that is ridiculously easy to learn and quick to pick up.
+Capstone.NET is an opinionated .NET Core and a .NET Framework binding for the [Capstone disassembly framework](http://www.capstone-engine.org). It is written in C#, supports _Capstone 4_, and has a friendly and simple type safe API that is ridiculously easy to learn and quick to pick up.
 
 ## Features
 (+) Supports _Capstone 4_. Only the ARM, ARM64, M68K, MIPS, PowerPC, X86, and XCore architectures are supported right now
