@@ -5542,9 +5542,8 @@
                 <para>
                     Represents the offset, in bytes, of <c>NativeInstructionDetail.X86|Arm64|...</c>. In the Capstone
                     API, those fields are defined by a nested anonymous union defined by <c>cs_detail</c>. A
-                    poor-man's analysis of <c>cs_detail</c> has indicated that all fields defined by it are aligned
-                    along 8 byte boundaries. As such, poor-man's pointer arithmetic has concluded that
-                    <c>NativeInstructionDetail.X86|Arm64|...</c> are accessible at this offset.
+                    poor-man's analysis of <c>cs_detail</c> has indicated that all fields defined by it are are
+                    accessible at this offset.
                 </para>
                 <para>
                     It seems the .NET Marshaller marshals <c>cs_detail</c> to <c>NativeInstructionDetail</c>
