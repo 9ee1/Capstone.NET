@@ -32,7 +32,7 @@ If your referencing project targets the .NET Framework runtime, the NuGet packag
 ## Building
 You can build Capstone.NET by opening the Visual Studio solution in Visual Studio 2017 and building from there. The Visual Studio solution has "Debug" and "Release" configurations for multiple platforms. Make sure you select the combination you're targeting before you build.
 
-If you're like me and get a headache when looking at the [.NET Compatibility Matrix](https://docs.microsoft.com/en-us/dotnet/standard/net-standard), you'll appreciate the fact that the Visual Studio solution actually builds 3 assemblies with a single build command. The first assembly targets _.NET Framework 4.0_, the second targets _.NET Framework 4.5_, and the third targets .NET _Standard 2.0_. Those 3 assemblies allow Capstone.NET to support a wide range of .NET Core and .NET Framework versions.
+If you're like me and get a headache when looking at the [.NET Compatibility Matrix](https://docs.microsoft.com/en-us/dotnet/standard/net-standard), you'll appreciate the fact that the Visual Studio solution actually builds 3 assemblies with a single build command. The first assembly targets _.NET Framework 4.0_, the second targets _.NET Framework 4.5_, and the third targets _.NET Standard 2.0_. Those 3 assemblies allow Capstone.NET to support a wide range of .NET Core and .NET Framework versions.
 
 The Visual Studio solution is a _Visual Studio 2017_ solution. This is the most stable version of Visual Studio that has support for .NET Core, .NET Framework, and the _C# 7.3_ compiler. I have not tried any other version of Visual Studio so I am not sure if there will be problems if you attempt to open the solution file in an older version of Visual Studio.
 
