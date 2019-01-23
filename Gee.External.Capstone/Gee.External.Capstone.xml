@@ -738,6 +738,61 @@
                 Indicates an invalid, or an uninitialized, operand type.
             </summary>
         </member>
+        <member name="F:Gee.External.Capstone.Arm64.Arm64OperandType.Register">
+            <summary>
+                Indicates a register operand.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Arm64.Arm64OperandType.Immediate">
+            <summary>
+                Indicates an immediate operand.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Arm64.Arm64OperandType.Memory">
+            <summary>
+                Indicates a memory operand.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Arm64.Arm64OperandType.FloatingPoint">
+            <summary>
+                Indicates a floating point operand.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Arm64.Arm64OperandType.CImmediate">
+            <summary>
+                Indicates a CImmediate operand.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Arm64.Arm64OperandType.MrsSystemRegister">
+            <summary>
+                Indicates a MRS system register operand.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Arm64.Arm64OperandType.MsrSystemRegister">
+            <summary>
+                Indicates a MSR system register operand.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Arm64.Arm64OperandType.PStateField">
+            <summary>
+                Indicates a Processor State (PSTATE) field operand.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Arm64.Arm64OperandType.SystemOperation">
+            <summary>
+                Indicates a system operation operand.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Arm64.Arm64OperandType.PrefetchOperation">
+            <summary>
+                Indicates a prefetch operation operand.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Arm64.Arm64OperandType.BarrierOperation">
+            <summary>
+                Indicates a barrier operation operand.
+            </summary>
+        </member>
         <member name="F:Gee.External.Capstone.Arm64.Arm64OperandType.AtOperation">
             <summary>
                 Indicates an Address Translation (AT) operation.
@@ -1059,22 +1114,22 @@
         </member>
         <member name="T:Gee.External.Capstone.Arm.ArmCpsFlag">
             <summary>
-                ARM CPS Flag Type.
+                ARM CPS Flag.
             </summary>
         </member>
         <member name="F:Gee.External.Capstone.Arm.ArmCpsFlag.Invalid">
             <summary>
-                Indicates an invalid, or an uninitialized, CPS flag type.
+                Indicates an invalid, or an uninitialized, CPS flag.
             </summary>
         </member>
         <member name="T:Gee.External.Capstone.Arm.ArmCpsMode">
             <summary>
-                ARM CPS Mode Type.
+                ARM CPS Mode.
             </summary>
         </member>
         <member name="F:Gee.External.Capstone.Arm.ArmCpsMode.Invalid">
             <summary>
-                Indicates an invalid, or an uninitialized, CPS mode type.
+                Indicates an invalid, or an uninitialized, CPS mode.
             </summary>
         </member>
         <member name="T:Gee.External.Capstone.Arm.ArmDisassembleMode">
@@ -1707,6 +1762,46 @@
         <member name="F:Gee.External.Capstone.Arm.ArmOperandType.Invalid">
             <summary>
                 Indicates an invalid, or an uninitialized, operand type.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Arm.ArmOperandType.Register">
+            <summary>
+                Indicates a register operand.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Arm.ArmOperandType.Immediate">
+            <summary>
+                Indicates an immediate operand.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Arm.ArmOperandType.Memory">
+            <summary>
+                Indicates a memory operand.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Arm.ArmOperandType.FloatingPoint">
+            <summary>
+                Indicates a floating point operand.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Arm.ArmOperandType.CImmediate">
+            <summary>
+                Indicates a CImmediate operand.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Arm.ArmOperandType.PImmediate">
+            <summary>
+                Indicates a PImmediate operand.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Arm.ArmOperandType.SetEndOperation">
+            <summary>
+                Indicates a SETEND operation operand.
+            </summary>
+        </member>
+        <member name="F:Gee.External.Capstone.Arm.ArmOperandType.SystemRegister">
+            <summary>
+                Indicates a system register operand.
             </summary>
         </member>
         <member name="T:Gee.External.Capstone.Arm.ArmRegister">

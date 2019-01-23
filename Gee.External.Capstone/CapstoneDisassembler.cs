@@ -62,7 +62,7 @@ namespace Gee.External.Capstone {
         ///     Indicates if the Ethereum EVM architecture is supported. A boolean true indicates it is supported. A
         ///     boolean false otherwise.
         /// </remarks>
-        public static bool IsEvmSupported {
+        internal static bool IsEvmSupported {
             get {
                 var value = NativeCapstone.Query(NativeQueryOption.QueryEvmArchitecture);
                 return value;
@@ -76,7 +76,7 @@ namespace Gee.External.Capstone {
         ///     Indicates if the M680X architecture is supported. A boolean true indicates it is supported. A boolean
         ///     false otherwise.
         /// </remarks>
-        public static bool IsM680XSupported {
+        internal static bool IsM680XSupported {
             get {
                 var value = NativeCapstone.Query(NativeQueryOption.QueryM680XArchitecture);
                 return value;
@@ -132,7 +132,7 @@ namespace Gee.External.Capstone {
         ///     Indicates if the SPARC architecture is supported. A boolean true indicates it is supported. A boolean
         ///     false otherwise.
         /// </remarks>
-        public static bool IsSparcSupported {
+        internal static bool IsSparcSupported {
             get {
                 var value = NativeCapstone.Query(NativeQueryOption.QuerySparcArchitecture);
                 return value;
@@ -146,7 +146,7 @@ namespace Gee.External.Capstone {
         ///     Indicates if the SystemZ architecture is supported. A boolean true indicates it is supported. A
         ///     boolean false otherwise.
         /// </remarks>
-        public static bool IsSystemZSupported {
+        internal static bool IsSystemZSupported {
             get {
                 var value = NativeCapstone.Query(NativeQueryOption.QuerySystemZArchitecture);
                 return value;
@@ -160,7 +160,7 @@ namespace Gee.External.Capstone {
         ///     Indicates if the TMS320C64X architecture is supported. A boolean true indicates it is supported. A
         ///     boolean false otherwise.
         /// </remarks>
-        public static bool IsTms320C64XSupported {
+        internal static bool IsTms320C64XSupported {
             get {
                 var value = NativeCapstone.Query(NativeQueryOption.QueryTms320C64XArchitecture);
                 return value;

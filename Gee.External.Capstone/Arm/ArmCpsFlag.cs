@@ -2,13 +2,13 @@
 
 namespace Gee.External.Capstone.Arm {
     /// <summary>
-    ///     ARM CPS Flag Type.
+    ///     ARM CPS Flag.
     /// </summary>
     [SuppressMessage("ReSharper", "IdentifierTypo")]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public enum ArmCpsFlag {
         /// <summary>
-        ///     Indicates an invalid, or an uninitialized, CPS flag type.
+        ///     Indicates an invalid, or an uninitialized, CPS flag.
         /// </summary>
         Invalid = 0,
         ARM_CPSFLAG_F = 1,
