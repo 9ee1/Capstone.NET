@@ -50,12 +50,12 @@ namespace Gee.External.Capstone.Arm {
         public bool WriteBack;
 
         /// <summary>
-        ///     Memory Barrier Operation.
+        ///     Memory Barrier Operation Operation.
         /// </summary>
-        public ArmMemoryBarrierOperation MemoryBarrier;
+        public ArmMemoryBarrierOperation MemoryBarrierOperation;
 
         /// <summary>
-        ///     Instruction's Operand Count.
+        ///     Instruction's Operands' Count.
         /// </summary>
         public byte OperandCount;
 

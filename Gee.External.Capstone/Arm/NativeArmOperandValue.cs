@@ -7,7 +7,7 @@ namespace Gee.External.Capstone.Arm {
     [StructLayout(LayoutKind.Explicit)]
     internal struct NativeArmOperandValue {
         /// <summary>
-        ///     Register.
+        ///     Register Value.
         /// </summary>
         [FieldOffset(0)]
         public int Register;

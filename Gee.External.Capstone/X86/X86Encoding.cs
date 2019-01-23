@@ -31,31 +31,15 @@
         /// <summary>
         ///     Create an X86 Encoding.
         /// </summary>
-        /// <param name="disassembler">
-        ///     A disassembler.
-        /// </param>
         /// <param name="nativeEncoding">
         ///     A native X86 encoding.
         /// </param>
-        /// <returns>
-        ///     An X86 encoding.
-        /// </returns>
-        internal static X86Encoding Create(CapstoneDisassembler disassembler, ref NativeX86Encoding nativeEncoding) {
-            return new X86EncodingBuilder().Build(disassembler, ref nativeEncoding).Create();
-        }
-
-        /// <summary>
-        ///     Create an X86 Encoding.
-        /// </summary>
-        /// <param name="builder">
-        ///     A builder to initialize the object with.
-        /// </param>
-        internal X86Encoding(X86EncodingBuilder builder) {
-            this.DisplacementOffset = builder.DisplacementOffset;
-            this.DisplacementSize = builder.DisplacementSize;
-            this.ImmediateOffset = builder.ImmediateOffset;
-            this.ImmediateSize = builder.ImmediateSize;
-            this.ModRmOffset = builder.ModRmOffset;
+        internal X86Encoding(ref NativeX86Encoding nativeEncoding) {
+            this.DisplacementOffset = nativeEncoding.DisplacementOffset;
+            this.DisplacementSize = nativeEncoding.DisplacementSize;
+            this.ImmediateOffset = nativeEncoding.ImmediateOffset;
+            this.ImmediateSize = nativeEncoding.ImmediateSize;
+            this.ModRmOffset = nativeEncoding.ModRmOffset;
         }
     }
 }

@@ -11,13 +11,13 @@ namespace Gee.External.Capstone.X86 {
         ///     Indicates an invalid, or an uninitialized, XOP condition code.
         /// </summary>
         Invalid = 0,
-        LT,
-        LE,
-        GT,
-        GE,
-        EQ,
-        NEQ,
-        FALSE,
-        TRUE
+        X86_XOP_CC_LT,
+        X86_XOP_CC_LE,
+        X86_XOP_CC_GT,
+        X86_XOP_CC_GE,
+        X86_XOP_CC_EQ,
+        X86_XOP_CC_NEQ,
+        X86_XOP_CC_FALSE,
+        X86_XOP_CC_TRUE
     }
 }

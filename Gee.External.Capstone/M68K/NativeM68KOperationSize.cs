@@ -7,7 +7,7 @@ namespace Gee.External.Capstone.M68K {
     [StructLayout(LayoutKind.Sequential)]
     internal struct NativeM68KOperationSize {
         /// <summary>
-        ///     Operation's Type.
+        ///     Operation Size's Type.
         /// </summary>
         public M68KOperationSizeType Type;
 

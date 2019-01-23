@@ -25,6 +25,9 @@
         /// <summary>
         ///     Create an XCore Instruction.
         /// </summary>
+        /// <param name="builder">
+        ///     A builder to initialize the object with.
+        /// </param>
         internal XCoreInstruction(XCoreInstructionBuilder builder) : base(builder) { }
     }
 }

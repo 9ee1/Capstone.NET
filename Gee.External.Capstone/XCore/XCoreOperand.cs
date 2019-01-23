@@ -23,8 +23,12 @@ namespace Gee.External.Capstone.XCore {
         /// <summary>
         ///     Get Immediate Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's immediate value if, and only if, the operand's type is
+        ///     <see cref="XCoreOperandType.Immediate" />. To determine the operand's type, call <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="XCoreOperandType.Immediate" />.
+        ///     Thrown if the operand's type is not <see cref="XCoreOperandType.Immediate" />.
         /// </exception>
         public long Immediate {
             get {
@@ -41,8 +45,12 @@ namespace Gee.External.Capstone.XCore {
         /// <summary>
         ///     Get Memory Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's memory value if, and only if, the operand's type is
+        ///     <see cref="XCoreOperandType.Memory" />. To determine the operand's type, call <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="XCoreOperandType.Memory" />.
+        ///     Thrown if the operand's type is not <see cref="XCoreOperandType.Memory" />.
         /// </exception>
         public XCoreMemoryOperandValue Memory {
             get {
@@ -59,8 +67,12 @@ namespace Gee.External.Capstone.XCore {
         /// <summary>
         ///     Get Register Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's register value if, and only if, the operand's type is
+        ///     <see cref="XCoreOperandType.Register" />. To determine the operand's type, call <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="XCoreOperandType.Register" />.
+        ///     Thrown if the operand's type is not <see cref="XCoreOperandType.Register" />.
         /// </exception>
         public XCoreRegister Register {
             get {
@@ -75,7 +87,7 @@ namespace Gee.External.Capstone.XCore {
         }
 
         /// <summary>
-        ///     Get and Set Operand's Type.
+        ///     Get Operand's Type.
         /// </summary>
         public XCoreOperandType Type { get; }
 
@@ -95,7 +107,7 @@ namespace Gee.External.Capstone.XCore {
             var operands = new XCoreOperand[nativeInstructionDetail.OperandCount];
             for (var i = 0; i < operands.Length; i++) {
                 ref var nativeOperand = ref nativeInstructionDetail.Operands[i];
-                operands[i] = XCoreOperand.Create(disassembler, ref nativeOperand);
+                operands[i] = new XCoreOperand(disassembler, ref nativeOperand);
             }
 
             return operands;
@@ -110,24 +122,22 @@ namespace Gee.External.Capstone.XCore {
         /// <param name="nativeOperand">
         ///     A native XCore operand.
         /// </param>
-        /// <returns>
-        ///     An XCore operand.
-        /// </returns>
-        internal static XCoreOperand Create(CapstoneDisassembler disassembler, ref NativeXCoreOperand nativeOperand) {
-            return new XCoreOperandBuilder().Build(disassembler, ref nativeOperand).Create();
-        }
-
-        /// <summary>
-        ///     Create an XCore Operand.
-        /// </summary>
-        /// <param name="builder">
-        ///     A builder to initialize the object with.
-        /// </param>
-        internal XCoreOperand(XCoreOperandBuilder builder) {
-            this._immediate = builder.Immediate;
-            this._memory = builder.Memory;
-            this._register = builder.Register;
-            this.Type = builder.Type;
+        internal XCoreOperand(CapstoneDisassembler disassembler, ref NativeXCoreOperand nativeOperand) {
+            this.Type = nativeOperand.Type;
+            // ...
+            //
+            // ...
+            switch (this.Type) {
+                case XCoreOperandType.Immediate:
+                    this._immediate = nativeOperand.Value.Immediate;
+                    break;
+                case XCoreOperandType.Memory:
+                    this._memory = new XCoreMemoryOperandValue(disassembler, ref nativeOperand.Value.Memory);
+                    break;
+                case XCoreOperandType.Register:
+                    this._register = XCoreRegister.TryCreate(disassembler, nativeOperand.Value.Register);
+                    break;
+            }
         }
     }
 }

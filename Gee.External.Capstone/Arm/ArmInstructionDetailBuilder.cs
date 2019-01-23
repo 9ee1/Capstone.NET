@@ -73,7 +73,7 @@
             this.CpsFlag = nativeInstructionDetail.CpsFlag;
             this.CpsMode = nativeInstructionDetail.CpsMode;
             this.IsUserMode = nativeInstructionDetail.IsUserMode;
-            this.MemoryBarrierOperation = nativeInstructionDetail.MemoryBarrier;
+            this.MemoryBarrierOperation = nativeInstructionDetail.MemoryBarrierOperation;
             this.Operands = ArmOperand.Create(disassembler, ref nativeInstructionDetail);
             this.UpdateFlags = nativeInstructionDetail.UpdateFlags;
             this.VectorDataType = nativeInstructionDetail.VectorDataType;

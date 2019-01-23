@@ -90,11 +90,11 @@ namespace Gee.External.Capstone {
                     const string detailMessage = "Memory Management is uninitialized.";
                     throw new CapstoneException(detailMessage);
                 }
-                else if (resultCode == NativeCapstoneResultCode.UnsupportedArchitecture) {
+                else if (resultCode == NativeCapstoneResultCode.UnsupportedDisassembleArchitecture) {
                     var detailMessage = $"A disassemble architecture ({disassembleArchitecture}) is invalid.";
                     throw new ArgumentException(detailMessage, nameof(disassembleArchitecture));
                 }
-                else if (resultCode == NativeCapstoneResultCode.UnsupportedDissembleMode) {
+                else if (resultCode == NativeCapstoneResultCode.UnsupportedDisassembleMode) {
                     var detailMessage = $"A disassemble mode ({disassembleMode}) is invalid.";
                     throw new ArgumentException(detailMessage, nameof(disassembleMode));
                 }
@@ -182,7 +182,7 @@ namespace Gee.External.Capstone {
                     var detailMessage = $"A disassembler handle ({nameof(hDisassembler)}) is invalid.";
                     throw new ArgumentException(detailMessage, nameof(hDisassembler));
                 }
-                else if (resultCode == NativeCapstoneResultCode.UnsupportedArchitecture) {
+                else if (resultCode == NativeCapstoneResultCode.UnsupportedDisassembleArchitecture) {
                     const string detailMessage = "A disassembler's hardware architecture is not supported.";
                     throw new NotSupportedException(detailMessage);
                 }

@@ -5,14 +5,9 @@ namespace Gee.External.Capstone {
     ///     Instruction Group.
     /// </summary>
     /// <typeparam name="TId">
-    ///     The type of the instruction group's unique identifiers.
+    ///     The type of the instruction group's unique identifier.
     /// </typeparam>
     public abstract class InstructionGroup<TId> where TId : Enum {
-        /// <summary>
-        ///     Instruction Group's Unique Identifier.
-        /// </summary>
-        private readonly TId _id;
-
         /// <summary>
         ///     Instruction Group's Name.
         /// </summary>
@@ -21,21 +16,25 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Get Instruction Group's Unique Identifier.
         /// </summary>
-        public TId Id => this._id;
+        public TId Id { get; }
 
         /// <summary>
         ///     Determine if Diet Mode is Enabled.
         /// </summary>
-        /// <value>
-        ///     A boolean true if diet mode is enabled. A boolean false otherwise.
-        /// </value>
+        /// <remarks>
+        ///     Indicates if Diet Mode is enabled. A boolean true indicates it is enabled. A boolean false otherwise.
+        /// </remarks>
         public bool IsDietModeEnabled => CapstoneDisassembler.IsDietModeEnabled;
 
         /// <summary>
         ///     Get Instruction Group's Name.
         /// </summary>
+        /// <remarks>
+        ///     Represents the instruction group's name if, and only if, Diet Mode is disabled. To determine if Diet
+        ///     Mode is disabled, call <see cref="IsDietModeEnabled" />.
+        /// </remarks>
         /// <exception cref="System.NotSupportedException">
-        ///     Thrown if diet mode is enabled.
+        ///     Thrown if Diet Mode is enabled.
         /// </exception>
         public string Name {
             get {
@@ -54,7 +53,7 @@ namespace Gee.External.Capstone {
         ///     The instruction group's name.
         /// </param>
         private protected InstructionGroup(TId id, string name) {
-            this._id = id;
+            this.Id = id;
             this._name = name;
         }
 
@@ -73,7 +72,7 @@ namespace Gee.External.Capstone {
                 var instructionGroup = @object as InstructionGroup<TId>;
                 isEqual = instructionGroup != null;
                 if (isEqual) {
-                    isEqual = this._id.Equals(instructionGroup._id);
+                    isEqual = this.Id.Equals(instructionGroup.Id);
                     isEqual = isEqual && this._name == instructionGroup._name;
                 }
             }
@@ -89,7 +88,7 @@ namespace Gee.External.Capstone {
         /// </returns>
         public override int GetHashCode() {
             var hashCode = 13;
-            hashCode = hashCode * 7 + this._id.GetHashCode();
+            hashCode = hashCode * 7 + this.Id.GetHashCode();
             hashCode = this._name != null ? hashCode * 7 + this._name.GetHashCode() : 0;
 
             return hashCode;

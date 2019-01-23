@@ -13,7 +13,7 @@
         ///     The instruction group's unique identifier.
         /// </param>
         /// <returns>
-        ///     A MIPS instruction group.
+        ///     An XCore instruction group.
         /// </returns>
         internal static XCoreInstructionGroup Create(CapstoneDisassembler disassembler, XCoreInstructionGroupId id) {
             // ...

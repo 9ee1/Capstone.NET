@@ -12,10 +12,6 @@
         /// <exception cref="Gee.External.Capstone.CapstoneException">
         ///     Thrown if a disassembler could not be created.
         /// </exception>
-        /// <exception cref="System.ArgumentException">
-        ///     Thrown if the disassemble architecture is invalid, or if the disassemble mode is invalid or
-        ///     unsupported by the disassemble architecture.
-        /// </exception>
         /// <exception cref="System.OutOfMemoryException">
         ///     Thrown if sufficient memory cannot be allocated to perform the operation as a rare indication that the
         ///     system is under heavy load.

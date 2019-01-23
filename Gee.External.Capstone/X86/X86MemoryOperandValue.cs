@@ -37,25 +37,12 @@
         /// <param name="nativeMemoryOperandValue">
         ///     A native X86 memory operand value.
         /// </param>
-        /// <returns>
-        ///     An X86 memory operand value.
-        /// </returns>
-        internal static X86MemoryOperandValue Create(CapstoneDisassembler disassembler, ref NativeX86MemoryOperandValue nativeMemoryOperandValue) {
-            return new X86MemoryOperandValueBuilder().Build(disassembler, ref nativeMemoryOperandValue).Create();
-        }
-
-        /// <summary>
-        ///     Create an X86 Memory Operand Value.
-        /// </summary>
-        /// <param name="builder">
-        ///     A builder to initialize the object with.
-        /// </param>
-        internal X86MemoryOperandValue(X86MemoryOperandValueBuilder builder) {
-            this.Base = builder.Base;
-            this.Displacement = builder.Displacement;
-            this.Index = builder.Index;
-            this.Scale = builder.Scale;
-            this.Segment = builder.Segment;
+        internal X86MemoryOperandValue(CapstoneDisassembler disassembler, ref NativeX86MemoryOperandValue nativeMemoryOperandValue) {
+            this.Base = X86Register.TryCreate(disassembler, nativeMemoryOperandValue.Base);
+            this.Displacement = nativeMemoryOperandValue.Displacement;
+            this.Index = X86Register.TryCreate(disassembler, nativeMemoryOperandValue.Index);
+            this.Scale = nativeMemoryOperandValue.Scale;
+            this.Segment = X86Register.TryCreate(disassembler, nativeMemoryOperandValue.Segment);
         }
     }
 }

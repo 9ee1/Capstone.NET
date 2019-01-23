@@ -7,7 +7,7 @@
         ///     Create an M68K Instruction.
         /// </summary>
         /// <returns>
-        ///     A MIPS instruction.
+        ///     An M68K instruction.
         /// </returns>
         internal M68KInstruction Create() {
             return new M68KInstruction(this);

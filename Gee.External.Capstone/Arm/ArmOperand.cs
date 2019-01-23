@@ -36,14 +36,14 @@ namespace Gee.External.Capstone.Arm {
         private readonly ArmSetEndOperation _setEndOperation;
 
         /// <summary>
-        ///     Shift Constant.
-        /// </summary>
-        private readonly int _shiftConstant;
-
-        /// <summary>
         ///     Shift Register.
         /// </summary>
         private readonly ArmRegister _shiftRegister;
+
+        /// <summary>
+        ///     Shift Value.
+        /// </summary>
+        private readonly int _shiftValue;
 
         /// <summary>
         ///     System Register Value.
@@ -53,8 +53,12 @@ namespace Gee.External.Capstone.Arm {
         /// <summary>
         ///     Get Operand's Access Type.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's access type if, and only if, Diet Mode is disabled. To determine if Diet Mode
+        ///     is disabled, call <see cref="IsDietModeEnabled" />.
+        /// </remarks>
         /// <exception cref="System.NotSupportedException">
-        ///     Thrown if diet mode is enabled.
+        ///     Thrown if Diet Mode is enabled.
         /// </exception>
         public OperandAccessType AccessType {
             get {
@@ -66,8 +70,13 @@ namespace Gee.External.Capstone.Arm {
         /// <summary>
         ///     Get Floating Point Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's floating point value if, and only if, the operand's type is
+        ///     <see cref="ArmOperandType.FloatingPoint" />. To determine the operand's type, call
+        ///     <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="ArmOperandType.FloatingPoint" />.
+        ///     Thrown if the operand's type is not <see cref="ArmOperandType.FloatingPoint" />.
         /// </exception>
         public double FloatingPoint {
             get {
@@ -84,15 +93,19 @@ namespace Gee.External.Capstone.Arm {
         /// <summary>
         ///     Get Immediate Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's immediate value if the operand's type is
+        ///     <see cref="ArmOperandType.CImmediate" />, <see cref="ArmOperandType.Immediate" />, or
+        ///     <see cref="ArmOperandType.PImmediate" />. To determine the operand's type, call <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="ArmOperandType.Immediate" /> or, if the
-        ///     operand's type is not equal to <see cref="ArmOperandType.CImmediate" />, or if the operand's type is
-        ///     not equal to <see cref="ArmOperandType.PImmediate" />.
+        ///     Thrown if the operand's type is not <see cref="ArmOperandType.CImmediate" />,
+        ///     <see cref="ArmOperandType.Immediate" />, or <see cref="ArmOperandType.PImmediate" />.
         /// </exception>
         public int Immediate {
             get {
-                var isTypeImmediate = this.Type == ArmOperandType.Immediate;
-                isTypeImmediate = isTypeImmediate || this.Type == ArmOperandType.CImmediate;
+                var isTypeImmediate = this.Type == ArmOperandType.CImmediate;
+                isTypeImmediate = isTypeImmediate || this.Type == ArmOperandType.Immediate;
                 isTypeImmediate = isTypeImmediate || this.Type == ArmOperandType.PImmediate;
                 if (!isTypeImmediate) {
                     const string valueName = nameof(ArmOperand.Immediate);
@@ -105,15 +118,27 @@ namespace Gee.External.Capstone.Arm {
         }
 
         /// <summary>
-        ///     Get Operand's Subtracted Flag.
+        ///     Determine if Diet Mode is Enabled.
+        /// </summary>
+        /// <remarks>
+        ///     Indicates if Diet Mode is enabled. A boolean true indicates it is enabled. A boolean false otherwise.
+        /// </remarks>
+        public bool IsDietModeEnabled => CapstoneDisassembler.IsDietModeEnabled;
+
+        /// <summary>
+        ///     Get Subtracted Flag.
         /// </summary>
         public bool IsSubtracted { get; }
 
         /// <summary>
         ///     Get Memory Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's memory value if, and only if, the operand's type is
+        ///     <see cref="ArmOperandType.Memory" />. To determine the operand's type, call <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="ArmOperandType.Memory" />.
+        ///     Thrown if the operand's type is not <see cref="ArmOperandType.Memory" />.
         /// </exception>
         public ArmMemoryOperandValue Memory {
             get {
@@ -135,8 +160,12 @@ namespace Gee.External.Capstone.Arm {
         /// <summary>
         ///     Get Register Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's register value if, and only if, the operand's type is
+        ///     <see cref="ArmOperandType.Register" />. To determine the operand's type, call <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="ArmOperandType.Register" />.
+        ///     Thrown if the operand's type is not <see cref="ArmOperandType.Register" />.
         /// </exception>
         public ArmRegister Register {
             get {
@@ -153,8 +182,13 @@ namespace Gee.External.Capstone.Arm {
         /// <summary>
         ///     Get SETEND Operation.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's SETEND operation if, and only if, the operand's type is
+        ///     <see cref="ArmOperandType.SetEndOperation" />. To determine the operand's type, call
+        ///     <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="ArmOperandType.SetEndOperation" />.
+        ///     Thrown if the operand's type is not <see cref="ArmOperandType.SetEndOperation" />.
         /// </exception>
         public ArmSetEndOperation SetEndOperation {
             get {
@@ -169,31 +203,6 @@ namespace Gee.External.Capstone.Arm {
         }
 
         /// <summary>
-        ///     Get Shift Constant.
-        /// </summary>
-        /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the shift operation is equal to <see cref="ArmShiftOperation.Invalid" />, or if the shift
-        ///     operation is not less than <see cref="ArmShiftOperation.ARM_SFT_ASR_REG" />.
-        /// </exception>
-        public int ShiftConstant {
-            get {
-                if (this.ShiftOperation == ArmShiftOperation.Invalid) {
-                    const string valueName = nameof(ArmOperand.ShiftConstant);
-                    var detailMessage = $"A value ({valueName}) is invalid when the type is ({this.ShiftOperation}).";
-                    throw new InvalidOperationException(detailMessage);
-                }
-
-                if (!(this.ShiftOperation < ArmShiftOperation.ARM_SFT_ASR_REG)) {
-                    const string valueName = nameof(ArmOperand.ShiftConstant);
-                    var detailMessage = $"A value ({valueName}) is invalid when the type is ({this.ShiftOperation}).";
-                    throw new InvalidOperationException(detailMessage);
-                }
-
-                return this._shiftConstant;
-            }
-        }
-
-        /// <summary>
         ///     Get Shift Operation.
         /// </summary>
         public ArmShiftOperation ShiftOperation { get; }
@@ -201,6 +210,12 @@ namespace Gee.External.Capstone.Arm {
         /// <summary>
         ///     Get Shift Register.
         /// </summary>
+        /// <remarks>
+        ///     Conveniently represents the operand's shift register if the operand's shift operation is not
+        ///     <see cref="ArmShiftOperation.Invalid" /> and greater than or equal to
+        ///     <see cref="ArmShiftOperation.ARM_SFT_ASR_REG" />. To determine the operand's shift operation,
+        ///     call <see cref="ShiftOperation" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
         ///     Thrown if the shift operation is equal to <see cref="ArmShiftOperation.Invalid" />, or if the shift
         ///     operation is less than <see cref="ArmShiftOperation.ARM_SFT_ASR_REG" />.
@@ -213,7 +228,7 @@ namespace Gee.External.Capstone.Arm {
                     throw new InvalidOperationException(detailMessage);
                 }
 
-                if (this.ShiftOperation < ArmShiftOperation.ARM_SFT_ASR_REG) {
+                if (!(this.ShiftOperation >= ArmShiftOperation.ARM_SFT_ASR_REG)) {
                     const string valueName = nameof(ArmOperand.ShiftRegister);
                     var detailMessage = $"A value ({valueName}) is invalid when the type is ({this.ShiftOperation}).";
                     throw new InvalidOperationException(detailMessage);
@@ -224,10 +239,38 @@ namespace Gee.External.Capstone.Arm {
         }
 
         /// <summary>
+        ///     Get Shift Value.
+        /// </summary>
+        /// <remarks>
+        ///     Represents the operand's shift value if, and only if, the operand's shift operation is not
+        ///     <see cref="ArmShiftOperation.Invalid" />. To determine the operand's shift operation, call
+        ///     <see cref="ShiftOperation" />.
+        /// </remarks>
+        /// <exception cref="System.InvalidOperationException">
+        ///     Thrown if the shift operation is <see cref="ArmShiftOperation.Invalid" />.
+        /// </exception>
+        public int ShiftValue {
+            get {
+                if (this.ShiftOperation == ArmShiftOperation.Invalid) {
+                    const string valueName = nameof(ArmOperand.ShiftValue);
+                    var detailMessage = $"A value ({valueName}) is invalid when the type is ({this.ShiftOperation}).";
+                    throw new InvalidOperationException(detailMessage);
+                }
+
+                return this._shiftValue;
+            }
+        }
+
+        /// <summary>
         ///     Get System Register.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's system register if, and only if, the operand's type is
+        ///     <see cref="ArmOperandType.SystemRegister" />. To determine the operand's type, call
+        ///     <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="ArmOperandType.SystemRegister" />.
+        ///     Thrown if the operand's type is not <see cref="ArmOperandType.SystemRegister" />.
         /// </exception>
         public ArmSystemRegister SystemRegister {
             get {
@@ -267,7 +310,7 @@ namespace Gee.External.Capstone.Arm {
             var operands = new ArmOperand[nativeInstructionDetail.OperandCount];
             for (var i = 0; i < operands.Length; i++) {
                 ref var nativeOperand = ref nativeInstructionDetail.Operands[i];
-                operands[i] = ArmOperand.Create(disassembler, ref nativeOperand);
+                operands[i] = new ArmOperand(disassembler, ref nativeOperand);
             }
 
             return operands;
@@ -282,34 +325,73 @@ namespace Gee.External.Capstone.Arm {
         /// <param name="nativeOperand">
         ///     A native ARM operand.
         /// </param>
-        /// <returns>
-        ///     An ARM operand.
-        /// </returns>
-        internal static ArmOperand Create(CapstoneDisassembler disassembler, ref NativeArmOperand nativeOperand) {
-            return new ArmOperandBuilder().Build(disassembler, ref nativeOperand).Create();
-        }
+        internal ArmOperand(CapstoneDisassembler disassembler, ref NativeArmOperand nativeOperand) {
+            this._accessType = !CapstoneDisassembler.IsDietModeEnabled ? nativeOperand.AccessType : OperandAccessType.Invalid;
+            this.IsSubtracted = nativeOperand.IsSubtracted;
+            this.NeonLane = nativeOperand.NeonLane;
+            this.ShiftOperation = nativeOperand.Shift.Operation;
+            this.Type = nativeOperand.Type;
+            this.VectorIndex = nativeOperand.VectorIndex;
+            // ...
+            //
+            // ...
+            this._shiftRegister = CreateShiftRegister(this, disassembler, ref nativeOperand);
+            this._shiftValue = CreateShiftValue(this, ref nativeOperand);
+            // ...
+            //
+            // ...
+            switch (this.Type) {
+                case ArmOperandType.CImmediate:
+                    this._immediate = nativeOperand.Value.Immediate;
+                    break;
+                case ArmOperandType.FloatingPoint:
+                    this._floatingPoint = nativeOperand.Value.FloatingPoint;
+                    break;
+                case ArmOperandType.Immediate:
+                    this._immediate = nativeOperand.Value.Immediate;
+                    break;
+                case ArmOperandType.Memory:
+                    this._memory = new ArmMemoryOperandValue(disassembler, ref nativeOperand.Value.Memory);
+                    break;
+                case ArmOperandType.PImmediate:
+                    this._immediate = nativeOperand.Value.Immediate;
+                    break;
+                case ArmOperandType.Register:
+                    this._register = ArmRegister.TryCreate(disassembler, (ArmRegisterId) nativeOperand.Value.Register);
+                    break;
+                case ArmOperandType.SetEndOperation:
+                    this._setEndOperation = nativeOperand.Value.SetEndOperation;
+                    break;
+                case ArmOperandType.SystemRegister:
+                    this._systemRegister = (ArmSystemRegister) nativeOperand.Value.Register;
+                    break;
+            }
 
-        /// <summary>
-        ///     Create an ARM Operand.
-        /// </summary>
-        /// <param name="builder">
-        ///     A builder to initialize the object with.
-        /// </param>
-        internal ArmOperand(ArmOperandBuilder builder) {
-            this._accessType = builder.AccessType;
-            this._floatingPoint = builder.FloatingPoint;
-            this._immediate = builder.Immediate;
-            this.IsSubtracted = builder.IsSubtracted;
-            this._memory = builder.Memory;
-            this.NeonLane = builder.NeonLane;
-            this._register = builder.Register;
-            this._setEndOperation = builder.SetEndOperation;
-            this._shiftConstant = builder.ShiftConstant;
-            this.ShiftOperation = builder.ShiftOperation;
-            this._shiftRegister = builder.ShiftRegister;
-            this._systemRegister = builder.SystemRegister;
-            this.Type = builder.Type;
-            this.VectorIndex = builder.VectorIndex;
+            // <summary>
+            //      Create Shift Value.
+            // </summary>
+            int CreateShiftValue(ArmOperand @this, ref NativeArmOperand cNativeOperand) {
+                var cShiftValue = 0;
+                if (@this.ShiftOperation != ArmShiftOperation.Invalid) {
+                    cShiftValue = cNativeOperand.Shift.Value;
+                }
+
+                return cShiftValue;
+            }
+
+            // <summary>
+            //      Create Shift Register.
+            // </summary>
+            ArmRegister CreateShiftRegister(ArmOperand @this, CapstoneDisassembler cDisassembler, ref NativeArmOperand cNativeArmOperand) {
+                ArmRegister cShiftRegister = null;
+                if (@this.ShiftOperation != ArmShiftOperation.Invalid) {
+                    if (@this.ShiftOperation >= ArmShiftOperation.ARM_SFT_ASR_REG) {
+                        cShiftRegister = ArmRegister.TryCreate(cDisassembler, (ArmRegisterId) cNativeArmOperand.Shift.Value);
+                    }
+                }
+
+                return cShiftRegister;
+            }
         }
     }
 }

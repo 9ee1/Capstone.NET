@@ -2,40 +2,43 @@
 using System.Runtime.InteropServices;
 
 namespace Gee.External.Capstone {
+    /// <summary>
+    ///     Native Disassembled Instruction Details.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 8)]
     [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Global")]
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-    [StructLayout(LayoutKind.Sequential, Pack = 8)]
     internal struct NativeInstructionDetail {
         /// <summary>
-        ///     Implicit Registers Read by an Instruction.
+        ///     Implicitly Read Registers.
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 12)]
-        public short[] ReadRegisters;
+        public short[] ImplicitlyReadRegisters;
 
         /// <summary>
-        ///     Number of Implicit Registers Read by an Instruction.
+        ///     Implicitly Read Registers' Count.
         /// </summary>
-        public byte ReadRegistersCount;
+        public byte ImplicitlyReadRegisterCount;
 
         /// <summary>
-        ///     Implicit Registers Written by an Instruction.
+        ///     Implicitly Written Registers.
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
-        public short[] WrittenRegisters;
+        public short[] ImplicitlyWrittenRegisters;
 
         /// <summary>
-        ///     Number of Implicit Registers Written by an Instruction.
+        ///     Implicitly Written Registers' Count.
         /// </summary>
-        public byte WrittenRegisterCount;
+        public byte ImplicitlyWrittenRegisterCount;
 
         /// <summary>
-        ///     Groups an Instruction Belongs to.
+        ///     Instruction's Groups.
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
         public byte[] Groups;
 
         /// <summary>
-        ///     Number of Groups an Instruction Belongs to.
+        ///     Instruction's Groups' Count.
         /// </summary>
         public byte GroupCount;
     }

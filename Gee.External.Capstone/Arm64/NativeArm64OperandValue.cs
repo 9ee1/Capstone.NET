@@ -37,7 +37,7 @@ namespace Gee.External.Capstone.Arm64 {
         public Arm64PStateField PStateField;
 
         /// <summary>
-        ///     System Register.
+        ///     System Operation.
         /// </summary>
         [FieldOffset(0)]
         public int SystemOperation;

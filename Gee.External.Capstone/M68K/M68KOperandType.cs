@@ -26,12 +26,12 @@
         /// <summary>
         ///     Indicates a single precision floating point operand.
         /// </summary>
-        SinglePrecisionFloatingPoint,
+        SImmediate,
 
         /// <summary>
         ///     Indicates a double precision floating point operand.
         /// </summary>
-        DoublePrecisionFloatingPoint,
+        DImmediate,
 
         /// <summary>
         ///     Indicates a register bits operand.

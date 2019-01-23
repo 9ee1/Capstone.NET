@@ -4,10 +4,10 @@
     /// </summary>
     internal sealed class Arm64InstructionBuilder : InstructionBuilder<Arm64InstructionDetail, Arm64DisassembleMode, Arm64InstructionGroup, Arm64InstructionGroupId, Arm64Instruction, Arm64InstructionId, Arm64Register, Arm64RegisterId> {
         /// <summary>
-        ///     Create an ARM Instruction.
+        ///     Create an ARM64 Instruction.
         /// </summary>
         /// <returns>
-        ///     An ARM instruction.
+        ///     An ARM64 instruction.
         /// </returns>
         internal Arm64Instruction Create() {
             return new Arm64Instruction(this);

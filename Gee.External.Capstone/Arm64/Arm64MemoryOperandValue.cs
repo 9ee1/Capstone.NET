@@ -27,23 +27,10 @@
         /// <param name="nativeMemoryOperandValue">
         ///     A native ARM64 memory operand value.
         /// </param>
-        /// <returns>
-        ///     An ARM64 memory operand value.
-        /// </returns>
-        internal static Arm64MemoryOperandValue Create(CapstoneDisassembler disassembler, ref NativeArm64MemoryOperandValue nativeMemoryOperandValue) {
-            return new Arm64MemoryOperandValueBuilder().Build(disassembler, ref nativeMemoryOperandValue).Create();
-        }
-
-        /// <summary>
-        ///     Create an ARM64 Memory Operand Value.
-        /// </summary>
-        /// <param name="builder">
-        ///     A builder to initialize the object with.
-        /// </param>
-        internal Arm64MemoryOperandValue(Arm64MemoryOperandValueBuilder builder) {
-            this.Base = builder.Base;
-            this.Displacement = builder.Displacement;
-            this.Index = builder.Index;
+        internal Arm64MemoryOperandValue(CapstoneDisassembler disassembler, ref NativeArm64MemoryOperandValue nativeMemoryOperandValue) {
+            this.Base = Arm64Register.TryCreate(disassembler, nativeMemoryOperandValue.Base);
+            this.Displacement = nativeMemoryOperandValue.Displacement;
+            this.Index = Arm64Register.TryCreate(disassembler, nativeMemoryOperandValue.Index);
         }
     }
 }

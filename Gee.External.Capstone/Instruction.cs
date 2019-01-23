@@ -2,7 +2,7 @@
 
 namespace Gee.External.Capstone {
     /// <summary>
-    ///     Instruction.
+    ///     Disassembled Instruction.
     /// </summary>
     /// <typeparam name="TSelf">
     ///     This type.
@@ -11,7 +11,7 @@ namespace Gee.External.Capstone {
     ///     The type of the instruction's details.
     /// </typeparam>
     /// <typeparam name="TDisassembleMode">
-    ///     The type of the hardware mode for the disassembler to use.
+    ///     The type of the hardware mode the instruction was disassembled for.
     /// </typeparam>
     /// <typeparam name="TGroup">
     ///     The type of the instruction's architecture specific instruction groups.
@@ -53,7 +53,7 @@ namespace Gee.External.Capstone {
         private readonly string _operand;
 
         /// <summary>
-        ///     Get Instruction's Address.
+        ///     Get Instruction's Address (EIP).
         /// </summary>
         public long Address { get; }
 
@@ -66,14 +66,12 @@ namespace Gee.External.Capstone {
         ///     Get Instruction's Details.
         /// </summary>
         /// <remarks>
-        ///     Represents the instruction's details if, and only if, the instruction was disassembled with details
-        ///     and the instruction is not a skipped data instruction. A null reference otherwise. To determine if the
-        ///     instruction was disassembled with details, use <see cref="HasDetails" />. To determine if the
-        ///     instruction is a skipped data instruction, use <see cref="IsSkippedData" />. 
+        ///     Represents the instruction's details if, and only if, the instruction was disassembled with details. A
+        ///     null reference otherwise. To determine if the instruction was disassembled with details, call
+        ///     <see cref="HasDetails" />. 
         /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the instruction was disassembled with no details, or if the instruction is a skipped data
-        ///     instruction.
+        ///     Thrown if the instruction was disassembled with no details.
         /// </exception>
         public TDetail Details {
             get {
@@ -87,10 +85,10 @@ namespace Gee.External.Capstone {
         }
 
         /// <summary>
-        ///     Get Disassemble Architecture.
+        ///     Get Instruction's Disassemble Architecture.
         /// </summary>
         /// <remarks>
-        ///     Represents the hardware architecture of the disassembled instruction.
+        ///     Represents the hardware architecture the instruction was disassembled for.
         /// </remarks>
         public DisassembleArchitecture DisassembleArchitecture { get; }
 
@@ -98,7 +96,7 @@ namespace Gee.External.Capstone {
         ///     Get Instruction's Disassemble Mode.
         /// </summary>
         /// <remarks>
-        ///     Represents the hardware mode of the disassembled instruction.
+        ///     Represents the hardware mode the instruction was disassembled for.
         /// </remarks>
         public TDisassembleMode DisassembleMode { get; }
 
@@ -106,8 +104,12 @@ namespace Gee.External.Capstone {
         ///     Determine if Instruction Has Details.
         /// </summary>
         /// <remarks>
-        ///     Indicates whether the instruction was disassembled with details. A boolean true indicates the
-        ///     instruction was disassembled with details. A boolean false otherwise.
+        ///     Indicates if the instruction was disassembled with details. A boolean true indicates the instruction
+        ///     was disassembled with details. A boolean false otherwise. If the instruction was disassembled without
+        ///     details, it is either because instruction details were disabled on the disassembler or instruction
+        ///     details and Skip Data Mode were enabled on the disassembler and the instruction is a skipped data
+        ///     instruction. To determine if the instruction is a skipped data instruction, call
+        ///     <see cref="IsSkippedData" />.
         /// </remarks>
         public bool HasDetails => this._details != null;
 
@@ -119,25 +121,29 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Determine if Diet Mode is Enabled.
         /// </summary>
-        /// <value>
-        ///     A boolean true if diet mode is enabled. A boolean false otherwise.
-        /// </value>
+        /// <remarks>
+        ///     Indicates if Diet Mode is enabled. A boolean true indicates it is enabled. A boolean false otherwise.
+        /// </remarks>
         public bool IsDietModeEnabled => CapstoneDisassembler.IsDietModeEnabled;
 
         /// <summary>
         ///     Determine if Instruction is Skipped Data.
         /// </summary>
         /// <remarks>
-        ///     Indicates whether the instruction is a skipped data instruction. A boolean true indicates the
-        ///     instruction is a skipped data instruction. A boolean false otherwise.
+        ///     Indicates if the instruction is a skipped data instruction. A boolean true indicates the instruction
+        ///     is a skipped data instruction. A boolean false otherwise.
         /// </remarks>
         public bool IsSkippedData { get; }
 
         /// <summary>
         ///     Get Instruction's Mnemonic.
         /// </summary>
+        /// <remarks>
+        ///     Represents the instruction's mnemonic if, and only if, Diet Mode is disabled. To determine if Diet
+        ///     Mode is disabled, call <see cref="IsDietModeEnabled" />.
+        /// </remarks>
         /// <exception cref="System.NotSupportedException">
-        ///     Thrown if diet mode is enabled.
+        ///     Thrown if Diet Mode is enabled.
         /// </exception>
         public string Mnemonic {
             get {
@@ -149,8 +155,12 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Get Instruction's Operand Text.
         /// </summary>
+        /// <remarks>
+        ///     Represents the instruction's operand text if, and only if, Diet Mode is disabled. To determine if Diet
+        ///     Mode is disabled, call <see cref="IsDietModeEnabled" />.
+        /// </remarks>
         /// <exception cref="System.NotSupportedException">
-        ///     Thrown if diet mode is enabled.
+        ///     Thrown if Diet Mode is enabled.
         /// </exception>
         public string Operand {
             get {
@@ -160,7 +170,7 @@ namespace Gee.External.Capstone {
         }
 
         /// <summary>
-        ///     Create an Instruction.
+        ///     Create a Disassembled Instruction.
         /// </summary>
         /// <param name="builder">
         ///     A builder to initialize the object with.

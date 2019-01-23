@@ -53,6 +53,14 @@ namespace Gee.External.Capstone.M68K {
         /// <summary>
         ///     Get Branch Displacement Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's branch displacement value if, and only if, the operand's type is
+        ///     <see cref="M68KOperandType.BranchDisplacement" />. To determine the operand's type, call
+        ///     <see cref="Type" />.
+        /// </remarks>
+        /// <exception cref="System.InvalidOperationException">
+        ///     Thrown if the operand's type is to <see cref="M68KOperandType.BranchDisplacement" />.
+        /// </exception>
         public M68KBranchDisplacementOperandValue BranchDisplacement {
             get {
                 if (this.Type != M68KOperandType.BranchDisplacement) {
@@ -68,9 +76,16 @@ namespace Gee.External.Capstone.M68K {
         /// <summary>
         ///     Get Double Precision Immediate Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's double precision immediate value if, and only if, the operand's type is
+        ///     <see cref="M68KOperandType.DImmediate" />. To determine the operand's type, call <see cref="Type" />.
+        /// </remarks>
+        /// <exception cref="System.InvalidOperationException">
+        ///     Thrown if the operand's type is not <see cref="M68KOperandType.DImmediate" />.
+        /// </exception>
         public double DImmediate {
             get {
-                if (this.Type != M68KOperandType.DoublePrecisionFloatingPoint) {
+                if (this.Type != M68KOperandType.DImmediate) {
                     const string valueName = nameof(M68KOperand.DImmediate);
                     var detailMessage = $"A value ({valueName}) is invalid when the type is ({this.Type}).";
                     throw new InvalidOperationException(detailMessage);
@@ -83,6 +98,13 @@ namespace Gee.External.Capstone.M68K {
         /// <summary>
         ///     Get Immediate Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's immediate value if, and only if, the operand's type is
+        ///     <see cref="M68KOperandType.Immediate" />. To determine the operand's type, call <see cref="Type" />.
+        /// </remarks>
+        /// <exception cref="System.InvalidOperationException">
+        ///     Thrown if the operand's type is not <see cref="M68KOperandType.Immediate" />.
+        /// </exception>
         public long Immediate {
             get {
                 if (this.Type != M68KOperandType.Immediate) {
@@ -98,6 +120,13 @@ namespace Gee.External.Capstone.M68K {
         /// <summary>
         ///     Get Memory Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's memory value if, and only if, the operand's type is
+        ///     <see cref="M68KOperandType.Memory" />. To determine the operand's type, call <see cref="Type" />.
+        /// </remarks>
+        /// <exception cref="System.InvalidOperationException">
+        ///     Thrown if the operand's type is not <see cref="M68KOperandType.Memory" />.
+        /// </exception>
         public M68KMemoryOperandValue Memory {
             get {
                 if (this.Type != M68KOperandType.Memory) {
@@ -113,6 +142,13 @@ namespace Gee.External.Capstone.M68K {
         /// <summary>
         ///     Get Register Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's register value if, and only if, the operand's type is
+        ///     <see cref="M68KOperandType.Register" />. To determine the operand's type, call <see cref="Type" />.
+        /// </remarks>
+        /// <exception cref="System.InvalidOperationException">
+        ///     Thrown if the operand's type is not <see cref="M68KOperandType.Register" />.
+        /// </exception>
         public M68KRegister Register {
             get {
                 if (this.Type != M68KOperandType.Register) {
@@ -128,6 +164,13 @@ namespace Gee.External.Capstone.M68K {
         /// <summary>
         ///     Get Register Bits Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's register bits value if, and only if, the operand's type is
+        ///     <see cref="M68KOperandType.RegisterBits" />. To determine the operand's type, call <see cref="Type" />.
+        /// </remarks>
+        /// <exception cref="System.InvalidOperationException">
+        ///     Thrown if the operand's type is not <see cref="M68KOperandType.RegisterBits" />.
+        /// </exception>
         public int RegisterBits {
             get {
                 if (this.Type != M68KOperandType.RegisterBits) {
@@ -143,6 +186,14 @@ namespace Gee.External.Capstone.M68K {
         /// <summary>
         ///     Get Register Pair Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents a 2-tuple of the operand's register pair value if, and only if, the operand's type is
+        ///     <see cref="M68KOperandType.RegisterPair" />. To determine the operand's type, call
+        ///     <see cref="Type" />.
+        /// </remarks>
+        /// <exception cref="System.InvalidOperationException">
+        ///     Thrown if the operand's type is not <see cref="M68KOperandType.RegisterPair" />.
+        /// </exception>
         public Tuple<M68KRegister, M68KRegister> RegisterPair {
             get {
                 if (this.Type != M68KOperandType.RegisterPair) {
@@ -158,9 +209,16 @@ namespace Gee.External.Capstone.M68K {
         /// <summary>
         ///     Get Single Precision Immediate Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's single precision immediate value if, and only if, the operand's type is
+        ///     <see cref="M68KOperandType.SImmediate" />. To determine the operand's type, call <see cref="Type" />.
+        /// </remarks>
+        /// <exception cref="System.InvalidOperationException">
+        ///     Thrown if the operand's type is not <see cref="M68KOperandType.SImmediate" />.
+        /// </exception>
         public float SImmediate {
             get {
-                if (this.Type != M68KOperandType.SinglePrecisionFloatingPoint) {
+                if (this.Type != M68KOperandType.SImmediate) {
                     const string valueName = nameof(M68KOperand.SImmediate);
                     var detailMessage = $"A value ({valueName}) is invalid when the type is ({this.Type}).";
                     throw new InvalidOperationException(detailMessage);
@@ -173,6 +231,9 @@ namespace Gee.External.Capstone.M68K {
         /// <summary>
         ///     Operand's Type.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's type.
+        /// </remarks>
         public M68KOperandType Type { get; }
 
         /// <summary>
@@ -216,7 +277,7 @@ namespace Gee.External.Capstone.M68K {
                 case M68KOperandType.BranchDisplacement:
                     this._branchDisplacement = new M68KBranchDisplacementOperandValue(ref nativeOperand.BranchDisplacement);
                     break;
-                case M68KOperandType.DoublePrecisionFloatingPoint:
+                case M68KOperandType.DImmediate:
                     this._dImmediate = nativeOperand.Value.DImmediate;
                     break;
                 case M68KOperandType.Immediate:
@@ -236,7 +297,7 @@ namespace Gee.External.Capstone.M68K {
                     var register1 = M68KRegister.TryCreate(disassembler, nativeOperand.Value.RegisterPair.Register1);
                     this._registerPair = Tuple.Create(register0, register1);
                     break;
-                case M68KOperandType.SinglePrecisionFloatingPoint:
+                case M68KOperandType.SImmediate:
                     this._sImmediate = nativeOperand.Value.SImmediate;
                     break;
             }

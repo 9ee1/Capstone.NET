@@ -17,7 +17,7 @@ namespace Gee.External.Capstone.M68K {
         public M68KRegisterId Index;
 
         /// <summary>
-        ///     Indirect Base.
+        ///     Indirect Base Register.
         /// </summary>
         public M68KRegisterId IndirectBase;
 

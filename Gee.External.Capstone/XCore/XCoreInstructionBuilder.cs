@@ -7,7 +7,7 @@
         ///     Create an XCore Instruction.
         /// </summary>
         /// <returns>
-        ///     A MIPS instruction.
+        ///     An XCore instruction.
         /// </returns>
         internal XCoreInstruction Create() {
             return new XCoreInstruction(this);

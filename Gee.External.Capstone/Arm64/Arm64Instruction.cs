@@ -13,7 +13,7 @@
         ///     An instruction handle.
         /// </param>
         /// <returns>
-        ///     An ARM instruction.
+        ///     An ARM64 instruction.
         /// </returns>
         internal static Arm64Instruction Create(CapstoneDisassembler disassembler, NativeInstructionHandle hInstruction) {
             var builder = new Arm64InstructionBuilder();

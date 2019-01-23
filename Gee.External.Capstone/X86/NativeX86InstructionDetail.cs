@@ -90,7 +90,7 @@ namespace Gee.External.Capstone.X86 {
         public NativeX86Flag Flag;
 
         /// <summary>
-        ///     Instruction's Operand Count.
+        ///     Instruction's Operands' Count.
         /// </summary>
         public byte OperandCount;
 

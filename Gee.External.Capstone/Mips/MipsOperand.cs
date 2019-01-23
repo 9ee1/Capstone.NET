@@ -23,8 +23,12 @@ namespace Gee.External.Capstone.Mips {
         /// <summary>
         ///     Get Immediate Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's immediate value if, and only if, the operand's type is
+        ///     <see cref="MipsOperandType.Immediate" />. To determine the operand's type, call <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="MipsOperandType.Immediate" />.
+        ///     Thrown if the operand's type is not <see cref="MipsOperandType.Immediate" />.
         /// </exception>
         public long Immediate {
             get {
@@ -41,8 +45,12 @@ namespace Gee.External.Capstone.Mips {
         /// <summary>
         ///     Get Memory Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's memory value if, and only if, the operand's type is
+        ///     <see cref="MipsOperandType.Memory" />. To determine the operand's type, call <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="MipsOperandType.Memory" />.
+        ///     Thrown if the operand's type is not <see cref="MipsOperandType.Memory" />.
         /// </exception>
         public MipsMemoryOperandValue Memory {
             get {
@@ -59,8 +67,12 @@ namespace Gee.External.Capstone.Mips {
         /// <summary>
         ///     Get Register Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's register value if, and only if, the operand's type is
+        ///     <see cref="MipsOperandType.Register" />. To determine the operand's type, call <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="MipsOperandType.Register" />.
+        ///     Thrown if the operand's type is not <see cref="MipsOperandType.Register" />.
         /// </exception>
         public MipsRegister Register {
             get {
@@ -95,7 +107,7 @@ namespace Gee.External.Capstone.Mips {
             var operands = new MipsOperand[nativeInstructionDetail.OperandCount];
             for (var i = 0; i < operands.Length; i++) {
                 ref var nativeOperand = ref nativeInstructionDetail.Operands[i];
-                operands[i] = MipsOperand.Create(disassembler, ref nativeOperand);
+                operands[i] = new MipsOperand(disassembler, ref nativeOperand);
             }
 
             return operands;
@@ -110,24 +122,22 @@ namespace Gee.External.Capstone.Mips {
         /// <param name="nativeOperand">
         ///     A native MIPS operand.
         /// </param>
-        /// <returns>
-        ///     A MIPS operand.
-        /// </returns>
-        internal static MipsOperand Create(CapstoneDisassembler disassembler, ref NativeMipsOperand nativeOperand) {
-            return new MipsOperandBuilder().Build(disassembler, ref nativeOperand).Create();
-        }
-
-        /// <summary>
-        ///     Create a MIPS Operand.
-        /// </summary>
-        /// <param name="builder">
-        ///     A builder to initialize the object with.
-        /// </param>
-        internal MipsOperand(MipsOperandBuilder builder) {
-            this._immediate = builder.Immediate;
-            this._memory = builder.Memory;
-            this._register = builder.Register;
-            this.Type = builder.Type;
+        internal MipsOperand(CapstoneDisassembler disassembler, ref NativeMipsOperand nativeOperand) {
+            this.Type = nativeOperand.Type;
+            // ...
+            //
+            // ...
+            switch (this.Type) {
+                case MipsOperandType.Immediate:
+                    this._immediate = nativeOperand.Value.Immediate;
+                    break;
+                case MipsOperandType.Memory:
+                    this._memory = new MipsMemoryOperandValue(disassembler, ref nativeOperand.Value.Memory);
+                    break;
+                case MipsOperandType.Register:
+                    this._register = MipsRegister.TryCreate(disassembler, nativeOperand.Value.Register);
+                    break;
+            }
         }
     }
 }

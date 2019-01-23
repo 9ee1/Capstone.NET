@@ -22,22 +22,9 @@
         /// <param name="nativeMemoryOperandValue">
         ///     A native MIPS memory operand value.
         /// </param>
-        /// <returns>
-        ///     A MIPS memory operand value.
-        /// </returns>
-        internal static MipsMemoryOperandValue Create(CapstoneDisassembler disassembler, ref NativeMipsMemoryOperandValue nativeMemoryOperandValue) {
-            return new MipsMemoryOperandValueBuilder().Build(disassembler, ref nativeMemoryOperandValue).Create();
-        }
-
-        /// <summary>
-        ///     Create a MIPS Memory Operand Value.
-        /// </summary>
-        /// <param name="builder">
-        ///     A builder to initialize the object with.
-        /// </param>
-        internal MipsMemoryOperandValue(MipsMemoryOperandValueBuilder builder) {
-            this.Base = builder.Base;
-            this.Displacement = builder.Displacement;
+        internal MipsMemoryOperandValue(CapstoneDisassembler disassembler, ref NativeMipsMemoryOperandValue nativeMemoryOperandValue) {
+            this.Base = MipsRegister.TryCreate(disassembler, nativeMemoryOperandValue.Base);
+            this.Displacement = nativeMemoryOperandValue.Displacement;
         }
     }
 }

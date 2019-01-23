@@ -25,6 +25,9 @@
         /// <summary>
         ///     Create a MIPS Instruction.
         /// </summary>
+        /// <param name="builder">
+        ///     A builder to initialize the object with.
+        /// </param>
         internal MipsInstruction(MipsInstructionBuilder builder) : base(builder) { }
     }
 }

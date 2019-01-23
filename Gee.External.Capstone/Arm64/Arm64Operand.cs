@@ -16,6 +16,11 @@ namespace Gee.External.Capstone.Arm64 {
         private readonly Arm64AtOperation _atOperation;
 
         /// <summary>
+        ///     Barrier Operation.
+        /// </summary>
+        private readonly Arm64BarrierOperation _barrierOperation;
+
+        /// <summary>
         ///     Data Cache (DC) Operation.
         /// </summary>
         private readonly Arm64DcOperation _dcOperation;
@@ -41,14 +46,14 @@ namespace Gee.External.Capstone.Arm64 {
         private readonly Arm64MemoryOperandValue _memory;
 
         /// <summary>
-        ///     MRS Register Value.
+        ///     MRS System Register Value.
         /// </summary>
-        private readonly Arm64MrsSystemRegister _mrsRegister;
+        private readonly Arm64MrsSystemRegister _mrsSystemRegister;
 
         /// <summary>
-        ///     MSR Register Value.
+        ///     MSR System Register Value.
         /// </summary>
-        private readonly Arm64MsrSystemRegister _msrRegister;
+        private readonly Arm64MsrSystemRegister _msrSystemRegister;
 
         /// <summary>
         ///     Prefetch Operation.
@@ -78,8 +83,12 @@ namespace Gee.External.Capstone.Arm64 {
         /// <summary>
         ///     Get Operand's Access Type.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's access type if, and only if, Diet Mode is disabled. To determine if Diet Mode
+        ///     is disabled, call <see cref="IsDietModeEnabled" />.
+        /// </remarks>
         /// <exception cref="System.NotSupportedException">
-        ///     Thrown if diet mode is enabled.
+        ///     Thrown if Diet Mode is enabled.
         /// </exception>
         public OperandAccessType AccessType {
             get {
@@ -91,8 +100,13 @@ namespace Gee.External.Capstone.Arm64 {
         /// <summary>
         ///     Get Address Translation (AT) Operation.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's Address Translation (AT) operation if, and only if, the operand's type is
+        ///     <see cref="Arm64OperandType.AtOperation" />. To determine the operand's type, call
+        ///     <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="Arm64OperandType.AtOperation" />.
+        ///     Thrown if the operand's type is not <see cref="Arm64OperandType.AtOperation" />.
         /// </exception>
         public Arm64AtOperation AtOperation {
             get {
@@ -109,13 +123,36 @@ namespace Gee.External.Capstone.Arm64 {
         /// <summary>
         ///     Get Barrier Operation.
         /// </summary>
-        public Arm64BarrierOperation BarrierOperation { get; }
+        /// <remarks>
+        ///     Represents the operand's barrier operation if, and only if, the operand's type is
+        ///     <see cref="Arm64OperandType.BarrierOperation" />. To determine the operand's type, call
+        ///     <see cref="Type" />.
+        /// </remarks>
+        /// <exception cref="System.InvalidOperationException">
+        ///     Thrown if the operand's type is not <see cref="Arm64OperandType.BarrierOperation" />.
+        /// </exception>
+        public Arm64BarrierOperation BarrierOperation {
+            get {
+                if (this.Type != Arm64OperandType.BarrierOperation) {
+                    const string valueName = nameof(Arm64Operand.BarrierOperation);
+                    var detailMessage = $"A value ({valueName}) is invalid when the type is ({this.Type}).";
+                    throw new InvalidOperationException(detailMessage);
+                }
+
+                return this._barrierOperation;
+            }
+        }
 
         /// <summary>
         ///     Get Data Cache (DC) Operation.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's Data Cache (DC) operation if, and only if, the operand's type is
+        ///     <see cref="Arm64OperandType.DcOperation" />. To determine the operand's type, call
+        ///     <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="Arm64OperandType.DcOperation" />.
+        ///     Thrown if the operand's type is not <see cref="Arm64OperandType.DcOperation" />.
         /// </exception>
         public Arm64DcOperation DcOperation {
             get {
@@ -137,8 +174,13 @@ namespace Gee.External.Capstone.Arm64 {
         /// <summary>
         ///     Get Floating Point Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's floating point value if, and only if, the operand's type is
+        ///     <see cref="Arm64OperandType.FloatingPoint" />. To determine the operand's type, call
+        ///     <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="Arm64OperandType.FloatingPoint" />.
+        ///     Thrown if the operand's type is not <see cref="Arm64OperandType.FloatingPoint" />.
         /// </exception>
         public double FloatingPoint {
             get {
@@ -155,8 +197,13 @@ namespace Gee.External.Capstone.Arm64 {
         /// <summary>
         ///     Get Instruction Cache (IC) Operation.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's Instruction Cache (IC) operation if, and only if, the operand's type is
+        ///     <see cref="Arm64OperandType.IcOperation" />. To determine the operand's type, call
+        ///     <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="Arm64OperandType.IcOperation" />.
+        ///     Thrown if the operand's type is not <see cref="Arm64OperandType.IcOperation" />.
         /// </exception>
         public Arm64IcOperation IcOperation {
             get {
@@ -173,8 +220,12 @@ namespace Gee.External.Capstone.Arm64 {
         /// <summary>
         ///     Get Immediate Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's immediate value if, and only if, the operand's type is
+        ///     <see cref="Arm64OperandType.Immediate" />. To determine the operand's type, call <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="Arm64OperandType.Immediate" />.
+        ///     Thrown if the operand's type is not <see cref="Arm64OperandType.Immediate" />.
         /// </exception>
         public long Immediate {
             get {
@@ -191,16 +242,20 @@ namespace Gee.External.Capstone.Arm64 {
         /// <summary>
         ///     Determine if Diet Mode is Enabled.
         /// </summary>
-        /// <value>
-        ///     A boolean true if diet mode is enabled. A boolean false otherwise.
-        /// </value>
+        /// <remarks>
+        ///     Indicates if Diet Mode is enabled. A boolean true indicates it is enabled. A boolean false otherwise.
+        /// </remarks>
         public bool IsDietModeEnabled => CapstoneDisassembler.IsDietModeEnabled;
 
         /// <summary>
         ///     Get Memory Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's memory value if, and only if, the operand's type is
+        ///     <see cref="Arm64OperandType.Memory" />. To determine the operand's type, call <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="Arm64OperandType.Memory" />.
+        ///     Thrown if the operand's type is not <see cref="Arm64OperandType.Memory" />.
         /// </exception>
         public Arm64MemoryOperandValue Memory {
             get {
@@ -215,46 +270,61 @@ namespace Gee.External.Capstone.Arm64 {
         }
 
         /// <summary>
-        ///     Get MRS Register Value.
+        ///     Get MRS System Register Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's MRS system register value if, and only if, the operand's type is
+        ///     <see cref="Arm64OperandType.MrsSystemRegister" />. To determine the operand's type, call
+        ///     <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="Arm64OperandType.MrsRegister" />.
+        ///     Thrown if the operand's type is not <see cref="Arm64OperandType.MrsSystemRegister" />.
         /// </exception>
-        public Arm64MrsSystemRegister MrsRegister {
+        public Arm64MrsSystemRegister MrsSystemRegister {
             get {
-                if (this.Type != Arm64OperandType.MrsRegister) {
-                    const string valueName = nameof(Arm64Operand.MrsRegister);
+                if (this.Type != Arm64OperandType.MrsSystemRegister) {
+                    const string valueName = nameof(Arm64Operand.MrsSystemRegister);
                     var detailMessage = $"A value ({valueName}) is invalid when the type is ({this.Type}).";
                     throw new InvalidOperationException(detailMessage);
                 }
 
-                return this._mrsRegister;
+                return this._mrsSystemRegister;
             }
         }
 
         /// <summary>
-        ///     Get MSR Register Value.
+        ///     Get MSR System Register Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's MRS system register value if, and only if, the operand's type is
+        ///     <see cref="Arm64OperandType.MsrSystemRegister" />. To determine the operand's type, call
+        ///     <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="Arm64OperandType.MrsRegister" />.
+        ///     Thrown if the operand's type is not <see cref="Arm64OperandType.MsrSystemRegister" />.
         /// </exception>
-        public Arm64MsrSystemRegister MsrRegister {
+        public Arm64MsrSystemRegister MsrSystemRegister {
             get {
-                if (this.Type != Arm64OperandType.MsrRegister) {
-                    const string valueName = nameof(Arm64Operand.MsrRegister);
+                if (this.Type != Arm64OperandType.MsrSystemRegister) {
+                    const string valueName = nameof(Arm64Operand.MsrSystemRegister);
                     var detailMessage = $"A value ({valueName}) is invalid when the type is ({this.Type}).";
                     throw new InvalidOperationException(detailMessage);
                 }
 
-                return this._msrRegister;
+                return this._msrSystemRegister;
             }
         }
 
         /// <summary>
         ///     Get Prefetch Operation.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's prefetch operation if, and only if, the operand's type is
+        ///     <see cref="Arm64OperandType.PrefetchOperation" />. To determine the operand's type, call
+        ///     <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="Arm64OperandType.PrefetchOperation" />.
+        ///     Thrown if the operand's type is not <see cref="Arm64OperandType.PrefetchOperation" />.
         /// </exception>
         public Arm64PrefetchOperation PrefetchOperation {
             get {
@@ -271,8 +341,13 @@ namespace Gee.External.Capstone.Arm64 {
         /// <summary>
         ///     Get Processor State (PSTATE) Field.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's processor state (PSTATE) field if, and only if, the operand's type is
+        ///     <see cref="Arm64OperandType.PStateField" />. To determine the operand's type, call
+        ///     <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="Arm64OperandType.PStateField" />.
+        ///     Thrown if the operand's type is not <see cref="Arm64OperandType.PStateField" />.
         /// </exception>
         public Arm64PStateField PStateField {
             get {
@@ -289,8 +364,12 @@ namespace Gee.External.Capstone.Arm64 {
         /// <summary>
         ///     Get Register Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's register value if, and only if, the operand's type is
+        ///     <see cref="Arm64OperandType.Register" />. To determine the operand's type, call <see cref="Type" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the operand's type is not equal to <see cref="Arm64OperandType.Register" />.
+        ///     Thrown if the operand's type is not <see cref="Arm64OperandType.Register" />.
         /// </exception>
         public Arm64Register Register {
             get {
@@ -312,8 +391,13 @@ namespace Gee.External.Capstone.Arm64 {
         /// <summary>
         ///     Get Shift Value.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's shift value if, and only if, the operand's shift operation is not
+        ///     <see cref="Arm64ShiftOperation.Invalid" />. To determine the operand's shift operation, call
+        ///     <see cref="ShiftOperation" />.
+        /// </remarks>
         /// <exception cref="System.InvalidOperationException">
-        ///     Thrown if the shift operation is equal to <see cref="Arm64ShiftOperation.Invalid" />.
+        ///     Thrown if the shift operation is <see cref="Arm64ShiftOperation.Invalid" />.
         /// </exception>
         public int ShiftValue {
             get {
@@ -330,6 +414,14 @@ namespace Gee.External.Capstone.Arm64 {
         /// <summary>
         ///     Get Translation Lookaside Buffer (TLBI) Operation.
         /// </summary>
+        /// <remarks>
+        ///     Represents the operand's Translation Lookaside Buffer (TLBI) operation if, and only if, the operand's
+        ///     type is <see cref="Arm64OperandType.TlbiOperation" />. To determine the operand's type, call
+        ///     <see cref="Type" />.
+        /// </remarks>
+        /// <exception cref="System.InvalidOperationException">
+        ///     Thrown if the operand's type is not <see cref="Arm64OperandType.TlbiOperation" />.
+        /// </exception>
         public Arm64TlbiOperation TlbiOperation {
             get {
                 if (this.Type != Arm64OperandType.TlbiOperation) {
@@ -381,7 +473,7 @@ namespace Gee.External.Capstone.Arm64 {
             var operands = new Arm64Operand[nativeInstructionDetail.OperandCount];
             for (var i = 0; i < operands.Length; i++) {
                 ref var nativeOperand = ref nativeInstructionDetail.Operands[i];
-                operands[i] = Arm64Operand.Create(disassembler, instructionId, ref nativeOperand);
+                operands[i] = new Arm64Operand(disassembler, instructionId, ref nativeOperand);
             }
 
             return operands;
@@ -399,41 +491,86 @@ namespace Gee.External.Capstone.Arm64 {
         /// <param name="nativeOperand">
         ///     A native ARM64 operand.
         /// </param>
-        /// <returns>
-        ///     An ARM64 operand.
-        /// </returns>
-        internal static Arm64Operand Create(CapstoneDisassembler disassembler, Arm64InstructionId instructionId, ref NativeArm64Operand nativeOperand) {
-            return new Arm64OperandBuilder().Build(disassembler, instructionId, ref nativeOperand).Create();
-        }
+        internal Arm64Operand(CapstoneDisassembler disassembler, Arm64InstructionId instructionId, ref NativeArm64Operand nativeOperand) {
+            this._accessType = !CapstoneDisassembler.IsDietModeEnabled ? nativeOperand.AccessType : OperandAccessType.Invalid;
+            this.ExtendOperation = nativeOperand.ExtendOperation;
+            this.ShiftOperation = nativeOperand.Shift.Operation;
+            this.Type = nativeOperand.Type;
+            this.VectorArrangementSpecifier = nativeOperand.VectorArrangementSpecifier;
+            this.VectorElementSizeSpecifier = nativeOperand.VectorElementSizeSpecifier;
+            this.VectorIndex = nativeOperand.VectorIndex;
+            // ...
+            //
+            // ...
+            this._shiftValue = CreateShiftValue(this, ref nativeOperand);
+            // ...
+            //
+            // ...
+            switch (this.Type) {
+                case Arm64OperandType.BarrierOperation:
+                    this._barrierOperation = nativeOperand.Value.BarrierOperation;
+                    break;
+                case Arm64OperandType.CImmediate:
+                    this._immediate = nativeOperand.Value.Immediate;
+                    break;
+                case Arm64OperandType.FloatingPoint:
+                    this._floatingPoint = nativeOperand.Value.FloatingPoint;
+                    break;
+                case Arm64OperandType.Immediate:
+                    this._immediate = nativeOperand.Value.Immediate;
+                    break;
+                case Arm64OperandType.Memory:
+                    this._memory = new Arm64MemoryOperandValue(disassembler, ref nativeOperand.Value.Memory);
+                    break;
+                case Arm64OperandType.MrsSystemRegister:
+                    this._mrsSystemRegister = (Arm64MrsSystemRegister) nativeOperand.Value.Register;
+                    break;
+                case Arm64OperandType.MsrSystemRegister:
+                    this._msrSystemRegister = (Arm64MsrSystemRegister) nativeOperand.Value.Register;
+                    break;
+                case Arm64OperandType.PrefetchOperation:
+                    this._prefetchOperation = nativeOperand.Value.PrefetchOperation;
+                    break;
+                case Arm64OperandType.PStateField:
+                    this._pStateField = nativeOperand.Value.PStateField;
+                    break;
+                case Arm64OperandType.Register:
+                    this._register = Arm64Register.TryCreate(disassembler, nativeOperand.Value.Register);
+                    break;
+                case Arm64OperandType.SystemOperation:
+                    switch (instructionId) {
+                        case Arm64InstructionId.ARM64_INS_AT:
+                            this._atOperation = (Arm64AtOperation) nativeOperand.Value.SystemOperation;
+                            this.Type = Arm64OperandType.AtOperation;
+                            break;
+                        case Arm64InstructionId.ARM64_INS_DC:
+                            this._dcOperation = (Arm64DcOperation) nativeOperand.Value.SystemOperation;
+                            this.Type = Arm64OperandType.DcOperation;
+                            break;
+                        case Arm64InstructionId.ARM64_INS_IC:
+                            this._icOperation = (Arm64IcOperation) nativeOperand.Value.SystemOperation;
+                            this.Type = Arm64OperandType.IcOperation;
+                            break;
+                        case Arm64InstructionId.ARM64_INS_TLBI:
+                            this._tlbiOperation = (Arm64TlbiOperation) nativeOperand.Value.SystemOperation;
+                            this.Type = Arm64OperandType.TlbiOperation;
+                            break;
+                    }
 
-        /// <summary>
-        ///     Create an ARM64 Operand.
-        /// </summary>
-        /// <param name="builder">
-        ///     A builder to initialize the object with.
-        /// </param>
-        internal Arm64Operand(Arm64OperandBuilder builder) {
-            this._accessType = builder.AccessType;
-            this._atOperation = builder.AtOperation;
-            this.BarrierOperation = builder.BarrierOperation;
-            this._dcOperation = builder.DcOperation;
-            this.ExtendOperation = builder.ExtendOperation;
-            this._floatingPoint = builder.FloatingPoint;
-            this._icOperation = builder.IcOperation;
-            this._immediate = builder.Immediate;
-            this._memory = builder.Memory;
-            this._mrsRegister = builder.MrsRegister;
-            this._msrRegister = builder.MsrRegister;
-            this._prefetchOperation = builder.PrefetchOperation;
-            this._pStateField = builder.PStateField;
-            this._register = builder.Register;
-            this.ShiftOperation = builder.ShiftOperation;
-            this._shiftValue = builder.ShiftValue;
-            this._tlbiOperation = builder.TlbiOperation;
-            this.Type = builder.Type;
-            this.VectorArrangementSpecifier = builder.VectorArrangementSpecifier;
-            this.VectorElementSizeSpecifier = builder.VectorElementSizeSpecifier;
-            this.VectorIndex = builder.VectorIndex;
+                    break;
+            }
+
+            // <summary>
+            //      Create Shift Value.
+            // </summary>
+            int CreateShiftValue(Arm64Operand @this, ref NativeArm64Operand cNativeOperand) {
+                var cShiftValue = 0;
+                if (@this.ShiftOperation != Arm64ShiftOperation.Invalid) {
+                    cShiftValue = cNativeOperand.Shift.Value;
+                }
+
+                return cShiftValue;
+            }
         }
     }
 }

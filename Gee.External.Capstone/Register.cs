@@ -5,14 +5,9 @@ namespace Gee.External.Capstone {
     ///     Register.
     /// </summary>
     /// <typeparam name="TId">
-    ///     The type of the register's unique identifiers.
+    ///     The type of the register's unique identifier.
     /// </typeparam>
     public abstract class Register<TId> where TId : Enum {
-        /// <summary>
-        ///     Register's Unique Identifier.
-        /// </summary>
-        private readonly TId _id;
-
         /// <summary>
         ///     Register's Name.
         /// </summary>
@@ -21,21 +16,25 @@ namespace Gee.External.Capstone {
         /// <summary>
         ///     Get Register's Unique Identifier.
         /// </summary>
-        public TId Id => this._id;
+        public TId Id { get; }
 
         /// <summary>
         ///     Determine if Diet Mode is Enabled.
         /// </summary>
-        /// <value>
-        ///     A boolean true if diet mode is enabled. A boolean false otherwise.
-        /// </value>
+        /// <remarks>
+        ///     Indicates if Diet Mode is enabled. A boolean true indicates it is enabled. A boolean false otherwise.
+        /// </remarks>
         public bool IsDietModeEnabled => CapstoneDisassembler.IsDietModeEnabled;
 
         /// <summary>
         ///     Get Register's Name.
         /// </summary>
+        /// <remarks>
+        ///     Represents the register's name if, and only if, Diet Mode is disabled. To determine if Diet Mode is
+        ///     disabled, call <see cref="IsDietModeEnabled" />.
+        /// </remarks>
         /// <exception cref="System.NotSupportedException">
-        ///     Thrown if diet mode is enabled.
+        ///     Thrown if Diet Mode is enabled.
         /// </exception>
         public string Name {
             get {
@@ -54,7 +53,7 @@ namespace Gee.External.Capstone {
         ///     The register's name.
         /// </param>
         private protected Register(TId id, string name) {
-            this._id = id;
+            this.Id = id;
             this._name = name;
         }
 
@@ -73,7 +72,7 @@ namespace Gee.External.Capstone {
                 var register = @object as Register<TId>;
                 isEqual = register != null;
                 if (isEqual) {
-                    isEqual = this._id.Equals(register._id);
+                    isEqual = this.Id.Equals(register.Id);
                     isEqual = isEqual && this._name == register._name;
                 }
             }
@@ -89,7 +88,7 @@ namespace Gee.External.Capstone {
         /// </returns>
         public override int GetHashCode() {
             var hashCode = 13;
-            hashCode = hashCode * 7 + this._id.GetHashCode();
+            hashCode = hashCode * 7 + this.Id.GetHashCode();
             hashCode = this._name != null ? hashCode * 7 + this._name.GetHashCode() : 0;
 
             return hashCode;

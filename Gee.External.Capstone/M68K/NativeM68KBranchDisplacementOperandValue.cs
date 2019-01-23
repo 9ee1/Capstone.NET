@@ -14,6 +14,7 @@ namespace Gee.External.Capstone.M68K {
         /// <summary>
         ///     Displacement Size.
         /// </summary>
-        public byte DisplacementSize;
+        [MarshalAs(UnmanagedType.I1)]
+        public M68KBranchDisplacementSize DisplacementSize;
     }
 }

@@ -1,20 +1,22 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Gee.External.Capstone {
+﻿namespace Gee.External.Capstone {
     /// <summary>
     ///     Native Capstone Result Code.
     /// </summary>
-    [SuppressMessage("ReSharper", "IdentifierTypo")]
     internal enum NativeCapstoneResultCode {
         /// <summary>
         ///     Indicates an operation completed successfully.
         /// </summary>
         Ok = 0,
+
+        /// <summary>
+        ///     Indicates an operation failed because sufficient memory cannot be allocated to perform the operation.
+        /// </summary>
         OutOfMemory,
-        UnsupportedArchitecture,
+
+        UnsupportedDisassembleArchitecture,
         InvalidHandle1,
         InvalidHandle2,
-        UnsupportedDissembleMode,
+        UnsupportedDisassembleMode,
         InvalidOption,
         UnsupportedInstructionDetail,
         UninitializedMemoryManagement,

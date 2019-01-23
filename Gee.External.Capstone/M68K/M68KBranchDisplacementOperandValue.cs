@@ -21,7 +21,7 @@
         /// </param>
         internal M68KBranchDisplacementOperandValue(ref NativeM68KBranchDisplacementOperandValue nativeBranchDisplacementOperandValue) {
             this.Displacement = nativeBranchDisplacementOperandValue.Displacement;
-            this.DisplacementSize = (M68KBranchDisplacementSize) nativeBranchDisplacementOperandValue.DisplacementSize;
+            this.DisplacementSize = nativeBranchDisplacementOperandValue.DisplacementSize;
         }
     }
 }

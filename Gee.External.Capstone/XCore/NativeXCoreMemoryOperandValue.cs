@@ -9,14 +9,12 @@ namespace Gee.External.Capstone.XCore {
         /// <summary>
         ///     Base Register.
         /// </summary>
-        [MarshalAs(UnmanagedType.I1)]
-        public XCoreRegisterId Base;
+        public byte Base;
 
         /// <summary>
         ///     Index Register.
         /// </summary>
-        [MarshalAs(UnmanagedType.I1)]
-        public XCoreRegisterId Index;
+        public byte Index;
 
         /// <summary>
         ///     Displacement Value.

@@ -32,7 +32,7 @@ namespace Gee.External.Capstone {
         public byte[] Bytes;
 
         /// <summary>
-        ///     Instruction's Mnemonic Text.
+        ///     Instruction's Mnemonic.
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
         public string Mnemonic;
@@ -47,7 +47,8 @@ namespace Gee.External.Capstone {
         ///     Instruction's Details.
         /// </summary>
         /// <remarks>
-        ///     Represents a pointer to the instruction's details in unmanaged memory.
+        ///     Represents a pointer to the instruction's details in unmanaged memory. A <c>IntPtr.Zero</c> indicates
+        ///     the instruction was disassembled without details.
         /// </remarks>
         public IntPtr Details;
     }

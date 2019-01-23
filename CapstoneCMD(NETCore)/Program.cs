@@ -275,12 +275,12 @@ namespace ConsoleApp1 {
                                     }
                                 }
                             }
-                            else if (operand.Type == Arm64OperandType.MrsRegister) {
-                                var mrsRegister = operand.MrsRegister;
+                            else if (operand.Type == Arm64OperandType.MrsSystemRegister) {
+                                var mrsRegister = operand.MrsSystemRegister;
                                 Console.WriteLine("\t\t\t MRS System Register = {0}", mrsRegister);
                             }
-                            else if (operand.Type == Arm64OperandType.MsrRegister) {
-                                var msrRegister = operand.MsrRegister;
+                            else if (operand.Type == Arm64OperandType.MsrSystemRegister) {
+                                var msrRegister = operand.MsrSystemRegister;
                                 Console.WriteLine("\t\t\t MSR System Register = {0}", msrRegister);
                             }
                             else if (operand.Type == Arm64OperandType.PStateField) {

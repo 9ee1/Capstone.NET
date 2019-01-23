@@ -12,10 +12,10 @@
         Memory,
         FloatingPoint,
         CImmediate = 64,
-        MrsRegister,
-        MsrRegister,
+        MrsSystemRegister,
+        MsrSystemRegister,
         PStateField,
-        System,
+        SystemOperation,
         PrefetchOperation,
         BarrierOperation,
 

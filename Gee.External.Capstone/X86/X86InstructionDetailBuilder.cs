@@ -120,7 +120,7 @@
             this.AvxSuppressAllExceptions = nativeInstructionDetail.AvxSuppressAllExceptions;
             this.Displacement = nativeInstructionDetail.Displacement;
             this.EFlags = nativeInstructionDetail.Flag.EFlags;
-            this.Encoding = X86Encoding.Create(disassembler, ref nativeInstructionDetail.Encoding);
+            this.Encoding = new X86Encoding(ref nativeInstructionDetail.Encoding);
             this.FpuFlags = nativeInstructionDetail.Flag.FpuFlags;
             this.ModRm = nativeInstructionDetail.ModRm;
             this.Opcode = nativeInstructionDetail.Opcode;

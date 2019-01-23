@@ -7,7 +7,7 @@ namespace Gee.External.Capstone.Mips {
     [StructLayout(LayoutKind.Sequential)]
     internal struct NativeMipsInstructionDetail {
         /// <summary>
-        ///     Instruction's Operand Count.
+        ///     Instruction's Operands' Count.
         /// </summary>
         public byte OperandCount;
 

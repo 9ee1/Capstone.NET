@@ -25,6 +25,9 @@
         /// <summary>
         ///     Create an M68K Instruction.
         /// </summary>
+        /// <param name="builder">
+        ///     A builder to initialize the object with.
+        /// </param>
         internal M68KInstruction(M68KInstructionBuilder builder) : base(builder) { }
     }
 }

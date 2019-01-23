@@ -110,14 +110,14 @@ namespace Gee.External.Capstone {
 
         Mips32 = NativeDisassembleMode.Bit32,
         Mips64 = NativeDisassembleMode.Bit64,
-        M680X6301 = 1 << 1,
-        M680X6309 = 1 << 2,
-        M680X6800 = 1 << 3,
-        M680X6801 = 1 << 4,
-        M680X6805 = 1 << 5,
-        M680X6808 = 1 << 6,
-        M680X6809 = 1 << 7,
-        M680X6811 = 1 << 8,
+        M680X6301 = 1  << 1,
+        M680X6309 = 1  << 2,
+        M680X6800 = 1  << 3,
+        M680X6801 = 1  << 4,
+        M680X6805 = 1  << 5,
+        M680X6808 = 1  << 6,
+        M680X6809 = 1  << 7,
+        M680X6811 = 1  << 8,
         M680XCpu12 = 1 << 9,
         M680XHcS08 = 1 << 10
     }

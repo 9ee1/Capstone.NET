@@ -6,7 +6,7 @@ namespace Gee.External.Capstone.XCore {
     /// </summary>
     [SuppressMessage("ReSharper", "IdentifierTypo")]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    public enum XCoreRegisterId : byte {
+    public enum XCoreRegisterId {
         /// <summary>
         ///     Indicates an invalid, or an uninitialized, register.
         /// </summary>

@@ -18,7 +18,7 @@ namespace Gee.External.Capstone.M68K {
         public NativeM68KOperationSize OperationSize;
 
         /// <summary>
-        ///     Instruction's Operand Count.
+        ///     Instruction's Operands' Count.
         /// </summary>
         public byte OperandCount;
     }

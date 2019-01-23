@@ -1,10 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Gee.External.Capstone {
+﻿namespace Gee.External.Capstone {
     /// <summary>
     ///     Disassemble Architecture.
     /// </summary>
-    [SuppressMessage("ReSharper", "IdentifierTypo")]
     public enum DisassembleArchitecture {
         /// <summary>
         ///     ARM Architecture.

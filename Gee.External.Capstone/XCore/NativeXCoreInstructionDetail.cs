@@ -7,7 +7,7 @@ namespace Gee.External.Capstone.XCore {
     [StructLayout(LayoutKind.Sequential)]
     internal struct NativeXCoreInstructionDetail {
         /// <summary>
-        ///     Instruction's Operand Count.
+        ///     Instruction's Operands' Count.
         /// </summary>
         public byte OperandCount;
 

@@ -11,9 +11,9 @@ namespace Gee.External.Capstone.X86 {
         ///     Indicates an invalid, or an uninitialized, AVX broadcast.
         /// </summary>
         Invalid = 0,
-        BCAST_2,
-        BCAST_4,
-        BCAST_8,
-        BCAST_16
+        X86_AVX_BCAST_2,
+        X86_AVX_BCAST_4,
+        X86_AVX_BCAST_8,
+        X86_AVX_BCAST_16
     }
 }

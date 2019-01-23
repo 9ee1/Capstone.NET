@@ -10,7 +10,7 @@ namespace Gee.External.Capstone {
         ///     Indicates an invalid, or an uninitialized, operand access type.
         /// </summary>
         Invalid = 0,
-        Read = 1 << 0,
+        Read = 1  << 0,
         Write = 1 << 1
     }
 }

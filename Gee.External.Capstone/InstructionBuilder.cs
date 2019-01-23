@@ -2,13 +2,13 @@
 
 namespace Gee.External.Capstone {
     /// <summary>
-    ///     Instruction Builder.
+    ///     Disassembled Instruction Builder.
     /// </summary>
     /// <typeparam name="TDetail">
     ///     The type of the instruction's details.
     /// </typeparam>
     /// <typeparam name="TDisassembleMode">
-    ///     The type of the hardware mode for the disassembler to use.
+    ///     The type of the hardware mode the instruction was disassembled for.
     /// </typeparam>
     /// <typeparam name="TGroup">
     ///     The type of the instruction's architecture specific instruction groups.
@@ -38,7 +38,7 @@ namespace Gee.External.Capstone {
         where TRegister : Register<TRegisterId>
         where TRegisterId : Enum {
         /// <summary>
-        ///     Get and Set Instruction's Address.
+        ///     Get and Set Instruction's Address (EIP).
         /// </summary>
         internal long Address { get; private set; }
 
@@ -73,7 +73,7 @@ namespace Gee.External.Capstone {
         internal bool IsSkippedData { get; private set; }
 
         /// <summary>
-        ///     Get and Set Instruction's Mnemonic Text.
+        ///     Get and Set Instruction's Mnemonic.
         /// </summary>
         internal string Mnemonic { get; private set; }
 

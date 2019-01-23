@@ -32,24 +32,11 @@
         /// <param name="nativeMemoryOperandValue">
         ///     A native XCore memory operand value.
         /// </param>
-        /// <returns>
-        ///     An XCore memory operand value.
-        /// </returns>
-        internal static XCoreMemoryOperandValue Create(CapstoneDisassembler disassembler, ref NativeXCoreMemoryOperandValue nativeMemoryOperandValue) {
-            return new XCoreMemoryOperandValueBuilder().Build(disassembler, ref nativeMemoryOperandValue).Create();
-        }
-
-        /// <summary>
-        ///     Create an XCore Memory Operand Value.
-        /// </summary>
-        /// <param name="builder">
-        ///     A builder to initialize the object with.
-        /// </param>
-        internal XCoreMemoryOperandValue(XCoreMemoryOperandValueBuilder builder) {
-            this.Base = builder.Base;
-            this.Direct = builder.Direct;
-            this.Displacement = builder.Displacement;
-            this.Index = builder.Index;
+        internal XCoreMemoryOperandValue(CapstoneDisassembler disassembler, ref NativeXCoreMemoryOperandValue nativeMemoryOperandValue) {
+            this.Base = XCoreRegister.TryCreate(disassembler, (XCoreRegisterId) nativeMemoryOperandValue.Base);
+            this.Direct = nativeMemoryOperandValue.Direct;
+            this.Displacement = nativeMemoryOperandValue.Displacement;
+            this.Index = XCoreRegister.TryCreate(disassembler, (XCoreRegisterId) nativeMemoryOperandValue.Index);
         }
     }
 }

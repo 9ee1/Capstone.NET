@@ -13,7 +13,7 @@
         ///     The instruction group's unique identifier.
         /// </param>
         /// <returns>
-        ///     A M68K instruction group.
+        ///     An M68K instruction group.
         /// </returns>
         internal static M68KInstructionGroup Create(CapstoneDisassembler disassembler, M68KInstructionGroupId id) {
             // ...
