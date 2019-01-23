@@ -2,7 +2,7 @@
 using Gee.External.Capstone.Arm64;
 using System;
 
-namespace CapstoneCMD {
+namespace ConsoleApp1 {
     /// <summary>
     ///     Example Program.
     /// </summary>
@@ -19,7 +19,7 @@ namespace CapstoneCMD {
             // Creating the disassembler in a "using" statement ensures that resources get cleaned up automatically
             // when it is no longer needed.
             const Arm64DisassembleMode disassembleMode = Arm64DisassembleMode.Arm;
-            using (var disassembler = CapstoneDisassembler.CreateArm64Disassembler(disassembleMode)) {
+            using (CapstoneArm64Disassembler disassembler = CapstoneDisassembler.CreateArm64Disassembler(disassembleMode)) {
                 // ....
                 //
                 // Enables disassemble details, which are disabled by default, to provide more detailed information on
@@ -39,18 +39,15 @@ namespace CapstoneCMD {
                 Console.WriteLine(hexCode);
                 Console.WriteLine();
 
-                var instructions = disassembler.Iterate(binaryCode);
-                foreach (var instruction in instructions) {
-                    // ...
-                    //
-                    // An instruction's address and unique identifier are always available.
+                Arm64Instruction[] instructions = disassembler.Disassemble(binaryCode);
+                foreach (Arm64Instruction instruction in instructions) {
                     var address = instruction.Address;
-                    var id = instruction.Id;
+                    Arm64InstructionId id = instruction.Id;
                     if (!instruction.IsDietModeEnabled) {
                         // ...
                         //
-                        // An instruction's mnemonic and operand text are only available when the native Capstone
-                        // DLL is compiled WITHOUT Diet Mode. An exception is thrown otherwise!
+                        // An instruction's mnemonic and operand text are only available when Diet Mode is disabled.
+                        // An exception is thrown otherwise!
                         var mnemonic = instruction.Mnemonic;
                         var operand = instruction.Operand;
                         Console.WriteLine("{0:X}: \t {1} \t {2}", address, mnemonic, operand);
@@ -64,17 +61,17 @@ namespace CapstoneCMD {
                     hexCode = BitConverter.ToString(instruction.Bytes).Replace("-", " ");
                     Console.WriteLine("\t Machine Bytes = {0}", hexCode);
 
-                    if (disassembler.EnableInstructionDetails) {
+                    if (instruction.HasDetails) {
                         Console.WriteLine("\t Condition Code = {0}", instruction.Details.ConditionCode);
                         Console.WriteLine("\t Update Flags? = {0}", instruction.Details.UpdateFlags);
                         Console.WriteLine("\t Write Back? = {0}", instruction.Details.WriteBack);
 
-                        if (!CapstoneDisassembler.IsDietModeEnabled) {
+                        if (!instruction.IsDietModeEnabled) {
                             // ...
                             //
                             // Instruction groups are only available when Diet Mode is disabled. An exception is
                             // thrown otherwise!
-                            var instructionGroups = instruction.Details.Groups;
+                            Arm64InstructionGroup[] instructionGroups = instruction.Details.Groups;
                             Console.WriteLine("\t # of Instruction Groups: {0}", instructionGroups.Length);
                             for (var i = 0; i < instructionGroups.Length; i++) {
                                 // ...
@@ -82,7 +79,7 @@ namespace CapstoneCMD {
                                 // A instruction group's name is only available when Diet Mode is disabled. An
                                 // exception is thrown otherwise! But since we already checked that it is disabled, we
                                 // don't need to perform another check.
-                                var instructionGroup = instructionGroups[i];
+                                Arm64InstructionGroup instructionGroup = instructionGroups[i];
                                 Console.Write("\t\t {0}) ", i + 1);
                                 Console.WriteLine("Id = {0}, Name = {1}", instructionGroup.Id, instructionGroup.Name);
                             }
@@ -91,7 +88,7 @@ namespace CapstoneCMD {
                             //
                             // Explicitly read registers are only available when Diet Mode is disabled. An exception
                             // is thrown otherwise!
-                            var registers = instruction.Details.ExplicitlyReadRegisters;
+                            Arm64Register[] registers = instruction.Details.ExplicitlyReadRegisters;
                             Console.WriteLine("\t # of Explicitly Read Registers: {0}", registers.Length);
                             for (var i = 0; i < registers.Length; i++) {
                                 // ...
@@ -99,7 +96,7 @@ namespace CapstoneCMD {
                                 // A register's name is only available when Diet Mode is disabled. An exception is
                                 // thrown otherwise! But since we already checked that it is disabled, we don't need
                                 // to perform another check.
-                                var register = registers[i];
+                                Arm64Register register = registers[i];
                                 Console.Write("\t\t {0}) ", i + 1);
                                 Console.WriteLine("Id = {0}, Name = {1}", register.Id, register.Name);
                             }
@@ -111,7 +108,7 @@ namespace CapstoneCMD {
                             registers = instruction.Details.ExplicitlyWrittenRegisters;
                             Console.WriteLine("\t # of Explicitly Modified Registers: {0}", registers.Length);
                             for (var i = 0; i < registers.Length; i++) {
-                                var register = registers[i];
+                                Arm64Register register = registers[i];
                                 Console.Write("\t\t {0}) ", i + 1);
                                 Console.WriteLine("Id = {0}, Name = {1}", register.Id, register.Name);
                             }
@@ -123,7 +120,7 @@ namespace CapstoneCMD {
                             registers = instruction.Details.ImplicitlyReadRegisters;
                             Console.WriteLine("\t # of Implicitly Read Registers: {0}", registers.Length);
                             for (var i = 0; i < registers.Length; i++) {
-                                var register = registers[i];
+                                Arm64Register register = registers[i];
                                 Console.Write("\t\t {0}) ", i + 1);
                                 Console.WriteLine("Id = {0}, Name = {1}", register.Id, register.Name);
                             }
@@ -135,7 +132,7 @@ namespace CapstoneCMD {
                             registers = instruction.Details.ImplicitlyWrittenRegisters;
                             Console.WriteLine("\t # of Implicitly Modified Registers: {0}", registers.Length);
                             for (var i = 0; i < registers.Length; i++) {
-                                var register = registers[i];
+                                Arm64Register register = registers[i];
                                 Console.Write("\t\t {0}) ", i + 1);
                                 Console.WriteLine("Id = {0}, Name = {1}", register.Id, register.Name);
                             }
@@ -144,26 +141,26 @@ namespace CapstoneCMD {
                         // ...
                         //
                         // An Instruction's operands are always available.
-                        var operands = instruction.Details.Operands;
+                        Arm64Operand[] operands = instruction.Details.Operands;
                         Console.WriteLine("\t # of Operands: {0}", operands.Length);
                         for (var i = 0; i < operands.Length; i++) {
                             // ...
                             //
                             // Always check the operand's type before retrieving the associated property. An exception
                             // is thrown otherwise!
-                            var operand = operands[i];
-                            var operandType = operand.Type;
+                            Arm64Operand operand = operands[i];
+                            Arm64OperandType operandType = operand.Type;
                             Console.WriteLine("\t\t {0}) Operand Type: {1}", i + 1, operandType);
                             if (operand.Type == Arm64OperandType.AtOperation) {
-                                var atOperation = operand.AtOperation;
+                                Arm64AtOperation atOperation = operand.AtOperation;
                                 Console.WriteLine("\t\t\t Address Translation (AT) Operation = {0}", atOperation);
                             }
                             else if (operand.Type == Arm64OperandType.BarrierOperation) {
-                                var barrierOperation = operand.BarrierOperation;
+                                Arm64BarrierOperation barrierOperation = operand.BarrierOperation;
                                 Console.WriteLine("\t\t\t Barrier Operation = {0}", barrierOperation);
                             }
                             else if (operand.Type == Arm64OperandType.DcOperation) {
-                                var dcOperation = operand.DcOperation;
+                                Arm64DcOperation dcOperation = operand.DcOperation;
                                 Console.WriteLine("\t\t\t Data Cache (DC) Operation = {0}", dcOperation);
                             }
                             else if (operand.Type == Arm64OperandType.FloatingPoint) {
@@ -171,7 +168,7 @@ namespace CapstoneCMD {
                                 Console.WriteLine("\t\t\t Floating Point Value = {0}", floatingPoint);
                             }
                             else if (operand.Type == Arm64OperandType.IcOperation) {
-                                var icOperation = operand.IcOperation;
+                                Arm64IcOperation icOperation = operand.IcOperation;
                                 Console.WriteLine("\t\t\t Instruction Cache (IC) Operation = {0}", icOperation);
                             }
                             else if (operand.Type == Arm64OperandType.Immediate) {
@@ -179,20 +176,22 @@ namespace CapstoneCMD {
                                 Console.WriteLine("\t\t\t Immediate Value = {0:X}", immediate);
                             }
                             else if (operand.Type == Arm64OperandType.Memory) {
-                                var memory = operand.Memory;
+                                Arm64MemoryOperandValue memory = operand.Memory;
                                 Console.WriteLine("\t\t\t Memory Value:");
 
                                 // ...
                                 //
                                 // For a memory operand, an irrelevant base register will be a null reference!
-                                var @base = memory.Base;
+                                Arm64Register @base = memory.Base;
                                 if (@base != null) {
                                     if (!@base.IsDietModeEnabled) {
                                         // ...
                                         //
                                         // A register's name is only available when Diet Mode is disabled. An
                                         // exception is thrown otherwise!
-                                        Console.WriteLine("\t\t\t\t Base: Id = {0}, Name = {1}", @base.Id, @base.Name);
+                                        Arm64RegisterId baseId = @base.Id;
+                                        var baseName = @base.Name;
+                                        Console.WriteLine("\t\t\t\t Base: Id = {0}, Name = {1}", baseId, baseName);
                                     }
                                     else {
                                         // ...
@@ -208,40 +207,44 @@ namespace CapstoneCMD {
                                 // ...
                                 //
                                 // For a memory operand, an irrelevant index register will be a null reference!
-                                var index = memory.Index;
+                                Arm64Register index = memory.Index;
                                 if (index != null) {
                                     if (!index.IsDietModeEnabled) {
-                                        Console.WriteLine("\t\t\t\t Index: Id = {0}, Name = {1}", index.Id, index.Name);
+                                        Arm64RegisterId indexId = index.Id;
+                                        var indexName = index.Name;
+                                        Console.WriteLine("\t\t\t\t Index: Id = {0}, Name = {1}", indexId, indexName);
                                     }
                                     else {
                                         Console.WriteLine("\t\t\t\t Index: Id = {0}", index.Id);
                                     }
                                 }
                             }
-                            else if (operand.Type == Arm64OperandType.MrsRegister) {
-                                var mrsRegister = operand.MrsRegister;
+                            else if (operand.Type == Arm64OperandType.MrsSystemRegister) {
+                                Arm64MrsSystemRegister mrsRegister = operand.MrsSystemRegister;
                                 Console.WriteLine("\t\t\t MRS System Register = {0}", mrsRegister);
                             }
-                            else if (operand.Type == Arm64OperandType.MsrRegister) {
-                                var msrRegister = operand.MsrRegister;
+                            else if (operand.Type == Arm64OperandType.MsrSystemRegister) {
+                                Arm64MsrSystemRegister msrRegister = operand.MsrSystemRegister;
                                 Console.WriteLine("\t\t\t MSR System Register = {0}", msrRegister);
                             }
                             else if (operand.Type == Arm64OperandType.PStateField) {
-                                var pStateField = operand.PStateField;
+                                Arm64PStateField pStateField = operand.PStateField;
                                 Console.WriteLine("\t\t\t Processor State (PSTATE) Field = {0}", pStateField);
                             }
                             else if (operand.Type == Arm64OperandType.PrefetchOperation) {
-                                var prefetchOperation = operand.PrefetchOperation;
+                                Arm64PrefetchOperation prefetchOperation = operand.PrefetchOperation;
                                 Console.WriteLine("\t\t\t Prefetch Operation = {0}", prefetchOperation);
                             }
                             else if (operand.Type == Arm64OperandType.Register) {
-                                var register = operand.Register;
+                                Arm64Register register = operand.Register;
                                 if (!register.IsDietModeEnabled) {
                                     // ...
                                     //
                                     // A register's name is only available when Diet Mode is disabled. An exception is
                                     // thrown otherwise!
-                                    Console.WriteLine("\t\t\t Register: Id = {0}, Name = {1}", register.Id, register.Name);
+                                    Arm64RegisterId registerId = register.Id;
+                                    var name = register.Name;
+                                    Console.WriteLine("\t\t\t Register: Id = {0}, Name = {1}", registerId, name);
                                 }
                                 else {
                                     // ...
@@ -256,14 +259,14 @@ namespace CapstoneCMD {
                                 //
                                 // An operand's access type is only available when Diet Mode is disabled. An exception
                                 // is thrown otherwise!
-                                var accessType = operand.AccessType;
+                                OperandAccessType accessType = operand.AccessType;
                                 Console.WriteLine("\t\t\t Access Type = {0}", accessType);
                             }
 
-                            var extendOperation = operand.ExtendOperation;
+                            Arm64ExtendOperation extendOperation = operand.ExtendOperation;
                             Console.WriteLine("\t\t\t Extend Operation = {0}", extendOperation);
 
-                            var shiftOperation = operand.ShiftOperation;
+                            Arm64ShiftOperation shiftOperation = operand.ShiftOperation;
                             Console.WriteLine("\t\t\t Shift Operation: {0}", shiftOperation);
                             if (shiftOperation != Arm64ShiftOperation.Invalid) {
                                 // ...
@@ -274,11 +277,11 @@ namespace CapstoneCMD {
                                 Console.WriteLine("\t\t\t\t Shift Value = {0}", shiftValue);
                             }
 
-                            var vectorArrangementSpecifier = operand.VectorArrangementSpecifier;
-                            Console.WriteLine("\t\t\t Vector Arrangement Specifier = {0}", vectorArrangementSpecifier);
+                            Arm64VectorArrangementSpecifier vas = operand.VectorArrangementSpecifier;
+                            Console.WriteLine("\t\t\t Vector Arrangement Specifier = {0}", vas);
 
-                            var vectorElementSizeSpecifier = operand.VectorElementSizeSpecifier;
-                            Console.WriteLine("\t\t\t Vector Element Size Specifier = {0}", vectorElementSizeSpecifier);
+                            Arm64VectorElementSizeSpecifier vess = operand.VectorElementSizeSpecifier;
+                            Console.WriteLine("\t\t\t Vector Element Size Specifier = {0}", vess);
 
                             var vectorIndex = operand.VectorIndex;
                             Console.WriteLine("\t\t\t Vector Index = {0}", vectorIndex);
@@ -286,6 +289,7 @@ namespace CapstoneCMD {
                     }
 
                     Console.WriteLine();
+                    Console.ReadLine();
                 }
             }
         }

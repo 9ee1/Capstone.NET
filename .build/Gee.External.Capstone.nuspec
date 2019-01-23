@@ -9,7 +9,8 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <licenseUrl>https://github.com/9ee1/Capstone.NET/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/9ee1/Capstone.NET</projectUrl>
-    <description>Capstone.NET is a .NET Core and a .NET Framework binding for the Capstone disassembly framework. It is written in C#, supports Capstone 4, and has a friendly and simple type safe API that is ridiculously easy to learn and quick to pick up.</description>
+    <description>Capstone.NET is an opinionated .NET Core and a .NET Framework binding for the Capstone disassembly framework. It is written in C#, supports Capstone 4, and has a friendly and simple type safe API that is ridiculously easy to learn and quick to pick up.</description>
+    <releaseNotes>Capstone.NET 2.0+ IS NOT backwards-compatible with previous releases of Capstone.NET, specifically Capstone.NET 1.x. Please do not upgrade until you are prepared to put in the effort to refactor your existing applications and libraries. See https://github.com/9ee1/Capstone.NET/wiki/What's-New-in-Capstone.NET-2.x for more information.</releaseNotes>
     <copyright>Copyright (c) Ahmed Garhy</copyright>
     <repository url="https://github.com/9ee1/Capstone.NET" />
     <tags>capstone disassembler reverse-engineering security arm x86</tags>

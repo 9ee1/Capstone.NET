@@ -241,6 +241,7 @@ namespace Gee.External.Capstone {
         ///     A boolean true if the option is supported. A boolean false otherwise.
         /// </returns>
         [DllImport("capstone", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_support")]
+        [return: MarshalAs(UnmanagedType.I1)]
         internal static extern bool Query(NativeQueryOption queryOption);
 
         /// <summary>

@@ -54,12 +54,24 @@ CALL copy /V /Y ^
           %~dp0\nuget\lib\net40\Gee.External.Capstone.dll
 
 CALL copy /V /Y ^
+          %~dp0\..\Gee.External.Capstone\Gee.External.Capstone.xml ^
+          %~dp0\nuget\lib\net40\Gee.External.Capstone.xml
+
+CALL copy /V /Y ^
           %~dp0\..\Gee.External.Capstone\bin\Release\net45\Gee.External.Capstone.dll ^
           %~dp0\nuget\lib\net45\Gee.External.Capstone.dll
 
 CALL copy /V /Y ^
+          %~dp0\..\Gee.External.Capstone\Gee.External.Capstone.xml ^
+          %~dp0\nuget\lib\net45\Gee.External.Capstone.xml
+
+CALL copy /V /Y ^
           %~dp0\..\Gee.External.Capstone\bin\Release\netstandard2.0\Gee.External.Capstone.dll ^
           %~dp0\nuget\ref\netstandard2.0\Gee.External.Capstone.dll
+
+CALL copy /V /Y ^
+          %~dp0\..\Gee.External.Capstone\Gee.External.Capstone.xml ^
+          %~dp0\nuget\ref\netstandard2.0\Gee.External.Capstone.xml
 
 CALL copy /V /Y ^
           %~dp0\..\Gee.External.Capstone\bin\x64\Release\netstandard2.0\Gee.External.Capstone.dll ^
