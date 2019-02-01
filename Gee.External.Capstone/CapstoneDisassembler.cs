@@ -833,7 +833,7 @@ namespace Gee.External.Capstone {
             // ...
             //
             // Throws an exception if the operation fails.
-            var instructionIterator = this.Iterate(binaryCode);
+            var instructionIterator = this.Iterate(binaryCode, startingAddress);
 
             // ...
             //
