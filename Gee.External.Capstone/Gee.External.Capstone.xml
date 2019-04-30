@@ -2480,12 +2480,12 @@
         </member>
         <member name="F:Gee.External.Capstone.CapstoneDisassembler`8._disassembleMode">
             <summary>
-                Disassemble Mode. 
+                Disassemble Mode.
             </summary>
         </member>
         <member name="F:Gee.External.Capstone.CapstoneDisassembler`8._disassembleSyntax">
             <summary>
-                Disassemble Syntax. 
+                Disassemble Syntax.
             </summary>
         </member>
         <member name="F:Gee.External.Capstone.CapstoneDisassembler`8._enableInstructionDetails">
