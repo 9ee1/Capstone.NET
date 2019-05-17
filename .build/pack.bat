@@ -13,28 +13,28 @@ CALL mkdir %~dp0\nuget\runtimes\win-x86\lib\netstandard2.0
 CALL dotnet msbuild %~dp0\..\Capstone.NET.sln ^
      /property:Configuration="Release" ^
      /property:Platform="Any CPU" ^
-     /property:AssemblyVersion=2.0.1.0 ^
+     /property:AssemblyVersion=2.0.2.0 ^
      /property:Copyright="Copyright (c) Ahmed Garhy" ^
-     /property:FileVersion=2.0.1.0 ^
-     /property:InformationalVersion=2.0.1.0 ^
+     /property:FileVersion=2.0.2.0 ^
+     /property:InformationalVersion=2.0.2.0 ^
      /property:Product="Capstone.NET"
 
 CALL dotnet msbuild %~dp0\..\Capstone.NET.sln ^
      /property:Configuration="Release" ^
      /property:Platform="x64" ^
-     /property:AssemblyVersion=2.0.1.0 ^
+     /property:AssemblyVersion=2.0.2.0 ^
      /property:Copyright="Copyright (c) Ahmed Garhy" ^
-     /property:FileVersion=2.0.1.0 ^
-     /property:InformationalVersion=2.0.1.0 ^
+     /property:FileVersion=2.0.2.0 ^
+     /property:InformationalVersion=2.0.2.0 ^
      /property:Product="Capstone.NET"
 
 CALL dotnet msbuild %~dp0\..\Capstone.NET.sln ^
      /property:Configuration="Release" ^
      /property:Platform="x86" ^
-     /property:AssemblyVersion=2.0.1.0 ^
+     /property:AssemblyVersion=2.0.2.0 ^
      /property:Copyright="Copyright (c) Ahmed Garhy" ^
-     /property:FileVersion=2.0.1.0 ^
-     /property:InformationalVersion=2.0.1.0 ^
+     /property:FileVersion=2.0.2.0 ^
+     /property:InformationalVersion=2.0.2.0 ^
      /property:Product="Capstone.NET"
 
 CALL copy /V /Y ^
