@@ -3,7 +3,7 @@
   <metadata>
     <id>Gee.External.Capstone</id>
     <title>Capstone.NET</title>
-    <version>2.0.1</version>
+    <version>2.0.2</version>
     <authors>Ahmed Garhy (@9ee1)</authors>
     <owners>Ahmed Garhy (@9ee1)</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -11,7 +11,7 @@
     <projectUrl>https://github.com/9ee1/Capstone.NET</projectUrl>
     <description>Capstone.NET is an opinionated .NET Core and a .NET Framework binding for the Capstone disassembly framework. It is written in C#, supports Capstone 4, and has a friendly and simple type safe API that is ridiculously easy to learn and quick to pick up.</description>
     <summary>Capstone.NET is an opinionated .NET Core and a .NET Framework binding for the Capstone disassembly framework. It is written in C#, supports Capstone 4, and has a friendly and simple type safe API that is ridiculously easy to learn and quick to pick up.</summary>
-    <releaseNotes>Capstone.NET 2.x IS NOT backwards-compatible with previous releases of Capstone.NET, specifically Capstone.NET 1.x. Please do not upgrade until you are prepared to put in the effort to refactor your existing applications and libraries. See https://github.com/9ee1/Capstone.NET/wiki/What-is-New-in-Capstone.NET-2.x for more information.</releaseNotes>
+    <releaseNotes>Capstone.NET 2.0.2 is a patch release. See https://github.com/9ee1/Capstone.NET/milestone/3 for more information. Capstone.NET 2.x IS NOT backwards-compatible with previous releases of Capstone.NET, specifically Capstone.NET 1.x. Please do not upgrade until you are prepared to put in the effort to refactor your existing applications and libraries. See https://github.com/9ee1/Capstone.NET/wiki/What-is-New-in-Capstone.NET-2.x for more information.</releaseNotes>
     <copyright>Copyright (c) Ahmed Garhy</copyright>
     <repository url="https://github.com/9ee1/Capstone.NET" />
     <tags>capstone disassembler reverse-engineering security arm x86</tags>

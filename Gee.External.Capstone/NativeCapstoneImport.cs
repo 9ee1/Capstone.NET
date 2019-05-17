@@ -216,6 +216,7 @@ namespace Gee.External.Capstone {
         ///     Thrown if the disassembler handle is disposed, or if the instruction handle is disposed.
         /// </exception>
         [DllImport("capstone", CallingConvention = CallingConvention.Cdecl, EntryPoint = "cs_disasm_iter")]
+        [return: MarshalAs(UnmanagedType.I1)]
         internal static extern bool Iterate(NativeDisassemblerHandle hDisassembler, ref IntPtr pCode, ref IntPtr codeSize, ref long address, NativeInstructionHandle hInstruction);
 
         /// <summary>
