@@ -24,11 +24,9 @@
         UseIntelSyntax,
 
         /// <summary>
-        ///     Indicates a disassembler should use AT\&\T syntax for generated assembly code.
+        ///     Indicates a disassembler should use ATT syntax for generated assembly code.
         /// </summary>
         UseAttSyntax,
-
-        CS_OPT_SYNTAX_NOREGNAME,
 
         /// <summary>
         ///     Indicates a disassembler should use MASM syntax for generated assembly code.

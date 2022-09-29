@@ -1,21 +1,14 @@
 # Capstone.NET
 Capstone.NET is an opinionated .NET Core and a .NET Framework binding for the [Capstone disassembly framework](http://www.capstone-engine.org). It is written in C#, supports _Capstone 4_, and has a friendly and simple type safe API that is ridiculously easy to learn and quick to pick up.
 
-[![Nuget](https://img.shields.io/nuget/dt/Gee.External.Capstone?label=Capstone.NET%20V2.0.2&style=for-the-badge)](https://www.nuget.org/packages/Gee.External.Capstone)
+[![Nuget](https://img.shields.io/nuget/dt/Gee.External.Capstone?label=Capstone.NET%20V2.1.0&style=for-the-badge)](https://www.nuget.org/packages/Gee.External.Capstone)
 
 ## Features
 (+) Supports _Capstone 4_. Only the ARM, ARM64, M68K, MIPS, PowerPC, X86, and XCore architectures are supported right now
 
-(+) Supports _.NET Core 2.0+_ and _.NET Framework 4.0+_
+(+) Supports _.NET Standard 2.0, .NET Standard 2.1, .NET 5, and .NET 6+_
 
 (+) A friendly and simple to use type safe API that is ridiculously easy to learn and pick up
-
-(+) One of the best documented source code you'll find in an open source project, guaranteed or your money back!
-
-## Upgrading from Capstone.NET 1.x to Capstone.NET 2.x
-If you are actively developing an application or library, or have a stable application or library released, that has a dependency on _Capstone.NET 1.x_, **please note _Capstone.NET 2.x_ is absolutely NOT backwards-compatible with _Capstone.NET 1.x_**.
-
-If you are interested in understanding why, please see this [WIKI article](https://github.com/9ee1/Capstone.NET/wiki/What-is-New-in-Capstone.NET-2.x).
 
 ## Requirements
 (+) **Capstone 4 (X86/X64)**: Capstone.NET is compatible with the X86 and X64 versions of _Capstone 4_. Older versions of Capstone are not supported!
