@@ -4,32 +4,32 @@ Capstone.NET is an opinionated .NET Core and a .NET Framework binding for the [C
 [![Nuget](https://img.shields.io/nuget/dt/Gee.External.Capstone?label=Capstone.NET%20V2.1.0&style=for-the-badge)](https://www.nuget.org/packages/Gee.External.Capstone)
 
 ## Features
-(+) Supports _Capstone 4_. Only the ARM, ARM64, M68K, MIPS, PowerPC, X86, and XCore architectures are supported right now
+* Supports _Capstone 4_. Only the ARM, ARM64, M68K, MIPS, PowerPC, X86, and XCore architectures are supported right now
 
-(+) Supports _.NET Standard 2.0, .NET Standard 2.1, .NET 5, and .NET 6+_
+* Supports _.NET 5_ and greater, and _.NET Framework 4.6.1_ and greater
 
-(+) A friendly and simple to use type safe API that is ridiculously easy to learn and pick up
+* A friendly and simple to use type safe API that is ridiculously easy to learn and pick up
 
 ## Requirements
-(+) **Capstone 4 (X86/X64)**: Capstone.NET is compatible with the X86 and X64 versions of _Capstone 4_. Older versions of Capstone are not supported!
+* **Capstone 4**: Capstone.NET is compatible with the x86 and x64 versions of _Capstone 4_. Older versions of Capstone are not supported
 
-(+) **.NET Core 2.0+ (X86/X64)**: Capstone.NET is compatible with the X86 and X64 versions of _.NET Core 2.0_ and newer. Older versions of .NET Core are not supported!
+* **.NET 5+**: Capstone.NET is compatible with _.NET 5_ and greater
 
-(+) **.NET Framework 4.0+ (X86/X64)**: Capstone.NET is compatible with the X86 and X64 versions of _.NET Framework 4.0_ and newer. Older versions of .NET Framework are not supported!
+* **.NET Framework 4.6.1+**: Capstone.NET is compatible with _.NET Framework 4.6.1_ and greater. If your application is still reliant on .NET Framework, please note that Microsoft [has deprecated, and no longer supports](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-framework), any version of .NET Framework before _.NET Framework 4.6.2_
+
+When _Capstone.NET 2.0_ was first released, .NET Core did not support Windows GUI applications. As such, _Capstone.NET 2.0_ explicitly supported _.NET Framework 4.0_ and greater to allow developers building Windows GUI applications to use Capstone.NET.
+
+Today, Windows GUI applications are supported on .NET. Developers no longer need to use .NET Framework to build Windows GUI applications. Furthermore, Microsoft [has deprecated, and no longer supports](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-framework), any version of .NET Framework before _.NET Framework 4.6.2_.
+
+Starting with _Capstone.NET 2.1_, the minimal supported version of .NET Framework is _.NET Framework 4.6.1_. If you're wondering why _.NET Framework 4.6.1_ even though it is deprecated, please consult the [.NET Compatibility Matrix](https://learn.microsoft.com/en-us/dotnet/standard/net-standard?tabs=net-standard-2-0).
 
 ## Installation
-Either open the NuGet Package Manager in Visual Studio and search for "Capstone.NET" or head over to the [NuGet website](https://www.nuget.org/packages/Gee.External.Capstone) and download the NuGet package yourself. You can also clone this repository and build Capstone.NET yourself.
-
-The NuGet package bundles Capstone. If your referencing project targets the .NET Core runtime, it will 1) automatically load the correct version of Capstone when you build the project and 2) will automatically bundle the correct version of Capstone when you deploy the project.
-
-If your referencing project targets the .NET Framework runtime, the NuGet package will automatically copy the correct version of Capstone to the project's output directory when you build the project.
+Either open the NuGet Package Manager in Visual Studio and search for "Capstone.NET" or head over to the [NuGet website](https://www.nuget.org/packages/Gee.External.Capstone) and download the NuGet package yourself. The NuGet package bundles Capstone. You can also clone this repository and build Capstone.NET yourself.
 
 ## Building
 You can build Capstone.NET by opening the Visual Studio solution in _Visual Studio 2017_ and building from there. The Visual Studio solution has "Debug" and "Release" configurations for multiple platforms. Make sure you select the combination you're targeting before you build.
 
-If you're like me and get a headache when looking at the [.NET Compatibility Matrix](https://docs.microsoft.com/en-us/dotnet/standard/net-standard), you'll appreciate the fact that the Visual Studio solution actually builds 3 assemblies with a single build command. The first assembly targets _.NET Framework 4.0_, the second targets _.NET Framework 4.5_, and the third targets _.NET Standard 2.0_. Those 3 assemblies allow Capstone.NET to support a wide range of .NET Core and .NET Framework versions.
-
-The Visual Studio solution is a _Visual Studio 2017_ solution. This is the most stable version of Visual Studio that has support for .NET Core, .NET Framework, and the _C# 7.3_ compiler. I have not tried any other version of Visual Studio so I am not sure if there will be problems if you attempt to open the solution file in an older version of Visual Studio.
+The Visual Studio solution is a _Visual Studio 2017_ solution. I have not tried any other version of Visual Studio so I am not sure if there will be problems if you attempt to open the solution file in an older version of Visual Studio.
 
 ## Acknowledgments
 Greetings to my sensi Mohamed Saher ([@halsten](https://twitter.com/@halsten)) who suggested I take on this project and was a major help in debugging some stucture alignment issues, the Capstone team ([@capstone_engine](https://twitter.com/@capstone_engine)) for all the great work they are doing, and Matt Graeber ([@mattifestation](https://twitter.com/@mattifestation)) who wrote the original binding for _Capstone 2_ and whose work was a starting point for this project.
