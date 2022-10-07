@@ -5,7 +5,7 @@ on:
       - "*"
 jobs:
   linux:
-    name: Linux Job (PR Workflow)
+    name: Linux Job
     defaults:
       run:
         shell: bash
@@ -15,9 +15,14 @@ jobs:
       - id: checkout
         name: Checkout Repository
         uses: actions/checkout@v2
+      
+      - id: run-tests
+        name: Run Tests
+        working-directory: ./Tests.Gee.External.Capstone
+        run: dotnet test -c Debug --runtime linux-x64
   
   mac:
-    name: MacOS Job (PR Workflow)
+    name: MacOS Job
     defaults:
       run:
         shell: bash
@@ -27,9 +32,14 @@ jobs:
       - id: checkout
         name: Checkout Repository
         uses: actions/checkout@v2
+      
+      - id: run-tests
+        name: Run Tests
+        working-directory: ./Tests.Gee.External.Capstone
+        run: dotnet test -c Debug --runtime mac-x64
 
   windows:
-    name: Windows Job (PR Workflow)
+    name: Windows Job
     defaults:
       run:
         shell: bash
@@ -38,4 +48,9 @@ jobs:
     steps:
       - id: checkout
         name: Checkout Repository
-        uses: actions/checkout@v2 
+        uses: actions/checkout@v2
+      
+      - id: run-tests
+        name: Run Tests
+        working-directory: ./Tests.Gee.External.Capstone
+        run: dotnet test -c Debug --runtime win-x64
