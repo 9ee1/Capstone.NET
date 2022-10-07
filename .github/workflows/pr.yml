@@ -19,7 +19,7 @@ jobs:
       - id: run-tests
         name: Run Tests
         working-directory: ./Tests.Gee.External.Capstone
-        run: dotnet test -c Debug --runtime linux-x64 --no-self-contained
+        run: dotnet test -c Debug --runtime linux-x64
   
   mac:
     name: MacOS Job
@@ -36,7 +36,7 @@ jobs:
       - id: run-tests
         name: Run Tests
         working-directory: ./Tests.Gee.External.Capstone
-        run: dotnet test -c Debug --runtime mac-x64 --no-self-contained
+        run: dotnet test -c Debug --runtime mac-x64
 
   windows:
     name: Windows Job
@@ -53,4 +53,4 @@ jobs:
       - id: run-tests
         name: Run Tests
         working-directory: ./Tests.Gee.External.Capstone
-        run: dotnet test -c Debug --runtime win-x64 --no-self-contained
+        run: dotnet test -c Debug --runtime win-x64
