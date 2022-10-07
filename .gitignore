@@ -25,6 +25,7 @@
 x64/
 x86/
 !Gee.External.Capstone/X86/
+!Tests.Gee.External.Capstone/X86/
 bld/
 [Bb]in/
 [Oo]bj/

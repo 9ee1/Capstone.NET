@@ -1,25 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;netstandard2.1;net5.0;net6.0</TargetFrameworks>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;net5.0;net6.0</TargetFrameworks>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Version>2.2.0</Version>
+        <Authors>Ahmed Garhy (@9ee1)</Authors>
+        <Title>Capstone.NET</Title>
+        <Description>Capstone.NET is a .NET Core and a .NET Framework binding for the Capstone disassembly framework. It is written in C#, supports Capstone 4, and has a friendly and simple type safe API that is ridiculously easy to learn and quick to pick up.</Description>
+        <Copyright>Copyright (c) Ahmed Garhy</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/9ee1/Capstone.NET</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/9ee1/Capstone.NET</RepositoryUrl>
+        <PackageTags>capstone disassembler reverse-engineering security arm x86</PackageTags>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>1591</NoWarn>
+    </PropertyGroup>
 
-    <Version>2.2.0</Version>
-    <Authors>Ahmed Garhy (@9ee1)</Authors>
-    <Title>Capstone.NET</Title>
-    <Description>Capstone.NET is a .NET Core and a .NET Framework binding for the Capstone disassembly framework. It is written in C#, supports Capstone 4, and has a friendly and simple type safe API that is ridiculously easy to learn and quick to pick up.</Description>
-    <Copyright>Copyright (c) Ahmed Garhy</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/9ee1/Capstone.NET</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/9ee1/Capstone.NET</RepositoryUrl>
-    <PackageTags>capstone disassembler reverse-engineering security arm x86</PackageTags>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>1591</NoWarn>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Content CopyToOutputDirectory="PreserveNewest" Include="runtimes/*/native/*" Pack="true" PackagePath="runtimes" />
-  </ItemGroup>
+    <ItemGroup>
+        <Content CopyToOutputDirectory="PreserveNewest" Include="runtimes/*/native/*" Pack="true" PackagePath="runtimes" />
+    </ItemGroup>
 </Project>
