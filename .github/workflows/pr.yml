@@ -10,7 +10,7 @@ jobs:
       run:
         shell: bash
         working-directory: .
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - id: checkout
         name: Checkout Repository
@@ -19,7 +19,7 @@ jobs:
       - id: run-tests
         name: Run Tests
         working-directory: ./Tests.Gee.External.Capstone
-        run: dotnet test -c Debug --runtime linux-x64
+        run: dotnet test -c Debug --runtime linux-x64 --no-self-contained
   
   mac:
     name: MacOS Job
@@ -27,7 +27,7 @@ jobs:
       run:
         shell: bash
         working-directory: .
-    runs-on: macos-11
+    runs-on: macos-12
     steps:
       - id: checkout
         name: Checkout Repository
@@ -36,7 +36,7 @@ jobs:
       - id: run-tests
         name: Run Tests
         working-directory: ./Tests.Gee.External.Capstone
-        run: dotnet test -c Debug --runtime mac-x64
+        run: dotnet test -c Debug --runtime mac-x64 --no-self-contained
 
   windows:
     name: Windows Job
@@ -44,7 +44,7 @@ jobs:
       run:
         shell: bash
         working-directory: .
-    runs-on: windows-2019
+    runs-on: windows-2022
     steps:
       - id: checkout
         name: Checkout Repository
@@ -53,4 +53,4 @@ jobs:
       - id: run-tests
         name: Run Tests
         working-directory: ./Tests.Gee.External.Capstone
-        run: dotnet test -c Debug --runtime win-x64
+        run: dotnet test -c Debug --runtime win-x64 --no-self-contained
