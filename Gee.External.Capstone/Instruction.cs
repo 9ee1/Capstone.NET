@@ -186,5 +186,8 @@ namespace Gee.External.Capstone {
             this._mnemonic = builder.Mnemonic;
             this._operand = builder.Operand;
         }
+
+        /// <inheritdoc />
+        public override string ToString() => !this.IsDietModeEnabled ? $"{this.Mnemonic} {this.Operand}" : this.GetType().Name;
     }
 }

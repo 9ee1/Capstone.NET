@@ -1,0 +1,56 @@
+name: PR Workflow
+on:
+  pull_request:
+    branches:
+      - "*"
+jobs:
+  linux:
+    name: Linux Job
+    defaults:
+      run:
+        shell: bash
+        working-directory: .
+    runs-on: ubuntu-22.04
+    steps:
+      - id: checkout
+        name: Checkout Repository
+        uses: actions/checkout@v2
+      
+      - id: run-tests
+        name: Run Tests
+        working-directory: ./Tests.Gee.External.Capstone
+        run: dotnet test -c Debug --runtime linux-x64
+  
+  mac:
+    name: MacOS Job
+    defaults:
+      run:
+        shell: bash
+        working-directory: .
+    runs-on: macos-12
+    steps:
+      - id: checkout
+        name: Checkout Repository
+        uses: actions/checkout@v2
+      
+      - id: run-tests
+        name: Run Tests
+        working-directory: ./Tests.Gee.External.Capstone
+        run: dotnet test -c Debug --runtime mac-x64
+
+  windows:
+    name: Windows Job
+    defaults:
+      run:
+        shell: bash
+        working-directory: .
+    runs-on: windows-2022
+    steps:
+      - id: checkout
+        name: Checkout Repository
+        uses: actions/checkout@v2
+      
+      - id: run-tests
+        name: Run Tests
+        working-directory: ./Tests.Gee.External.Capstone
+        run: dotnet test -c Debug --runtime win-x64
