@@ -1,7 +1,7 @@
 # Capstone.NET
 Capstone.NET is an opinionated .NET Core and a .NET Framework binding for the [Capstone disassembly framework](http://www.capstone-engine.org). It is written in C#, supports _Capstone 4_, and has a friendly and simple type safe API that is ridiculously easy to learn and quick to pick up.
 
-[![Nuget](https://img.shields.io/nuget/dt/Gee.External.Capstone?label=Capstone.NET%20V2.1.0&style=for-the-badge)](https://www.nuget.org/packages/Gee.External.Capstone)
+[![Nuget](https://img.shields.io/nuget/dt/Gee.External.Capstone?label=Capstone.NET%20V2.3.0&style=for-the-badge)](https://www.nuget.org/packages/Gee.External.Capstone)
 
 ## Features
 * Supports _Capstone 4_. Only the ARM, ARM64, M68K, MIPS, PowerPC, X86, and XCore architectures are supported right now
@@ -10,26 +10,11 @@ Capstone.NET is an opinionated .NET Core and a .NET Framework binding for the [C
 
 * A friendly and simple to use type safe API that is ridiculously easy to learn and pick up
 
-## Requirements
-* **Capstone 4**: Capstone.NET is compatible with the x86 and x64 versions of _Capstone 4_. Older versions of Capstone are not supported
-
-* **.NET 5+**: Capstone.NET is compatible with _.NET 5_ and greater
-
-* **.NET Framework 4.6.1+**: Capstone.NET is compatible with _.NET Framework 4.6.1_ and greater. If your application is still reliant on .NET Framework, please note that Microsoft [has deprecated, and no longer supports](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-framework), any version of .NET Framework before _.NET Framework 4.6.2_
-
-When _Capstone.NET 2.0_ was first released, .NET Core did not support Windows GUI applications. As such, _Capstone.NET 2.0_ explicitly supported _.NET Framework 4.0_ and greater to allow developers building Windows GUI applications to use Capstone.NET.
-
-Today, Windows GUI applications are supported on .NET. Developers no longer need to use .NET Framework to build Windows GUI applications. Furthermore, Microsoft [has deprecated, and no longer supports](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-framework), any version of .NET Framework before _.NET Framework 4.6.2_.
-
-Starting with _Capstone.NET 2.1_, the minimal supported version of .NET Framework is _.NET Framework 4.6.1_. If you're wondering why _.NET Framework 4.6.1_ even though it is deprecated, please consult the [.NET Compatibility Matrix](https://learn.microsoft.com/en-us/dotnet/standard/net-standard?tabs=net-standard-2-0).
-
 ## Installation
 Either open the NuGet Package Manager in Visual Studio and search for "Capstone.NET" or head over to the [NuGet website](https://www.nuget.org/packages/Gee.External.Capstone) and download the NuGet package yourself. The NuGet package bundles Capstone. You can also clone this repository and build Capstone.NET yourself.
 
 ## Building
-You can build Capstone.NET by opening the Visual Studio solution in _Visual Studio 2017_ and building from there. The Visual Studio solution has "Debug" and "Release" configurations for multiple platforms. Make sure you select the combination you're targeting before you build.
-
-The Visual Studio solution is a _Visual Studio 2017_ solution. I have not tried any other version of Visual Studio so I am not sure if there will be problems if you attempt to open the solution file in an older version of Visual Studio.
+You can build Capstone.NET by opening the Visual Studio solution in _Visual Studio 2017_ or greater, and building from there. The Visual Studio solution has "Debug" and "Release" configurations. Make sure you select the configuration you're targeting before you build.
 
 ## Acknowledgments
 Greetings to my sensi Mohamed Saher ([@halsten](https://twitter.com/@halsten)) who suggested I take on this project and was a major help in debugging some stucture alignment issues, the Capstone team ([@capstone_engine](https://twitter.com/@capstone_engine)) for all the great work they are doing, and Matt Graeber ([@mattifestation](https://twitter.com/@mattifestation)) who wrote the original binding for _Capstone 2_ and whose work was a starting point for this project.
