@@ -454,9 +454,7 @@ namespace Gee.External.Capstone {
             }
         }
 
-        /// <summary>
-        ///     Dispose Object.
-        /// </summary>
+        /// <inheritdoc />
         public abstract void Dispose();
     }
 
@@ -570,7 +568,7 @@ namespace Gee.External.Capstone {
                 // to a 32-bit integer to pass to the Capstone API. It should be relatively quick since
                 // <c>System.Enum</c> implements <c>System.IConvertible</c>.
                 var iDisassembleMode = Convert.ToInt32(value);
-                var disassembleMode = (NativeDisassembleMode) iDisassembleMode;
+                var disassembleMode = (NativeDisassembleMode)iDisassembleMode;
 
                 // ..
                 //
@@ -597,9 +595,9 @@ namespace Gee.External.Capstone {
                 // ..
                 //
                 // Throws an exception if the operation fails.
-                const NativeDisassemblerOptionType optionType = NativeDisassemblerOptionType.SetSyntax;
-                var optionValue = (NativeDisassemblerOptionValue) value;
-                NativeCapstone.SetDisassemblerOption(this._handle, optionType, optionValue);
+                const NativeDisassemblerOptionType optionType = NativeDisassemblerOptionType.SetDisassembleSyntax;
+                var optionValue = (NativeDisassemblerOptionValue)value;
+                NativeCapstone.SetOption(this._handle, optionType, optionValue);
 
                 this._disassembleSyntax = value;
             }
@@ -622,7 +620,7 @@ namespace Gee.External.Capstone {
                 // Throws an exception if the operation fails.
                 const NativeDisassemblerOptionType optionType = NativeDisassemblerOptionType.SetInstructionDetails;
                 var optionValue = value ? NativeDisassemblerOptionValue.Enable : NativeDisassemblerOptionValue.Disable;
-                NativeCapstone.SetDisassemblerOption(this._handle, optionType, optionValue);
+                NativeCapstone.SetOption(this._handle, optionType, optionValue);
 
                 this._enableInstructionDetails = value;
             }
@@ -643,9 +641,9 @@ namespace Gee.External.Capstone {
                 // ..
                 //
                 // Throws an exception if the operation fails.
-                const NativeDisassemblerOptionType optionType = NativeDisassemblerOptionType.SetSkipData;
+                const NativeDisassemblerOptionType optionType = NativeDisassemblerOptionType.SetSkipDataMode;
                 var optionValue = value ? NativeDisassemblerOptionValue.Enable : NativeDisassemblerOptionValue.Disable;
-                NativeCapstone.SetDisassemblerOption(this._handle, optionType, optionValue);
+                NativeCapstone.SetOption(this._handle, optionType, optionValue);
 
                 this._enableSkipDataMode = value;
             }
@@ -744,7 +742,7 @@ namespace Gee.External.Capstone {
                 // a 32-bit integer to pass to the Capstone API. It should be relatively quick since <c>System.Enum</c>
                 // implements <c>System.IConvertible</c>.
                 var cIDisassembleMode = Convert.ToInt32(@this._disassembleMode);
-                return (NativeDisassembleMode) cIDisassembleMode;
+                return (NativeDisassembleMode)cIDisassembleMode;
             }
         }
 
@@ -850,9 +848,7 @@ namespace Gee.External.Capstone {
             return instructions;
         }
 
-        /// <summary>
-        ///     Dispose Object.
-        /// </summary>
+        /// <inheritdoc />
         public override void Dispose() {
             // ...
             //
@@ -1030,11 +1026,11 @@ namespace Gee.External.Capstone {
                 // ...
                 //
                 // Throws an exception if the operation fails.
-                var optionValue = new NativeSkipDataOptionValue();
+                var optionValue = new NativeSkipDataModeConfigOptionValue();
                 optionValue.Callback = callback;
                 optionValue.InstructionMnemonic = this._skipDataInstructionMnemonic;
                 optionValue.State = IntPtr.Zero;
-                NativeCapstone.SetSkipDataOption(this._handle, ref optionValue);
+                NativeCapstone.SetSkipDataModeConfigOption(this._handle, ref optionValue);
             }
 
             try {
@@ -1063,11 +1059,11 @@ namespace Gee.External.Capstone {
                     //
                     // Throws an exception if the operation fails. If the operation fails here, it could only be
                     // because the disassembler is disposed, which will have no side effects if it happens here.
-                    var optionValue = new NativeSkipDataOptionValue();
+                    var optionValue = new NativeSkipDataModeConfigOptionValue();
                     optionValue.Callback = null;
                     optionValue.InstructionMnemonic = this._skipDataInstructionMnemonic;
                     optionValue.State = IntPtr.Zero;
-                    NativeCapstone.SetSkipDataOption(this._handle, ref optionValue);
+                    NativeCapstone.SetSkipDataModeConfigOption(this._handle, ref optionValue);
                 }
             }
 

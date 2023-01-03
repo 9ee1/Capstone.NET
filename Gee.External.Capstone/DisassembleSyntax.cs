@@ -1,21 +1,15 @@
 ﻿namespace Gee.External.Capstone {
     /// <summary>
-    ///     Disassemble Syntax.
+    ///     Represents the syntax a <see cref="CapstoneDisassembler" /> should use for generated assembly code.
     /// </summary>
     public enum DisassembleSyntax {
-        /// <summary>
-        ///     Indicates a disassembler should use AT&amp;T syntax for generated assembly code.
-        /// </summary>
-        Att = NativeDisassemblerOptionValue.UseAttSyntax,
+        /// <inheritdoc cref="NativeDisassemblerOptionValue.UseAttDisassembleSyntax" />
+        Att = NativeDisassemblerOptionValue.UseAttDisassembleSyntax,
 
-        /// <summary>
-        ///     Indicates a disassembler should use Intel syntax for generated assembly code.
-        /// </summary>
-        Intel = NativeDisassemblerOptionValue.UseIntelSyntax,
+        /// <inheritdoc cref="NativeDisassemblerOptionValue.UseIntelDisassembleSyntax" />
+        Intel = NativeDisassemblerOptionValue.UseIntelDisassembleSyntax,
 
-        /// <summary>
-        ///     Indicates a disassembler should use MASM syntax for generated assembly code.
-        /// </summary>
-        Masm = NativeDisassemblerOptionValue.UseMasmSyntax
+        /// <inheritdoc cref="NativeDisassemblerOptionValue.UseMasmDisassembleSyntax" />
+        Masm = NativeDisassemblerOptionValue.UseMasmDisassembleSyntax
     }
 }

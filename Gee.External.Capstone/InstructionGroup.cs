@@ -93,5 +93,8 @@ namespace Gee.External.Capstone {
 
             return hashCode;
         }
+
+        /// <inheritdoc />
+        public override string ToString() => !this.IsDietModeEnabled ? this.Name : $"{this.Id}";
     }
 }
