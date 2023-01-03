@@ -6,7 +6,7 @@ namespace Gee.External.Capstone {
     ///     Native Skip Data Option Value.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal struct NativeSkipDataOptionValue {
+    internal struct NativeSkipDataModeConfigOptionValue {
         /// <summary>
         ///     Instruction Mnemonic.
         /// </summary>

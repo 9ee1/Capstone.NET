@@ -173,7 +173,7 @@ namespace Gee.External.Capstone {
             byte writtenRegistersCount = 0;
             var resultCode = NativeCapstoneImport.GetAccessedRegisters(hDisassembler, hInstruction, readRegisters, ref readRegistersCount, writtenRegisters, ref writtenRegistersCount);
             if (resultCode != NativeCapstoneResultCode.Ok) {
-                if ((int) resultCode == -1) {
+                if ((int)resultCode == -1) {
                     // ...
                     //
                     // For some reason, the Capstone API will return a <c>-1</c>, instead of a defined error code, if
@@ -185,7 +185,7 @@ namespace Gee.External.Capstone {
                     const string detailMessage = "A disassembler's hardware architecture is not supported.";
                     throw new NotSupportedException(detailMessage);
                 }
-                else if (resultCode == NativeCapstoneResultCode.UnSupportedDietModeOperation) {
+                else if (resultCode == NativeCapstoneResultCode.UnsupportedDietModeOperation) {
                     const string detailMessage = "An operation is not supported when diet mode is enabled.";
                     throw new NotSupportedException(detailMessage);
                 }
@@ -254,7 +254,7 @@ namespace Gee.External.Capstone {
                 // always relative to the memory address of its defining <c>NativeInstruction</c> structure. This is
                 // NOT the actual memory address of the instruction's details.
                 var instructionDetailOffset = Marshal.OffsetOf(typeof(NativeInstruction), nameof(NativeInstruction.Details));
-                var pInstructionDetail = (IntPtr) ((long) pInstruction + (long) instructionDetailOffset);
+                var pInstructionDetail = (IntPtr)((long)pInstruction + (long)instructionDetailOffset);
 
                 // ...
                 //
@@ -296,7 +296,7 @@ namespace Gee.External.Capstone {
                 // always relative to the memory address of its defining <c>NativeInstruction</c> structure. This is
                 // NOT the actual memory address of the instruction's details.
                 var instructionDetailOffset = Marshal.OffsetOf(typeof(NativeInstruction), nameof(NativeInstruction.Details));
-                var pInstructionDetail = (IntPtr) ((long) pInstruction + (long) instructionDetailOffset);
+                var pInstructionDetail = (IntPtr)((long)pInstruction + (long)instructionDetailOffset);
 
                 // ...
                 //
@@ -311,7 +311,7 @@ namespace Gee.External.Capstone {
                     // Fourth, we calculate the memory address of the instruction's architecture specific details,
                     // which is always relative to the memory address of the instruction's details.
                     var pArchInstructionDetail = ppInstructionDetail + NativeCapstone.MagicInstructionArchitectureDetailsFieldOffset;
-                    instructionDetail = (TInstructionDetail) Marshal.PtrToStructure(pArchInstructionDetail, typeof(TInstructionDetail));
+                    instructionDetail = (TInstructionDetail)Marshal.PtrToStructure(pArchInstructionDetail, typeof(TInstructionDetail));
                 }
 
                 return instructionDetail;
@@ -393,7 +393,7 @@ namespace Gee.External.Capstone {
             string instructionGroupName = null;
             var pInstructionGroupName = NativeCapstoneImport.GetInstructionGroupName(hDisassembler, instructionGroupId);
             if (pInstructionGroupName != IntPtr.Zero) {
-                instructionGroupName = new string((sbyte*) pInstructionGroupName);
+                instructionGroupName = new string((sbyte*)pInstructionGroupName);
             }
 
             return instructionGroupName;
@@ -422,7 +422,7 @@ namespace Gee.External.Capstone {
             string registerName = null;
             var pRegisterName = NativeCapstoneImport.GetRegisterName(hDisassembler, registerId);
             if (pRegisterName != IntPtr.Zero) {
-                registerName = new string((sbyte*) pRegisterName);
+                registerName = new string((sbyte*)pRegisterName);
             }
 
             return registerName;
@@ -484,7 +484,7 @@ namespace Gee.External.Capstone {
                 //
                 // Second, we calculate the size of the binary code buffer by decrementing the offset we incremented
                 // by in the previous step.
-                var binaryCodeSize = (IntPtr) binaryCode.Length - binaryCodeOffset;
+                var binaryCodeSize = (IntPtr)binaryCode.Length - binaryCodeOffset;
 
                 // ...
                 //
@@ -502,7 +502,7 @@ namespace Gee.External.Capstone {
                     //
                     // Fourth, we compute a new offset to indicate to the caller the next instruction to disassemble
                     // in the binary code buffer.
-                    binaryCodeOffset += (int) ((long) pBinaryCode - (long) initialPBinaryCode);
+                    binaryCodeOffset += (int)((long)pBinaryCode - (long)initialPBinaryCode);
                 }
 
                 return isDisassembled;
@@ -592,59 +592,9 @@ namespace Gee.External.Capstone {
             //
             // Throws an exception if the operation fails.
             const NativeDisassemblerOptionType optionType = NativeDisassemblerOptionType.SetDisassembleMode;
-            var resultCode = NativeCapstoneImport.SetDisassemblerOption(hDisassembler, optionType, (IntPtr) disassembleMode);
+            var resultCode = NativeCapstoneImport.SetDisassemblerOption(hDisassembler, optionType, (IntPtr)disassembleMode);
             if (resultCode != NativeCapstoneResultCode.Ok) {
                 if (resultCode == NativeCapstoneResultCode.InvalidOption) {
-                    var detailMessage = $"An option ({nameof(optionType)}) is invalid.";
-                    throw new ArgumentException(detailMessage, nameof(optionType));
-                }
-                else {
-                    var detailMessage = $"A disassembler option ({optionType}) could not be set.";
-                    throw new CapstoneException(detailMessage);
-                }
-            }
-        }
-
-        /// <summary>
-        ///     Set a Disassembler Option.
-        /// </summary>
-        /// <param name="hDisassembler">
-        ///     A disassembler handle.
-        /// </param>
-        /// <param name="optionType">
-        ///     A type of option to set.
-        /// </param>
-        /// <param name="optionValue">
-        ///     A value to set the option to.
-        /// </param>
-        /// <exception cref="Gee.External.Capstone.CapstoneException">
-        ///     Thrown if the option could not be set.
-        /// </exception>
-        /// <exception cref="System.ArgumentException">
-        ///     Thrown if the disassembler handle is invalid, or if the option is invalid.
-        /// </exception>
-        /// <exception cref="System.NotSupportedException">
-        ///     Thrown if the option is equal to <see cref="NativeDisassemblerOptionType.SetSkipDataConfig" />.
-        /// </exception>
-        /// <exception cref="System.ObjectDisposedException">
-        ///     Thrown if the disassembler handle is disposed.
-        /// </exception>
-        internal static void SetDisassemblerOption(NativeDisassemblerHandle hDisassembler, NativeDisassemblerOptionType optionType, NativeDisassemblerOptionValue optionValue) {
-            if (optionType == NativeDisassemblerOptionType.SetSkipDataConfig) {
-                var detailMessage = $"A disassembler option ({optionType}) is unsupported.";
-                throw new NotSupportedException(detailMessage);
-            }
-
-            // ...
-            //
-            // Throws an exception if the operation fails.
-            var resultCode = NativeCapstoneImport.SetDisassemblerOption(hDisassembler, optionType, (IntPtr) optionValue);
-            if (resultCode != NativeCapstoneResultCode.Ok) {
-                if (resultCode == NativeCapstoneResultCode.InvalidHandle2) {
-                    var detailMessage = $"A disassembler handle ({nameof(hDisassembler)}) is invalid.";
-                    throw new ArgumentException(detailMessage, nameof(hDisassembler));
-                }
-                else if (resultCode == NativeCapstoneResultCode.InvalidOption) {
                     var detailMessage = $"An option ({nameof(optionType)}) is invalid.";
                     throw new ArgumentException(detailMessage, nameof(optionType));
                 }
@@ -682,7 +632,7 @@ namespace Gee.External.Capstone {
                 // ...
                 //
                 // Throws an exception if the operation fails.
-                const NativeDisassemblerOptionType optionType = NativeDisassemblerOptionType.SetMnemonic;
+                const NativeDisassemblerOptionType optionType = NativeDisassemblerOptionType.SetInstructionMnemonic;
                 var resultCode = NativeCapstoneImport.SetDisassemblerOption(hDisassembler, optionType, pOptionValue);
                 if (resultCode != NativeCapstoneResultCode.Ok) {
                     if (resultCode == NativeCapstoneResultCode.InvalidHandle2) {
@@ -702,16 +652,66 @@ namespace Gee.External.Capstone {
             }
         }
 
-        internal static void SetSkipDataOption(NativeDisassemblerHandle hDisassembler, ref NativeSkipDataOptionValue optionValue) {
+        /// <summary>
+        ///     Set a Disassembler Option.
+        /// </summary>
+        /// <param name="hDisassembler">
+        ///     A disassembler handle.
+        /// </param>
+        /// <param name="optionType">
+        ///     A type of option to set.
+        /// </param>
+        /// <param name="optionValue">
+        ///     A value to set the option to.
+        /// </param>
+        /// <exception cref="Gee.External.Capstone.CapstoneException">
+        ///     Thrown if the option could not be set.
+        /// </exception>
+        /// <exception cref="System.ArgumentException">
+        ///     Thrown if the disassembler handle is invalid, or if the option is invalid.
+        /// </exception>
+        /// <exception cref="System.NotSupportedException">
+        ///     Thrown if the option is equal to <see cref="NativeDisassemblerOptionType.SetSkipDataModeConfig" />.
+        /// </exception>
+        /// <exception cref="System.ObjectDisposedException">
+        ///     Thrown if the disassembler handle is disposed.
+        /// </exception>
+        internal static void SetOption(NativeDisassemblerHandle hDisassembler, NativeDisassemblerOptionType optionType, NativeDisassemblerOptionValue optionValue) {
+            if (optionType == NativeDisassemblerOptionType.SetSkipDataModeConfig) {
+                var detailMessage = $"A disassembler option ({optionType}) is unsupported.";
+                throw new NotSupportedException(detailMessage);
+            }
+
+            // ...
+            //
+            // Throws an exception if the operation fails.
+            var resultCode = NativeCapstoneImport.SetDisassemblerOption(hDisassembler, optionType, (IntPtr)optionValue);
+            if (resultCode != NativeCapstoneResultCode.Ok) {
+                if (resultCode == NativeCapstoneResultCode.InvalidHandle2) {
+                    var detailMessage = $"A disassembler handle ({nameof(hDisassembler)}) is invalid.";
+                    throw new ArgumentException(detailMessage, nameof(hDisassembler));
+                }
+                else if (resultCode == NativeCapstoneResultCode.InvalidOption) {
+                    var detailMessage = $"An option ({nameof(optionType)}) is invalid.";
+                    throw new ArgumentException(detailMessage, nameof(optionType));
+                }
+                else {
+                    var detailMessage = $"A disassembler option ({optionType}) could not be set.";
+                    throw new CapstoneException(detailMessage);
+                }
+            }
+        }
+
+        internal static void SetSkipDataModeConfigOption(NativeDisassemblerHandle hDisassembler, ref NativeSkipDataModeConfigOptionValue optionValue) {
             var pOptionValue = IntPtr.Zero;
             try {
-                pOptionValue = MarshalExtension.AllocHGlobal<NativeSkipDataOptionValue>();
+                pOptionValue = MarshalExtension.AllocHGlobal<NativeSkipDataModeConfigOptionValue>();
                 Marshal.StructureToPtr(optionValue, pOptionValue, false);
 
                 // ...
                 //
                 // Throws an exception if the operation fails.
-                const NativeDisassemblerOptionType optionType = NativeDisassemblerOptionType.SetSkipDataConfig;
+                const NativeDisassemblerOptionType optionType = NativeDisassemblerOptionType.SetSkipDataModeConfig;
                 var resultCode = NativeCapstoneImport.SetDisassemblerOption(hDisassembler, optionType, pOptionValue);
             }
             finally {
