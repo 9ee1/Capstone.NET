@@ -1,24 +1,24 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Gee.External.Capstone.PowerPc {
+namespace Gee.External.Capstone.PowerPc;
+
+/// <summary>
+///     Native PowerPC Condition Register Operand Value.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct NativePowerPcConditionRegisterOperandValue {
     /// <summary>
-    ///     Native PowerPC Condition Register Operand Value.
+    ///     Scale.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct NativePowerPcConditionRegisterOperandValue {
-        /// <summary>
-        ///     Scale.
-        /// </summary>
-        public int Scale;
+    public int Scale;
 
-        /// <summary>
-        ///     Register.
-        /// </summary>
-        public PowerPcRegisterId Register;
+    /// <summary>
+    ///     Register.
+    /// </summary>
+    public PowerPcRegisterId Register;
 
-        /// <summary>
-        ///     Branch Code.
-        /// </summary>
-        public PowerPcBranchCode BranchCode;
-    }
+    /// <summary>
+    ///     Branch Code.
+    /// </summary>
+    public PowerPcBranchCode BranchCode;
 }

@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Gee.External.Capstone {
+namespace Gee.External.Capstone;
+
+/// <summary>
+///     Native Skip Data Option Value.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct NativeSkipDataModeConfigOptionValue {
     /// <summary>
-    ///     Native Skip Data Option Value.
+    ///     Instruction Mnemonic.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct NativeSkipDataModeConfigOptionValue {
-        /// <summary>
-        ///     Instruction Mnemonic.
-        /// </summary>
-        [MarshalAs(UnmanagedType.LPStr)]
-        public string InstructionMnemonic;
+    [MarshalAs(UnmanagedType.LPStr)]
+    public string InstructionMnemonic;
 
-        [MarshalAs(UnmanagedType.FunctionPtr)]
-        public NativeCapstone.SkipDataCallback Callback;
+    [MarshalAs(UnmanagedType.FunctionPtr)]
+    public NativeCapstone.SkipDataCallback Callback;
 
-        public IntPtr State;
-    }
+    public IntPtr State;
 }

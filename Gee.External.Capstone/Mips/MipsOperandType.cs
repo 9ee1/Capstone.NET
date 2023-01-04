@@ -1,26 +1,26 @@
-﻿namespace Gee.External.Capstone.Mips {
+﻿namespace Gee.External.Capstone.Mips;
+
+/// <summary>
+///     MIPS Operand Type.
+/// </summary>
+public enum MipsOperandType {
     /// <summary>
-    ///     MIPS Operand Type.
+    ///     Indicates an invalid, or an uninitialized, operand type.
     /// </summary>
-    public enum MipsOperandType {
-        /// <summary>
-        ///     Indicates an invalid, or an uninitialized, operand type.
-        /// </summary>
-        Invalid = 0,
+    Invalid = 0,
 
-        /// <summary>
-        ///     Indicates a register operand.
-        /// </summary>
-        Register,
+    /// <summary>
+    ///     Indicates a register operand.
+    /// </summary>
+    Register,
 
-        /// <summary>
-        ///     Indicates an immediate operand.
-        /// </summary>
-        Immediate,
+    /// <summary>
+    ///     Indicates an immediate operand.
+    /// </summary>
+    Immediate,
 
-        /// <summary>
-        ///     Indicates a memory operand.
-        /// </summary>
-        Memory
-    }
+    /// <summary>
+    ///     Indicates a memory operand.
+    /// </summary>
+    Memory
 }
