@@ -1,29 +1,29 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Gee.External.Capstone.XCore {
+namespace Gee.External.Capstone.XCore;
+
+/// <summary>
+///     Native XCore Memory Operand Value.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct NativeXCoreMemoryOperandValue {
     /// <summary>
-    ///     Native XCore Memory Operand Value.
+    ///     Base Register.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct NativeXCoreMemoryOperandValue {
-        /// <summary>
-        ///     Base Register.
-        /// </summary>
-        public byte Base;
+    public byte Base;
 
-        /// <summary>
-        ///     Index Register.
-        /// </summary>
-        public byte Index;
+    /// <summary>
+    ///     Index Register.
+    /// </summary>
+    public byte Index;
 
-        /// <summary>
-        ///     Displacement Value.
-        /// </summary>
-        public int Displacement;
+    /// <summary>
+    ///     Displacement Value.
+    /// </summary>
+    public int Displacement;
 
-        /// <summary>
-        ///     Direct Value.
-        /// </summary>
-        public int Direct;
-    }
+    /// <summary>
+    ///     Direct Value.
+    /// </summary>
+    public int Direct;
 }

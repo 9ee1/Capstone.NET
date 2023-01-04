@@ -1,39 +1,39 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Gee.External.Capstone.M68K {
+namespace Gee.External.Capstone.M68K;
+
+/// <summary>
+///     Native M68K Operand.
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+internal struct NativeM68KOperand {
     /// <summary>
-    ///     Native M68K Operand.
+    ///     Value.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct NativeM68KOperand {
-        /// <summary>
-        ///     Value.
-        /// </summary>
-        public NativeM68KOperandValue Value;
+    public NativeM68KOperandValue Value;
 
-        /// <summary>
-        ///     Memory Value.
-        /// </summary>
-        public NativeM68KMemoryOperandValue Memory;
+    /// <summary>
+    ///     Memory Value.
+    /// </summary>
+    public NativeM68KMemoryOperandValue Memory;
 
-        /// <summary>
-        ///     Branch Displacement Value.
-        /// </summary>
-        public NativeM68KBranchDisplacementOperandValue BranchDisplacement;
+    /// <summary>
+    ///     Branch Displacement Value.
+    /// </summary>
+    public NativeM68KBranchDisplacementOperandValue BranchDisplacement;
 
-        /// <summary>
-        ///     Register Bits Value.
-        /// </summary>
-        public int RegisterBits;
+    /// <summary>
+    ///     Register Bits Value.
+    /// </summary>
+    public int RegisterBits;
 
-        /// <summary>
-        ///     Operand's Type.
-        /// </summary>
-        public M68KOperandType Type;
+    /// <summary>
+    ///     Operand's Type.
+    /// </summary>
+    public M68KOperandType Type;
 
-        /// <summary>
-        ///     Address Mode.
-        /// </summary>
-        public M68KAddressMode AddressMode;
-    }
+    /// <summary>
+    ///     Address Mode.
+    /// </summary>
+    public M68KAddressMode AddressMode;
 }
