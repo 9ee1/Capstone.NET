@@ -473,8 +473,7 @@ internal static class NativeCapstone {
     ///     Thrown if the disassembler handle is disposed, or if the instruction handle is disposed.
     /// </exception>
     internal static unsafe bool Iterate(NativeDisassemblerHandle hDisassembler, ReadOnlySpan<byte> binaryCode, ref int binaryCodeOffset, ref long address, NativeInstructionHandle hInstruction) {
-        fixed (byte* fixedPointer = binaryCode)
-        {
+        fixed (byte* fixedPointer = binaryCode) {
             // ...
             //
             // First, we increment the pointer to the binary code buffer to the point to the address of the
