@@ -498,8 +498,7 @@ internal static class NativeCapstone {
             // Throws an exception if the operation fails.
             var initialPBinaryCode = pBinaryCode;
             var isDisassembled = NativeCapstoneImport.Iterate(hDisassembler, ref pBinaryCode, ref binaryCodeSize, ref address, hInstruction);
-            if (isDisassembled)
-            {
+            if (isDisassembled) {
                 // ...
                 //
                 // Fourth, we compute a new offset to indicate to the caller the next instruction to disassemble
