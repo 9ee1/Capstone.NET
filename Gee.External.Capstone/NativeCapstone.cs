@@ -472,14 +472,14 @@ internal static class NativeCapstone {
     /// <exception cref="System.ObjectDisposedException">
     ///     Thrown if the disassembler handle is disposed, or if the instruction handle is disposed.
     /// </exception>
-    internal static bool Iterate(NativeDisassemblerHandle hDisassembler, byte[] binaryCode, ref int binaryCodeOffset, ref long address, NativeInstructionHandle hInstruction) {
-        var hBinaryCode = GCHandle.Alloc(binaryCode, GCHandleType.Pinned);
-        try {
+    internal static unsafe bool Iterate(NativeDisassemblerHandle hDisassembler, ReadOnlySpan<byte> binaryCode, ref int binaryCodeOffset, ref long address, NativeInstructionHandle hInstruction) {
+        fixed (byte* fixedPointer = binaryCode)
+        {
             // ...
             //
             // First, we increment the pointer to the binary code buffer to the point to the address of the
             // instruction we want to disassemble.
-            var pBinaryCode = hBinaryCode.AddrOfPinnedObject() + binaryCodeOffset;
+            var pBinaryCode = (IntPtr)fixedPointer + binaryCodeOffset;
 
             // ...
             //
@@ -498,7 +498,8 @@ internal static class NativeCapstone {
             // Throws an exception if the operation fails.
             var initialPBinaryCode = pBinaryCode;
             var isDisassembled = NativeCapstoneImport.Iterate(hDisassembler, ref pBinaryCode, ref binaryCodeSize, ref address, hInstruction);
-            if (isDisassembled) {
+            if (isDisassembled)
+            {
                 // ...
                 //
                 // Fourth, we compute a new offset to indicate to the caller the next instruction to disassemble
@@ -507,11 +508,6 @@ internal static class NativeCapstone {
             }
 
             return isDisassembled;
-        }
-        finally {
-            if (hBinaryCode.IsAllocated) {
-                hBinaryCode.Free();
-            }
         }
     }
 

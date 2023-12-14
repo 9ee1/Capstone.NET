@@ -767,13 +767,10 @@ public abstract class CapstoneDisassembler<TDisassembleMode, TInstruction, TInst
     /// <returns>
     ///     An array of disassembled instructions.
     /// </returns>
-    /// <exception cref="System.ArgumentNullException">
-    ///     Thrown if the binary code array is a null reference.
-    /// </exception>
     /// <exception cref="System.ObjectDisposedException">
     ///     Thrown if the disassembler is disposed.
     /// </exception>
-    public TInstruction[] Disassemble(byte[] binaryCode) {
+    public TInstruction[] Disassemble(ReadOnlySpan<byte> binaryCode) {
         // ...
         //
         // Throws an exception if the operation fails.
@@ -793,13 +790,10 @@ public abstract class CapstoneDisassembler<TDisassembleMode, TInstruction, TInst
     /// <returns>
     ///     An array of disassembled instructions.
     /// </returns>
-    /// <exception cref="System.ArgumentNullException">
-    ///     Thrown if the binary code array is a null reference.
-    /// </exception>
     /// <exception cref="System.ObjectDisposedException">
     ///     Thrown if the disassembler is disposed.
     /// </exception>
-    public TInstruction[] Disassemble(byte[] binaryCode, long startingAddress) {
+    public TInstruction[] Disassemble(ReadOnlySpan<byte> binaryCode, long startingAddress) {
         // ...
         //
         // Throws an exception if the operation fails.
@@ -822,13 +816,10 @@ public abstract class CapstoneDisassembler<TDisassembleMode, TInstruction, TInst
     /// <returns>
     ///     An array of disassembled instructions.
     /// </returns>
-    /// <exception cref="System.ArgumentNullException">
-    ///     Thrown if the binary code array is a null reference.
-    /// </exception>
     /// <exception cref="System.ObjectDisposedException">
     ///     Thrown if the disassembler is disposed.
     /// </exception>
-    public TInstruction[] Disassemble(byte[] binaryCode, long startingAddress, int count) {
+    public TInstruction[] Disassemble(ReadOnlySpan<byte> binaryCode, long startingAddress, int count) {
         // ...
         //
         // Throws an exception if the operation fails.
@@ -954,13 +945,10 @@ public abstract class CapstoneDisassembler<TDisassembleMode, TInstruction, TInst
     /// <returns>
     ///     A deferred collection of disassembled instructions.
     /// </returns>
-    /// <exception cref="System.ArgumentNullException">
-    ///     Thrown if the binary code array is a null reference.
-    /// </exception>
     /// <exception cref="System.ObjectDisposedException">
     ///     Thrown if the disassembler is disposed.
     /// </exception>
-    public IEnumerable<TInstruction> Iterate(byte[] binaryCode) {
+    public IEnumerable<TInstruction> Iterate(ReadOnlySpan<byte> binaryCode) {
         // ...
         //
         // Throws an exception if the operation fails.
@@ -979,15 +967,10 @@ public abstract class CapstoneDisassembler<TDisassembleMode, TInstruction, TInst
     /// <returns>
     ///     A deferred collection of disassembled instructions.
     /// </returns>
-    /// <exception cref="System.ArgumentNullException">
-    ///     Thrown if the binary code array is a null reference.
-    /// </exception>
     /// <exception cref="System.ObjectDisposedException">
     ///     Thrown if the disassembler is disposed.
     /// </exception>
-    public IEnumerable<TInstruction> Iterate(byte[] binaryCode, long startingAddress) {
-        CapstoneDisassembler.ThrowIfValueIsNullReference(nameof(binaryCode), binaryCode);
-
+    public IEnumerable<TInstruction> Iterate(ReadOnlySpan<byte> binaryCode, long startingAddress) {
         var binaryCodeOffset = 0;
 
         // ...
@@ -1021,7 +1004,7 @@ public abstract class CapstoneDisassembler<TDisassembleMode, TInstruction, TInst
             //
             // To make this work though, we MUST define a local variable for the delegate!
             if (this._skipDataCallback != null) {
-                callback = OnNativeSkipDataCallback;
+                callback = CreateCallback(binaryCode.ToArray());
             }
 
             // ...
@@ -1067,24 +1050,28 @@ public abstract class CapstoneDisassembler<TDisassembleMode, TInstruction, TInst
             }
         }
 
-        // <summary>
-        //      Native Skip Data Mode Callback.
-        // </summary>
-        IntPtr OnNativeSkipDataCallback(IntPtr cPBinaryCode, IntPtr cBinaryCodeSize, IntPtr cDataOffset, IntPtr pState) {
-            // ...
-            //
-            // Normally, a closure enclosing over a variable modified from a loop, such as this method, is a
-            // problem because the value of the variable is resolved at the time the closure is invoked and not
-            // when the variable is captured. This can lead to unexpected behavior if the closure is invoked
-            // outside the loop since the value of the captured variable will always be resolved to the last value
-            // it was set to inside the loop.
-            //
-            // However, because this closure will always be invoked from inside a disassemble loop, and never from
-            // outside of one, the variable value resolution behavior is exactly what we are looking for. We want
-            // the Capstone API to invoke this callback with an updated value for the captured variable every
-            // time!
-            var cBytesToSkip = this.SkipDataCallback(binaryCode, binaryCodeOffset);
-            return new IntPtr(cBytesToSkip);
+        NativeCapstone.SkipDataCallback CreateCallback(byte[] binaryCode) {
+            return OnNativeSkipDataCallback;
+
+            // <summary>
+            //      Native Skip Data Mode Callback.
+            // </summary>
+            IntPtr OnNativeSkipDataCallback(IntPtr cPBinaryCode, IntPtr cBinaryCodeSize, IntPtr cDataOffset, IntPtr pState) {
+                // ...
+                //
+                // Normally, a closure enclosing over a variable modified from a loop, such as this method, is a
+                // problem because the value of the variable is resolved at the time the closure is invoked and not
+                // when the variable is captured. This can lead to unexpected behavior if the closure is invoked
+                // outside the loop since the value of the captured variable will always be resolved to the last value
+                // it was set to inside the loop.
+                //
+                // However, because this closure will always be invoked from inside a disassemble loop, and never from
+                // outside of one, the variable value resolution behavior is exactly what we are looking for. We want
+                // the Capstone API to invoke this callback with an updated value for the captured variable every
+                // time!
+                var cBytesToSkip = this.SkipDataCallback(binaryCode, binaryCodeOffset);
+                return new IntPtr(cBytesToSkip);
+            }
         }
     }
 
