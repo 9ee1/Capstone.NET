@@ -228,7 +228,7 @@ internal static class NativeCapstone {
             // ...
             //
             // Throws an exception if the operation fails.
-            var instruction = MarshalExtension.PtrToStructure<NativeInstruction>(pInstruction);
+            var instruction = Marshal.PtrToStructure<NativeInstruction>(pInstruction);
             return instruction;
         }
         finally {
@@ -254,7 +254,7 @@ internal static class NativeCapstone {
             // First, we calculate the memory address of the <c>NativeInstruction.Details</c> field, which is
             // always relative to the memory address of its defining <c>NativeInstruction</c> structure. This is
             // NOT the actual memory address of the instruction's details.
-            var instructionDetailOffset = Marshal.OffsetOf(typeof(NativeInstruction), nameof(NativeInstruction.Details));
+            var instructionDetailOffset = Marshal.OffsetOf<NativeInstruction>(nameof(NativeInstruction.Details));
             var pInstructionDetail = (IntPtr)((long)pInstruction + (long)instructionDetailOffset);
 
             // ...
@@ -265,7 +265,7 @@ internal static class NativeCapstone {
             var ppInstructionDetail = Marshal.ReadIntPtr(pInstructionDetail);
             NativeInstructionDetail? instructionDetail = null;
             if (ppInstructionDetail != IntPtr.Zero) {
-                instructionDetail = MarshalExtension.PtrToStructure<NativeInstructionDetail>(ppInstructionDetail);
+                instructionDetail = Marshal.PtrToStructure<NativeInstructionDetail>(ppInstructionDetail);
             }
 
             return instructionDetail;
@@ -296,7 +296,7 @@ internal static class NativeCapstone {
             // First, we calculate the memory address of the <c>NativeInstruction.Details</c> field, which is
             // always relative to the memory address of its defining <c>NativeInstruction</c> structure. This is
             // NOT the actual memory address of the instruction's details.
-            var instructionDetailOffset = Marshal.OffsetOf(typeof(NativeInstruction), nameof(NativeInstruction.Details));
+            var instructionDetailOffset = Marshal.OffsetOf<NativeInstruction>(nameof(NativeInstruction.Details));
             var pInstructionDetail = (IntPtr)((long)pInstruction + (long)instructionDetailOffset);
 
             // ...
@@ -312,7 +312,7 @@ internal static class NativeCapstone {
                 // Fourth, we calculate the memory address of the instruction's architecture specific details,
                 // which is always relative to the memory address of the instruction's details.
                 var pArchInstructionDetail = ppInstructionDetail + NativeCapstone.MagicInstructionArchitectureDetailsFieldOffset;
-                instructionDetail = (TInstructionDetail)Marshal.PtrToStructure(pArchInstructionDetail, typeof(TInstructionDetail));
+                instructionDetail = Marshal.PtrToStructure<TInstructionDetail>(pArchInstructionDetail);
             }
 
             return instructionDetail;
@@ -339,7 +339,7 @@ internal static class NativeCapstone {
             //
             // Throws an exception if the operation fails.
             var pInstructionDetails = instruction.Details;
-            instructionDetails = MarshalExtension.PtrToStructure<NativeInstructionDetail>(pInstructionDetails);
+            instructionDetails = Marshal.PtrToStructure<NativeInstructionDetail>(pInstructionDetails);
         }
 
         return instructionDetails;
@@ -365,7 +365,7 @@ internal static class NativeCapstone {
             //
             // Throws an exception if the operation fails.
             var pInstructionDetails = instruction.Details + NativeCapstone.MagicInstructionArchitectureDetailsFieldOffset;
-            instructionDetails = MarshalExtension.PtrToStructure<TInstructionDetails>(pInstructionDetails);
+            instructionDetails = Marshal.PtrToStructure<TInstructionDetails>(pInstructionDetails);
         }
 
         return instructionDetails;

@@ -17,7 +17,7 @@ internal static class MarshalExtension {
     ///     A pointer to the allocated memory.
     /// </returns>
     internal static IntPtr AllocHGlobal<T>() {
-        var nType = MarshalExtension.SizeOf<T>();
+        var nType = Marshal.SizeOf<T>();
         var pType = Marshal.AllocHGlobal(nType);
 
         return pType;
@@ -36,7 +36,7 @@ internal static class MarshalExtension {
     ///     A pointer to the allocated memory.
     /// </returns>
     internal static IntPtr AllocHGlobal<T>(int size) {
-        var nType = MarshalExtension.SizeOf<T>() * size;
+        var nType = Marshal.SizeOf<T>() * size;
         var pType = Marshal.AllocHGlobal(nType);
 
         return pType;
@@ -55,27 +55,10 @@ internal static class MarshalExtension {
     ///     The destination structure.
     /// </returns>
     internal static T FreePtrToStructure<T>(IntPtr p) {
-        var @struct = Marshal.PtrToStructure(p, typeof(T));
+        var @struct = Marshal.PtrToStructure<T>(p);
         Marshal.FreeHGlobal(p);
 
-        return (T)@struct;
-    }
-
-    /// <summary>
-    ///     Marshal a Pointer to a Structure.
-    /// </summary>
-    /// <typeparam name="T">
-    ///     The destination structure's type.
-    /// </typeparam>
-    /// <param name="p">
-    ///     The pointer to marshal.
-    /// </param>
-    /// <returns>
-    ///     The destination structure.
-    /// </returns>
-    internal static T PtrToStructure<T>(IntPtr p) {
-        var @struct = Marshal.PtrToStructure(p, typeof(T));
-        return (T)@struct;
+        return @struct;
     }
 
     /// <summary>
@@ -97,26 +80,12 @@ internal static class MarshalExtension {
         var array = new T[size];
         var index = p;
         for (var i = 0; i < size; i++) {
-            var element = MarshalExtension.PtrToStructure<T>(index);
+            var element = Marshal.PtrToStructure<T>(index);
             array[i] = element;
 
-            index += Marshal.SizeOf(typeof(T));
+            index += Marshal.SizeOf<T>();
         }
 
         return array;
-    }
-
-    /// <summary>
-    ///     Get a Type's Size.
-    /// </summary>
-    /// <typeparam name="T">
-    ///     The type.
-    /// </typeparam>
-    /// <returns>
-    ///     The type's size, in bytes.
-    /// </returns>
-    internal static int SizeOf<T>() {
-        var size = Marshal.SizeOf(typeof(T));
-        return size;
     }
 }
