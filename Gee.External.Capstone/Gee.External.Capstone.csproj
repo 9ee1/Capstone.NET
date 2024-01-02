@@ -27,4 +27,8 @@
     <ItemGroup>
         <Content CopyToOutputDirectory="PreserveNewest" Include="runtimes/*/native/*" Pack="true" PackagePath="runtimes" />
     </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+        <PackageReference Include="System.Memory" Version="4.5.5" />
+    </ItemGroup>
 </Project>
