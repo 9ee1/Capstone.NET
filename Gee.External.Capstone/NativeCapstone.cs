@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -288,7 +289,7 @@ internal static class NativeCapstone {
     ///     The instruction's details. A null reference indicates the instruction was disassembled without
     ///     details.
     /// </returns>
-    internal static TInstructionDetail? GetInstructionDetail<TInstructionDetail>(NativeInstructionHandle hInstruction) where TInstructionDetail : struct {
+    internal static TInstructionDetail? GetInstructionDetail<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] TInstructionDetail>(NativeInstructionHandle hInstruction) where TInstructionDetail : struct {
         var pInstruction = hInstruction.DangerousAddRefAndGetHandle();
         try {
             // ...
@@ -358,7 +359,7 @@ internal static class NativeCapstone {
     ///     The instruction's architecture specific details. A null reference indicates the instruction was
     ///     disassembled without its details. 
     /// </returns>
-    internal static TInstructionDetails? GetInstructionDetail<TInstructionDetails>(ref NativeInstruction instruction) where TInstructionDetails : struct {
+    internal static TInstructionDetails? GetInstructionDetail<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] TInstructionDetails>(ref NativeInstruction instruction) where TInstructionDetails : struct {
         TInstructionDetails? instructionDetails = null;
         if (instruction.Details != IntPtr.Zero) {
             // ...

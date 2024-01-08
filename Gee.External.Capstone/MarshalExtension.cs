@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace Gee.External.Capstone;
@@ -54,7 +55,7 @@ internal static class MarshalExtension {
     /// <returns>
     ///     The destination structure.
     /// </returns>
-    internal static T FreePtrToStructure<T>(IntPtr p) {
+    internal static T FreePtrToStructure<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] T>(IntPtr p) {
         var @struct = Marshal.PtrToStructure<T>(p);
         Marshal.FreeHGlobal(p);
 
@@ -76,7 +77,7 @@ internal static class MarshalExtension {
     /// <returns>
     ///     The destination collection.
     /// </returns>
-    internal static T[] PtrToStructure<T>(IntPtr p, int size) {
+    internal static T[] PtrToStructure<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] T>(IntPtr p, int size) {
         var array = new T[size];
         var index = p;
         for (var i = 0; i < size; i++) {
